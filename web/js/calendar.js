@@ -9,7 +9,8 @@ function admin(){
 }
 
 function logout(){
-    alert("TO_DO logout");
+    //alert("TO_DO logout");
+    $.get('Logout');
 }
 
 function dayview(){
@@ -46,4 +47,8 @@ function today(){
 
 function future(){
     alert("TO_DO future");
+}
+
+function createevent(){
+    alert("TO_DO createevenr");
 }

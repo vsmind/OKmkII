@@ -4,12 +4,10 @@
  */
 package servlets;
 
+import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +18,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author Vitaly
  */
-public class Calendarpage extends HttpServlet {
+public class Logout extends HttpServlet {
 
-    private HttpSession httpsession;   
-    private String action;
+    private HttpSession httpsession;  
+    
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -44,10 +42,10 @@ public class Calendarpage extends HttpServlet {
              */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Calendarpage</title>");            
+            out.println("<title>Servlet Logout</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Calendarpage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Logout at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -68,21 +66,14 @@ public class Calendarpage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        httpsession = request.getSession();
-        response.setContentType("text/html");
 
-	action = request.getParameter("instance");
-        
-        if(action.equals("day"))
-        {
-            System.out.println(action);
-            getDay(request, response);
-        }
-        else
-        {
-            response.sendRedirect("feil.jsp");
-        }
-        
+            httpsession = request.getSession();
+            User user = (User) httpsession.getAttribute("user");
+            if(user!=null)
+            {
+                httpsession.removeAttribute("user");
+            }
+         response.sendRedirect("index.jsp");
     }
 
     /**
@@ -109,36 +100,4 @@ public class Calendarpage extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    private void getDay(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
-        StringBuilder answer =  new StringBuilder();
-        int today;
-        Calendar calenar = Calendar.getInstance();
-        today = calenar.get(Calendar.DATE);
-        
-        answer.append("<p align=\"center\">Today is ").append(today).append("</p>");
-        
-        //Create a time field
-        for(int i = 0; i < 24; i++)
-        {
-            answer.append("<table border=\"0\">");
-                answer.append("<tr>");
-                    answer.append("<td>");
-                        answer.append("<div class=\"hours\">");
-                            answer.append(i).append(":00");
-                        answer.append("</div>");
-                    answer.append("</td>");  
-                    answer.append("<td>");
-                        answer.append("<div id=\"hour").append(i).append("\" class=\"eventzone\" onclick=\"createevent()\">");
-                            answer.append("");
-                        answer.append("</div>");
-                    answer.append("</td>");
-                answer.append("</tr>");
-            answer.append("</table>");
-        }
-        
-        response.setContentType("text/plain");
-        response.getWriter().write(answer.toString());
-    }
 }

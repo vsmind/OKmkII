@@ -63,9 +63,21 @@
         </div>
         
         <div id="infopanel" class="infop">
-        
-            <button id="buttonadm" class="butadmin" onclick="admin()">Administration</button>
-            <button id="buttonlogout" class="butlogout" onclick="logout()">Log Out</button>
+            
+            <table>
+                <tr>
+                    <td>
+                        <form method="get" action="Registration">
+                        <button id="buttonadm" class="butadmin" onclick="admin()">Administration</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="get" action="Logout">
+                            <button id="buttonlogout" class="butlogout" onclick="logout()">Log Out</button>
+                        </form>
+                    </td>
+                </tr>  
+            </table>
             
         </div>
         
