@@ -1,0 +1,7 @@
+<%@ page pageEncoding="UTF-8" %>
+<%
+	//checks if sessions have a username which was assigned to him after signing in
+	if (session.getAttribute("user") == null){
+		response.sendRedirect("index.jsp");	
+	}
+%> 

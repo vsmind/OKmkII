@@ -1,0 +1,173 @@
+/* 
+    Document   : calendar
+    Created on : Apr 29, 2013, 3:22:18 PM
+    Author     : Vitaly
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+.viewp{
+    height: 15%;
+    width: 70%;
+    background: #33ffcc;
+    
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.infop{
+    height: 10%;
+    width: 30%;
+    background: #00cccc;
+    
+    position: absolute;
+    left: 70%;
+    top: 0%;
+}
+
+.mainp{
+    height: 85%;
+    width: 70%;
+    background: #ccffff;
+    
+    position: absolute;
+    left: 0%;
+    top: 15%;
+}
+
+.eventp{
+    height: 90%;
+    width: 30%;
+    background: #ff66ff;
+    
+    position: absolute;
+    left: 70%;
+    top: 10%;
+}
+
+.butadmin {    
+	-moz-box-shadow:inset 0px 0px 25px 1px #bbdaf7;
+	-webkit-box-shadow:inset 0px 0px 25px 1px #bbdaf7;
+	box-shadow:inset 0px 0px 25px 1px #bbdaf7;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5) );
+	background:-moz-linear-gradient( center top, #79bbff 5%, #378de5 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5');
+	background-color:#79bbff;
+	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
+	border:1px solid #84bbf3;
+	display:inline-block;
+	color:#ffffff;
+	font-family:arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:10px 25px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #528ecc;
+}.butadmin:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff) );
+	background:-moz-linear-gradient( center top, #378de5 5%, #79bbff 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff');
+	background-color:#378de5;
+}.butadmin:active {
+	position:relative;
+	top:1px;
+}
+
+.butlogout {
+	-moz-box-shadow:inset 0px 0px 5px 1px #f7c5c0;
+	-webkit-box-shadow:inset 0px 0px 5px 1px #f7c5c0;
+	box-shadow:inset 0px 0px 5px 1px #f7c5c0;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d) );
+	background:-moz-linear-gradient( center top, #fc8d83 5%, #e4685d 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fc8d83', endColorstr='#e4685d');
+	background-color:#fc8d83;
+	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
+	border:1px solid #d83526;
+	display:inline-block;
+	color:#ffffff;
+	font-family:arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:10px 25px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #b23e35;
+}.butlogout:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #e4685d), color-stop(1, #fc8d83) );
+	background:-moz-linear-gradient( center top, #e4685d 5%, #fc8d83 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e4685d', endColorstr='#fc8d83');
+	background-color:#e4685d;
+}.butlogout:active {
+	position:relative;
+	top:1px;
+}
+
+.buttime {
+    
+        width: 120px;
+	-moz-box-shadow:inset 0px 0px 5px 1px #bee2f9;
+	-webkit-box-shadow:inset 0px 0px 5px 1px #bee2f9;
+	box-shadow:inset 0px 0px 5px 1px #bee2f9;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf) );
+	background:-moz-linear-gradient( center top, #63b8ee 5%, #468ccf 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf');
+	background-color:#63b8ee;
+	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
+	border:2px solid #3866a3;
+	display:inline-block;
+	color:#14396a;
+	font-family:arial;
+	font-size:20px;
+	font-weight:bold;
+	padding:5px 40px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #7cacde;
+}.buttime:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee) );
+	background:-moz-linear-gradient( center top, #468ccf 5%, #63b8ee 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee');
+	background-color:#468ccf;
+}.buttime:active {
+	position:relative;
+	top:1px;
+}
+
+.butchangedate {
+	-moz-box-shadow:inset 0px 0px 5px 1px #cae3fc;
+	-webkit-box-shadow:inset 0px 0px 5px 1px #cae3fc;
+	box-shadow:inset 0px 0px 5px 1px #cae3fc;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #4197ee) );
+	background:-moz-linear-gradient( center top, #79bbff 5%, #4197ee 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#4197ee');
+	background-color:#79bbff;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+	border:2px solid #469df5;
+	display:inline-block;
+	color:#ffffff;
+	font-family:arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:1px 90px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #287ace;
+}.butchangedate:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4197ee), color-stop(1, #79bbff) );
+	background:-moz-linear-gradient( center top, #4197ee 5%, #79bbff 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4197ee', endColorstr='#79bbff');
+	background-color:#4197ee;
+}.butchangedate:active {
+	position:relative;
+	top:1px;
+}
