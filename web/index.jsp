@@ -12,6 +12,7 @@
         <title>Welcome to Object Calendar</title>
         <script src="js/jquery-2.0.0.js"></script>
         <script src="js/home.js"></script>
+        <link rel="stylesheet" href="style/index.css" type="text/css"/>
     </head>
     <body>
         <h1>Welcome to Object Calendar</h1>

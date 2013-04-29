@@ -1,0 +1,20 @@
+/* 
+    Document   : index
+    Created on : Apr 29, 2013, 10:20:15 PM
+    Author     : Vitaly
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+.checkok{
+    color: green;
+}
+
+.checkfeil{
+    color: red;
+}
+

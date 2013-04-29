@@ -139,7 +139,7 @@ public class Homepage extends HttpServlet {
                             answer.append("<input name=\"username\" type=\"text\" id=\"uname\" onkeyup=\"checkusername()\">");
                         answer.append("</td>");
                         answer.append("<td>");
-                            answer.append("<div id=\"unamecheck\">TO_DO usernamecheck</div>");
+                            answer.append("<div id=\"unamecheck\"></div>");
                         answer.append("</td>");
                     answer.append("</tr>");
                     
@@ -151,7 +151,7 @@ public class Homepage extends HttpServlet {
                             answer.append("<input name=\"email\" type=\"text\" id=\"uemail\" onkeyup=\"checkemail()\">");
                         answer.append("</td>");
                         answer.append("<td>");
-                            answer.append("<div id=\"uemailcheck\">TO_DO emailcheck</div>");
+                            answer.append("<div id=\"uemailcheck\"></div>");
                         answer.append("</td>");
                     answer.append("</tr>");
                     
@@ -175,7 +175,7 @@ public class Homepage extends HttpServlet {
                             answer.append("<input name=\"passwordconfirmation\" type=\"password\" id=\"upassconf\" onkeyup=\"checkpasswordconf()\">");
                         answer.append("</td>");
                         answer.append("<td>");
-                            answer.append("<div id=\"upasswordconf\">TO_DO right password check</div>");
+                            answer.append("<div id=\"upasswordconf\"></div>");
                         answer.append("</td>");
                     answer.append("</tr>");
                     

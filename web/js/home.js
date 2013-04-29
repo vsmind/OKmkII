@@ -20,17 +20,25 @@ function register(){
 
 function checkusername(){
     var name = $("#uname").val();
-    $("#unamecheck").replaceWith("<div id=\"unamecheck\">" + name + "</div>");
+    
+    $.get('registration', {instant:'username', name:name}, function(responseText){
+        $("#unamecheck").replaceWith("<div id=\"unamecheck\">" + responseText + "</div>");   
+    });
 }
 
 function checkemail(){
     var email = $("#uemail").val();
-    $("#uemailcheck").replaceWith("<div id=\"uemailcheck\">" + email + "</div>")
+    
+    $.get('registration', {instant:'mail', mail:email}, function(responseText){
+        $("#uemailcheck").replaceWith("<div id=\"uemailcheck\">" + responseText + "</div>");
+    });
+    
+    
 }
 
 function checkpassword(){
     var pass = $("#upass").val();
-    $("#upasswordcheck").replaceWith("<div id=\"upasswordcheck\">" + pass + "</div>")
+    $("#upasswordcheck").replaceWith("<div id=\"upasswordcheck\">" + pass + "</div>");
     checkpasswordconf();
 }
 
