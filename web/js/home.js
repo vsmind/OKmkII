@@ -24,6 +24,7 @@ function checkusername(){
     $.get('registration', {instant:'username', name:name}, function(responseText){
         $("#unamecheck").replaceWith("<div id=\"unamecheck\">" + responseText + "</div>");   
     });
+    checkall();
 }
 
 function checkemail(){
@@ -32,21 +33,53 @@ function checkemail(){
     $.get('registration', {instant:'mail', mail:email}, function(responseText){
         $("#uemailcheck").replaceWith("<div id=\"uemailcheck\">" + responseText + "</div>");
     });
-    
+    checkall();
     
 }
 
 function checkpassword(){
     var pass = $("#upass").val();
-    $("#upasswordcheck").replaceWith("<div id=\"upasswordcheck\">" + pass + "</div>");
+    
+    $.get('registration', {instant:'pass', pass:pass}, function(responseText){
+        $("#upasswordcheck").replaceWith("<div id=\"upasswordcheck\">" + responseText + "</div>");
+    });
+    
+    
     checkpasswordconf();
+    checkall();
 }
 
 function checkpasswordconf(){
     var passone = $("#upass").val();
     var passtwo = $("#upassconf").val();
-    if(passone == passtwo)
-        $("#upasswordconf").replaceWith("<div id=\"upasswordconf\">" + "Passwords Correct" + "</div>")
-    else
-        $("#upasswordconf").replaceWith("<div id=\"upasswordconf\">" + "Passwords Inncorect" + "</div>")
+    
+    $.get('registration', {instant:'passcheck', passone:passone, passtwo:passtwo}, function(responseText){
+        $("#upasswordconf").replaceWith("<div id=\"upasswordconf\">" + responseText + "</div>");
+    });
+    
+    checkall();
+}
+
+function checkall(){
+    $.get('registration', {instant:'checkall'}, function(responseText){
+        var action = responseText;
+        //alert(action);
+        if(action == "true")
+        {
+            $("#regbutton").attr("style","display:inline"); 
+            //alert("true " + action);
+        }
+        else
+        {
+            $("#regbutton").attr("style","display:none");
+            //alert("false " + action);
+        }
+            
+      });
+}
+
+function restorePassword(){
+    $.get('homepage', {ac:'rest'}, function(responseText){
+        $("#restoreform").replaceWith("<div id=\"restoreform\">" + responseText + "</div>");
+    });
 }

@@ -16,6 +16,10 @@
         <servlet-name>Logout</servlet-name>
         <servlet-class>servlets.Logout</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Restorepassword</servlet-name>
+        <servlet-class>servlets.Restorepassword</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Restorepassword</servlet-name>
+        <url-pattern>/Restorepassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

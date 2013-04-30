@@ -114,10 +114,13 @@ public class Homepage extends HttpServlet {
                 answer.append("</table>");
             answer.append("</form>");
             
+            answer.append("<button onclick=\"restorePassword()\">Restore Password</button>");
+            answer.append("<div id=\"restoreform\"></div>");
+            
             response.setContentType("text/plain");
             response.getWriter().write(answer.toString());
         }
-        else
+        else if(action.equals("reg"))
         {
             answer.append("<form method=\"post\" action=\"registration\">");
             
@@ -163,7 +166,7 @@ public class Homepage extends HttpServlet {
                             answer.append("<input name=\"password\" type=\"password\" id=\"upass\" onkeyup=\"checkpassword()\">");
                         answer.append("</td>");
                         answer.append("<td>");
-                            answer.append("<div id=\"upasswordcheck\">TO_DO strongpassword check</div>");
+                            answer.append("<div id=\"upasswordcheck\"></div>");
                         answer.append("</td>");
                     answer.append("</tr>");
                     
@@ -184,7 +187,7 @@ public class Homepage extends HttpServlet {
                             
                         answer.append("</td>");
                         answer.append("<td>");
-                            answer.append("<input type=\"submit\" value=\"Register\">");
+                            answer.append("<input type=\"submit\" id=\"regbutton\" value=\"Register\" style=\"display:none\"/>");
                         answer.append("</td>");
                     answer.append("</tr>");
                                       
@@ -194,7 +197,28 @@ public class Homepage extends HttpServlet {
             
             response.setContentType("text/plain");
             response.getWriter().write(answer.toString());
-        }   
+        }
+        else if(action.equals("rest"))
+        {
+            answer.append("<form method=\"post\" action=\"Restorepassword\">");
+                answer.append("<table>");
+                    answer.append("<tr>");
+                        answer.append("<td>"); 
+                            answer.append("<input name=\"restemail\" type=\"text\" id=\"remail\" />");
+                        answer.append("</td>");
+                        answer.append("<td>"); 
+                            answer.append("<input type=\"submit\" value=\"Register\"/>");
+                        answer.append("</td>");                  
+                    answer.append("</tr>");                   
+            answer.append("</table>");
+            answer.append("</form>");
+            response.setContentType("text/plain");
+            response.getWriter().write(answer.toString());
+        }
+        else
+        {
+        
+        }
     }
 
     /**

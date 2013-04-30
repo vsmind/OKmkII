@@ -85,6 +85,18 @@ public class Registration extends HttpServlet {
         {
             checkUsername(request, response);
         }
+        else if(action.equals("pass"))
+        {
+            checkPass(request, response);
+        }
+        else if(action.equals("checkall"))
+        {
+            checkAll(request, response);
+        }
+        else if(action.equals("passcheck"))
+        {
+            checkPasswords(request, response);
+        }
         else
         {
             answer =  new StringBuilder();
@@ -105,7 +117,34 @@ public class Registration extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        String registerName;
+        String registerMail;
+        String registerPassword;
+        
+        registerName = request.getParameter("username");
+        registerMail = request.getParameter("email");
+        registerPassword = request.getParameter("password");
+        
+        
+        User user = new User(1);
+        user.setUsername(registerName);
+        user.setEmail(registerMail);
+        user.setPassword(registerPassword);
+        user.setActive(false);
+        user.setFacebook(false);
+        
+        userFacade.create(user);
+        
+        httpsession.removeAttribute("regformname");
+        httpsession.removeAttribute("regformemail");
+        httpsession.removeAttribute("regformpass");
+        httpsession.removeAttribute("regformpasspass");
+        
+        
+        response.setContentType("text/html");
+        response.sendRedirect("calendar.jsp");
+        
     }
 
     /**
@@ -142,11 +181,17 @@ public class Registration extends HttpServlet {
         String email = (String)request.getParameter("mail");
         matcher = pattern.matcher(email);
         
-        if(matcher.matches())
-            answer.append("<p class=\"checkok\">e-mail format is correct</p>");
-        else
-            answer.append("<p class=\"checkfeil\">e-mail format is incorrect</p>");
         
+        if(matcher.matches())
+        {
+            answer.append("<p class=\"checkok\">e-mail format is correct</p>");
+            httpsession.setAttribute("regformemail", "true");
+        }  
+        else
+        {
+            answer.append("<p class=\"checkfeil\">e-mail format is incorrect</p>");
+            httpsession.setAttribute("regformemail", "false");
+        }
         response.getWriter().write(answer.toString());
     }
     
@@ -154,9 +199,7 @@ public class Registration extends HttpServlet {
     {
         Pattern pattern;
 	Matcher matcher;
-        
-        
-        
+       
         answer =  new StringBuilder();
         String username = (String)request.getParameter("name");
         
@@ -172,21 +215,152 @@ public class Registration extends HttpServlet {
             {
                 User user = userFacade.getUserByUsername(username);
                 if(user==null)
+                {
                     answer.append("<p class=\"checkok\">Username is free for use</p>");
+                    httpsession.setAttribute("regformname", "true");
+                }
                 else
+                {
                     answer.append("<p class=\"checkfeil\">Username is already taken, try another one</p>");
+                    httpsession.setAttribute("regformname", "false");
+                }
             }
             else
             {
                 answer.append("<p class=\"checkfeil\">Username is to short, you have to use at least 4 characters</p>");
+                httpsession.setAttribute("regformname", "false");
             } 
         }
         else
         {
             answer.append("<p class=\"checkfeil\">Username can innhold just letters and numbers</p>");
+            httpsession.setAttribute("regformname", "false");
         }
         
         
         response.getWriter().write(answer.toString());
+    }
+    
+    /**
+     * http://www.zorched.net/2009/05/08/password-strength-validation-with-regular-expressions/
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
+    private void checkPass(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        Pattern pattern;
+	Matcher matcher;
+        
+        int passwordScore = 0;
+        String criteria = "";
+         
+        answer =  new StringBuilder();
+        String pass = (String)request.getParameter("pass");
+        
+        
+        if(pass.length()>5)
+        {
+            criteria = "^.*(?=.*[a-z]).*$";//line with at least 1 lowercase character
+            pattern = Pattern.compile(criteria);
+            matcher = pattern.matcher(pass);
+            if(matcher.matches())
+                passwordScore++;
+            
+            criteria = "^.*(?=.*[A-Z]).*$";//Assert a string contains at least 1 uppercase letter
+            pattern = Pattern.compile(criteria);
+            matcher = pattern.matcher(pass);
+            if(matcher.matches())
+                passwordScore++;
+            
+            criteria = "^.*(?=.*[\\d]).*$";//Assert a string contains at least 1 digit:
+            pattern = Pattern.compile(criteria);
+            matcher = pattern.matcher(pass);
+            if(matcher.matches())
+                passwordScore++;
+            
+            criteria = "^.*(?=.*[\\W]).*$";//Assert a string contains at least 1 special character
+            pattern = Pattern.compile(criteria);
+            matcher = pattern.matcher(pass);
+            if(matcher.matches())
+                passwordScore++;
+            
+            switch(passwordScore)
+            {
+                case 1:
+                    answer.append("<p class=\"checkfeil\">").append("Week password").append("</p>");
+                    httpsession.setAttribute("regformpass", "true");
+                    break;
+                case 2:
+                    answer.append("<p class=\"checklow\">").append("Easy password").append("</p>");
+                    httpsession.setAttribute("regformpass", "true");
+                    break;
+                case 3:
+                    answer.append("<p class=\"checkhigh\">").append("OK password").append("</p>");
+                    httpsession.setAttribute("regformpass", "true");
+                    break;
+                case 4:
+                    answer.append("<p class=\"checkok\">").append("Good password").append("</p>");
+                    httpsession.setAttribute("regformpass", "true");
+                    break;
+            }
+                    
+           
+        }
+        else
+        {
+            answer.append("<p class=\"checkfeil\">Password are too short</p>");
+            httpsession.setAttribute("regformpass", "false");
+        }
+            
+        
+        response.getWriter().write(answer.toString());
+    }
+    
+    private void checkAll(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        Boolean namecheck = Boolean.FALSE;
+        Boolean mailcheck = Boolean.FALSE;
+        Boolean passcheck = Boolean.FALSE;
+        Boolean passpasscheck = Boolean.FALSE;
+        
+        if(httpsession.getAttribute("regformname")!= null)
+            namecheck = Boolean.valueOf((String)httpsession.getAttribute("regformname"));
+        if(httpsession.getAttribute("regformemail")!= null)
+            mailcheck = Boolean.valueOf((String)httpsession.getAttribute("regformemail"));
+        if(httpsession.getAttribute("regformpass")!= null)
+            passcheck = Boolean.valueOf((String)httpsession.getAttribute("regformpass"));
+        if(httpsession.getAttribute("regformpasspass")!=null)
+            passpasscheck = Boolean.valueOf((String)httpsession.getAttribute("regformpasspass"));
+        
+        if(namecheck==true && mailcheck == true && passcheck == true && passpasscheck == true)
+        {
+            response.getWriter().write("true");
+            //System.out.println("true" + namecheck.toString() + mailcheck.toString() + passcheck.toString());
+        }
+        else
+        {
+            response.getWriter().write("false");
+            //System.out.println("false" + namecheck.toString() + mailcheck.toString() + passcheck.toString());
+        }
+        
+    }
+    
+    private void checkPasswords(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        String passone = (String)request.getParameter("passone");
+        String passtwo = (String)request.getParameter("passtwo");
+        
+        if(passone.equals(passtwo))
+        {
+            httpsession.setAttribute("regformpasspass", "true");
+            response.getWriter().write("Passwords Correct");
+        }
+        else
+        {
+            httpsession.setAttribute("regformpasspass", "false");
+            response.getWriter().write("Passwords Inncorect");
+        }
+        
     }
 }

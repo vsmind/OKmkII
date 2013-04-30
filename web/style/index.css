@@ -18,3 +18,11 @@ root {
     color: red;
 }
 
+.checklow{
+    color: yellow;
+}
+
+.checkhigh{
+    color: greenyellow;
+}
+
