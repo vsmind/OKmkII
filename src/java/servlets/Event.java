@@ -6,10 +6,6 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +16,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author Vitaly
  */
-public class Calendarpage extends HttpServlet {
+public class Event extends HttpServlet {
 
     private HttpSession httpsession;   
-    private String action;
+    
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -44,10 +40,10 @@ public class Calendarpage extends HttpServlet {
              */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Calendarpage</title>");            
+            out.println("<title>Servlet Event</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Calendarpage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Event at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -69,20 +65,20 @@ public class Calendarpage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         httpsession = request.getSession();
-        response.setContentType("text/html");
-
-	action = request.getParameter("instance");
         
-        if(action.equals("day"))
-        {
-            System.out.println(action);
-            getDay(request, response);
-        }
-        else
-        {
-            response.sendRedirect("feil.jsp");
-        }
+        String title;
+        Integer type;
+        String description;
         
+        title = request.getParameter("eventtitle");
+        type = Integer.parseInt(request.getParameter("eventtype"));
+        description = request.getParameter("eventdescription");
+        
+        System.out.println(title);
+        System.out.println(type);
+        System.out.println(description);
+        
+        response.getWriter().write("OK");
     }
 
     /**
@@ -97,7 +93,22 @@ public class Calendarpage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        httpsession = request.getSession();
+        
+        String title;
+        Integer type;
+        String description;
+        
+        title = request.getParameter("eventtitle");
+        type = Integer.parseInt(request.getParameter("eventtype"));
+        description = request.getParameter("eventdescription");
+        
+        System.out.println(title);
+        System.out.println(type);
+        System.out.println(description);
+        
+        
     }
 
     /**
@@ -109,41 +120,4 @@ public class Calendarpage extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    private void getDay(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
-        StringBuilder answer =  new StringBuilder();
-        int today;
-        Calendar calenar = Calendar.getInstance();
-        today = calenar.get(Calendar.DATE);
-        
-        answer.append("<p align=\"center\">Today is ").append(today).append("</p>");
-        
-        //Create a time field
-        for(int i = 0; i < 24; i++)
-        {
-            answer.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" margin=\"0\">");
-                answer.append("<tr bgcolor=\"red\">");
-                    answer.append("<td>");
-                        answer.append("<div class=\"hours\">");
-                            answer.append(i).append(":00");
-                        answer.append("</div>");
-                    answer.append("</td>");  
-                    answer.append("<td>");
-                        answer.append("<div id=\"hour").append(i).append("\" class=\"eventzone\" onclick=\"createevent()\">");
-                            answer.append("");
-                        answer.append("</div>");
-                    answer.append("</td>");
-                answer.append("</tr>");
-            answer.append("</table>");
-        }
-        
-        response.setContentType("text/plain");
-        response.getWriter().write(answer.toString());
-    }
-    
-    private void goBack()
-    {
-    
-    }
 }

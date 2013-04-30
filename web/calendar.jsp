@@ -82,6 +82,21 @@
         </div>
         
         <div id="eventpanel" class="eventp">
+            <table>
+                <tr>
+                    <td>
+                        <button onclick="createEventPanel()">Event</button>
+                    </td>
+                    <td>
+                        <button onclick="createModulePanel()">Module</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="dynamicevents"> </div>
+                    </td>
+                </tr>            
+            </table>
             
         </div>
         

@@ -4,26 +4,29 @@
  */
 package servlets;
 
+import entity.Eventtype;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import session.EventtypeFacade;
 
 /**
  *
  * @author Vitaly
  */
-public class Calendarpage extends HttpServlet {
+public class Eventspage extends HttpServlet {
 
     private HttpSession httpsession;   
     private String action;
+    @EJB
+    EventtypeFacade eventtypeFacade;
+    
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -44,10 +47,10 @@ public class Calendarpage extends HttpServlet {
              */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Calendarpage</title>");            
+            out.println("<title>Servlet Eventspage</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Calendarpage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Eventspage at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -69,20 +72,19 @@ public class Calendarpage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         httpsession = request.getSession();
-        response.setContentType("text/html");
+        response.setContentType("text/plain");
 
 	action = request.getParameter("instance");
         
-        if(action.equals("day"))
+        if(action.equals("createeventform"))
         {
-            System.out.println(action);
-            getDay(request, response);
+            createEventForm(request, response);
         }
         else
         {
+            response.setContentType("text/html");
             response.sendRedirect("feil.jsp");
         }
-        
     }
 
     /**
@@ -97,7 +99,9 @@ public class Calendarpage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        
+        
     }
 
     /**
@@ -110,40 +114,70 @@ public class Calendarpage extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    private void getDay(HttpServletRequest request, HttpServletResponse response) throws IOException
+    private void createEventForm(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         StringBuilder answer =  new StringBuilder();
-        int today;
-        Calendar calenar = Calendar.getInstance();
-        today = calenar.get(Calendar.DATE);
         
-        answer.append("<p align=\"center\">Today is ").append(today).append("</p>");
-        
-        //Create a time field
-        for(int i = 0; i < 24; i++)
-        {
-            answer.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" margin=\"0\">");
-                answer.append("<tr bgcolor=\"red\">");
+            answer.append("<table>");
+                answer.append("<tr>");
                     answer.append("<td>");
-                        answer.append("<div class=\"hours\">");
-                            answer.append(i).append(":00");
-                        answer.append("</div>");
-                    answer.append("</td>");  
-                    answer.append("<td>");
-                        answer.append("<div id=\"hour").append(i).append("\" class=\"eventzone\" onclick=\"createevent()\">");
-                            answer.append("");
-                        answer.append("</div>");
+                        answer.append("Create new event:");
                     answer.append("</td>");
                 answer.append("</tr>");
+                
+                answer.append("<tr>");
+                    answer.append("<td>");
+                        answer.append("Event title:");
+                    answer.append("</td>");
+                    answer.append("<td>");
+                        answer.append("<input name=\"eventtitle\" type=\"text\" id=\"eventtitle\">");
+                    answer.append("</td>");
+                answer.append("</tr>");
+                
+                answer.append("<tr>");
+                    answer.append("<td>");
+                        answer.append("Event type:");
+                    answer.append("</td>");
+                    
+                    answer.append("<td>");
+                        List<Eventtype> eventList = getAllEventsType();
+                        answer.append("<select name=\"eventtype\" id=\"eventtype\">");
+                            for(int i = 0; i < eventList.size(); i++)
+                            {
+                                answer.append("<option value=\"").append(i+1).append("\">").append(eventList.get(i).getName()).append("</option>");
+                            }
+                        answer.append("</select>");
+                    answer.append("</td>");
+                answer.append("</tr>");
+                
+                answer.append("<tr>");
+                    answer.append("<td>");
+                        answer.append("Description:");
+                    answer.append("</td>");
+                    answer.append("<td>");
+                        answer.append("<input name=\"eventdescription\" type=\"text\" id=\"eventdescription\">");
+                    answer.append("</td>");
+                answer.append("</tr>");
+                
+                answer.append("<tr>");
+                    answer.append("<td>");
+                        answer.append("<input type=\"submit\" id=\"regbutton\" value=\"Save Event\" onclick=\"saveEvent()\" />");
+                    answer.append("</td>");
+                answer.append("</tr>");
+                
             answer.append("</table>");
-        }
+        
         
         response.setContentType("text/plain");
         response.getWriter().write(answer.toString());
     }
     
-    private void goBack()
+    private List<Eventtype> getAllEventsType()
     {
-    
+        List<Eventtype> eventList;
+        
+        eventList = eventtypeFacade.findAll();
+        
+        return eventList;
     }
 }

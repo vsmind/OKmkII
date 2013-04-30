@@ -52,3 +52,23 @@ function future(){
 function createevent(){
     alert("TO_DO createevenr");
 }
+
+function createEventPanel(){
+    $.get('Eventspage', {instance:'createeventform'}, function(responseText){
+        $("#dynamicevents").replaceWith("<div id=\"dynamicevents\">" + responseText + "</div>");
+    });
+}
+
+function createModulePanel(){
+    alert("TO_DO");
+}
+
+function saveEvent()
+{
+    var evtitle = $("#eventtitle").val();
+    var evtype = $("#eventtype").val();
+    var evdescription = $("#eventdescription").val();
+    $.get('Event', {eventtitle:evtitle,eventtype:evtype,eventdescription:evdescription}, function(){
+       
+    });
+}

@@ -20,6 +20,14 @@
         <servlet-name>Restorepassword</servlet-name>
         <servlet-class>servlets.Restorepassword</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Eventspage</servlet-name>
+        <servlet-class>servlets.Eventspage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Event</servlet-name>
+        <servlet-class>servlets.Event</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -39,6 +47,14 @@
     <servlet-mapping>
         <servlet-name>Restorepassword</servlet-name>
         <url-pattern>/Restorepassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Eventspage</servlet-name>
+        <url-pattern>/Eventspage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Event</servlet-name>
+        <url-pattern>/Event</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
