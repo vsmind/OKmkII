@@ -68,7 +68,10 @@ function saveEvent()
     var evtitle = $("#eventtitle").val();
     var evtype = $("#eventtype").val();
     var evdescription = $("#eventdescription").val();
-    $.get('Event', {eventtitle:evtitle,eventtype:evtype,eventdescription:evdescription}, function(){
-       
+    $.get('Event', {eventtitle:evtitle,eventtype:evtype,eventdescription:evdescription}, function(responseText){
+        if(responseText == "OK")
+            $("#eventtitle").val("");
+            $("#eventtype").val(1);
+            $("#eventdescription").val("");
     });
 }

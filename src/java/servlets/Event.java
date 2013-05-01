@@ -6,11 +6,19 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Calendar;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import session.EventFacade;
+import session.EventtypeFacade;
+import session.TimeRepeatFacade;
 
 /**
  *
@@ -20,6 +28,12 @@ public class Event extends HttpServlet {
 
     private HttpSession httpsession;   
     
+    @EJB
+    private EventFacade eventFacade;
+    @EJB
+    private EventtypeFacade eventTypeFacade;
+    @EJB
+    private TimeRepeatFacade timeRepeatFacade;
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -65,18 +79,48 @@ public class Event extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         httpsession = request.getSession();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar cal = Calendar.getInstance();
         
         String title;
         Integer type;
         String description;
+        Date timeStart;
+        Date timeEnd;
+        long location_lat;
+        long location_long;
         
         title = request.getParameter("eventtitle");
         type = Integer.parseInt(request.getParameter("eventtype"));
         description = request.getParameter("eventdescription");
         
+        timeStart = cal.getTime();
+        timeEnd = cal.getTime();
+        
+        location_lat = 1;
+        location_long = 1;
+        
         System.out.println(title);
         System.out.println(type);
         System.out.println(description);
+        
+        entity.Event event = new entity.Event(1);
+        
+        event.setTitle(title);
+        event.setType(eventTypeFacade.getEventTypeById(type));
+        event.setDescription(description);
+        
+        event.setTimeStart(timeStart);
+        event.setTimeEnd(timeEnd);
+        
+        event.setLocationLat(location_lat);
+        event.setLocationLong(location_long);
+        
+        event.setReminder(Boolean.TRUE);
+        event.setTimeRepeat(timeRepeatFacade.getEventTypeById(1));
+         
+        eventFacade.create(event);
+        
         
         response.getWriter().write("OK");
     }

@@ -27,4 +27,11 @@ public class TimeRepeatFacade extends AbstractFacade<TimeRepeat> {
         super(TimeRepeat.class);
     }
     
+    public TimeRepeat getEventTypeById(int _id)
+    {
+        TimeRepeat tRepeat;
+        tRepeat = (TimeRepeat)getEntityManager().createNamedQuery("TimeRepeat.findById").setParameter("id", _id).getSingleResult();
+        return tRepeat;
+    }
+    
 }

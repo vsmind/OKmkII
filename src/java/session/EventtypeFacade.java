@@ -27,4 +27,11 @@ public class EventtypeFacade extends AbstractFacade<Eventtype> {
         super(Eventtype.class);
     }
     
+    public Eventtype getEventTypeById(int _id)
+    {
+        Eventtype etype;
+        etype = (Eventtype)getEntityManager().createNamedQuery("Eventtype.findById").setParameter("id", _id).getSingleResult();
+        return etype;
+    }
+    
 }

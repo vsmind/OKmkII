@@ -5,12 +5,10 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -22,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TimeRepeat.findAll", query = "SELECT t FROM TimeRepeat t"),
     @NamedQuery(name = "TimeRepeat.findById", query = "SELECT t FROM TimeRepeat t WHERE t.id = :id"),
-    @NamedQuery(name = "TimeRepeat.findByInterval", query = "SELECT t FROM TimeRepeat t WHERE t.interval = :interval")})
+    @NamedQuery(name = "TimeRepeat.findByTimetorepeat", query = "SELECT t FROM TimeRepeat t WHERE t.timetorepeat = :timetorepeat")})
 public class TimeRepeat implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -34,10 +32,8 @@ public class TimeRepeat implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 256)
-    @Column(name = "INTERVAL")
-    private String interval;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "timeRepeat")
-    private Collection<Event> eventCollection;
+    @Column(name = "TIMETOREPEAT")
+    private String timetorepeat;
 
     public TimeRepeat() {
     }
@@ -46,9 +42,9 @@ public class TimeRepeat implements Serializable {
         this.id = id;
     }
 
-    public TimeRepeat(Integer id, String interval) {
+    public TimeRepeat(Integer id, String timetorepeat) {
         this.id = id;
-        this.interval = interval;
+        this.timetorepeat = timetorepeat;
     }
 
     public Integer getId() {
@@ -59,21 +55,12 @@ public class TimeRepeat implements Serializable {
         this.id = id;
     }
 
-    public String getInterval() {
-        return interval;
+    public String getTimetorepeat() {
+        return timetorepeat;
     }
 
-    public void setInterval(String interval) {
-        this.interval = interval;
-    }
-
-    @XmlTransient
-    public Collection<Event> getEventCollection() {
-        return eventCollection;
-    }
-
-    public void setEventCollection(Collection<Event> eventCollection) {
-        this.eventCollection = eventCollection;
+    public void setTimetorepeat(String timetorepeat) {
+        this.timetorepeat = timetorepeat;
     }
 
     @Override
