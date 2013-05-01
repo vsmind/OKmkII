@@ -28,6 +28,14 @@
         <servlet-name>Event</servlet-name>
         <servlet-class>servlets.Event</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Administration</servlet-name>
+        <servlet-class>servlets.Administration</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Time</servlet-name>
+        <servlet-class>servlets.Time</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -55,6 +63,14 @@
     <servlet-mapping>
         <servlet-name>Event</servlet-name>
         <url-pattern>/Event</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Administration</servlet-name>
+        <url-pattern>/Administration</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Time</servlet-name>
+        <url-pattern>/Time</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

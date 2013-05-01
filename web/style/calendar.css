@@ -177,11 +177,22 @@ root {
 .hours{
     border: solid 1px black;
     width: 50px;
-    height: 48px;
+    height: 60px;
 }
 
 .eventzone{
     border: solid 1px black;
-    height: 48px;
+    height: 60px;
+    width: 800px;
+}
+
+.minute{
+    height: 1px;
+    width: 800px;
+}
+
+.past{
+    height: 1px;
+    background: #ccccff;
     width: 800px;
 }

@@ -2,6 +2,7 @@ $(document).ready(function(){
     $.get('Calendarpage', {instance:'day'}, function(responseText){
         $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"mainp\">" + responseText + "</div>");
     });
+    showhour();
 });
 
 function admin(){
@@ -49,8 +50,10 @@ function future(){
     alert("TO_DO future");
 }
 
-function createevent(){
-    alert("TO_DO createevenr");
+function createevent(clicked_id){
+    var test = clicked_id.id;
+    $("#" + clicked_id.id).attr("class", "past");
+    alert(test); 
 }
 
 function createEventPanel(){
@@ -74,4 +77,12 @@ function saveEvent()
             $("#eventtype").val(1);
             $("#eventdescription").val("");
     });
+}
+
+function showhour(){
+    setInterval(function() {
+    $.get('Time', function(responseText){
+        $("#" + responseText).attr("class", "past");
+    });
+}, 60 * 100);
 }

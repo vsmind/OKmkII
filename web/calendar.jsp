@@ -67,8 +67,8 @@
             <table>
                 <tr>
                     <td>
-                        <form method="get" action="Registration">
-                        <button id="buttonadm" class="butadmin" onclick="admin()">Administration</button>
+                        <form method="get" action="Administration">
+                            <button id="buttonadm" class="butadmin" onclick="admin()">Administration</button>
                         </form>
                     </td>
                     <td>
