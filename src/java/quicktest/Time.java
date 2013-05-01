@@ -17,14 +17,10 @@ public class Time {
     public Time()
     {
         Calendar cal = Calendar.getInstance();
-        Date now;
-        now = cal.getTime();
-        
-        ht h = new ht();
         
         Gson gson = new Gson();
         
-        String a = gson.toJson(h);
+        String a = gson.toJson(cal);
         
         
         System.out.println(a);

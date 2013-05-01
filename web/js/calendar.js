@@ -81,8 +81,28 @@ function saveEvent()
 
 function showhour(){
     setInterval(function() {
-    $.get('Time', function(responseText){
-        $("#" + responseText).attr("class", "past");
+    //$.get('Time', function(responseText){$("#" + responseText).attr("class", "past");});
+    $.getJSON('Time', function(json){
+        //alert(json.hourOfDay);
+        
+        for(var i = 0; i < 24; i++){
+            if(i < json.hourOfDay)
+            {
+                for(var j= 0; j < 60; j++)
+                {
+                    $("#" + i + "minute" + j).attr("class", "past");    
+                }
+            }
+            else if(i == json.hourOfDay)
+            {
+                for(var z = 0; z < json.minute; z++)
+                {
+                    $("#" + i + "minute" + z).attr("class", "past");    
+                }
+            }
+        }
+        
+        $("#" + json.hourOfDay + "minute" + json.minute).attr("class", "past");
     });
 }, 60 * 100);
 }

@@ -4,6 +4,7 @@
  */
 package servlets;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
@@ -63,10 +64,10 @@ public class Time extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Calendar cal = Calendar.getInstance();
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-        int min =  cal.get(Calendar.MINUTE);
-        response.getWriter().write(hour+"minute"+min);
         
+        Gson gson = new Gson(); 
+        
+        response.getWriter().write(gson.toJson(cal));       
     }
 
     /**
