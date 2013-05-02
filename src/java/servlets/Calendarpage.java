@@ -208,17 +208,13 @@ public class Calendarpage extends HttpServlet {
         int oneStep = 1;
         
         Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
-        System.out.println("data iz sessii " + cal.get(5));
+
         int maxiumNumberOfEvents = 0;
         cal.add(cal.DAY_OF_MONTH, -4);
-        
-        System.out.println("4 dnya do segodnya " + cal.get(5));
-        
+
         for(int i = 0; i < 7; i++)
         {
             cal.add(cal.DAY_OF_MONTH, oneStep);
-            
-            System.out.println(i + " dni dlya vivoda " + cal.get(5));
             
             userEventsList = eventFacade.getEventsByUserIDandDate(userID,cal.get(cal.MONTH)+1,cal.get(cal.DAY_OF_MONTH),cal.get(cal.YEAR));
             weekEvents.add(userEventsList);
@@ -227,29 +223,21 @@ public class Calendarpage extends HttpServlet {
                 maxiumNumberOfEvents = userEventsList.size();   
         }
         
-        
-        
-        
         cal.add(cal.DAY_OF_MONTH, -7);
-        
-        System.out.println("vernulis' na 8 dney " + cal.get(5));
         
         answer.append("<table>");
             answer.append("<tr>");       
  
-            
-            
+          
         for(int i = 0; i < 7; i++)      
         {   
             cal.add(cal.DAY_OF_MONTH, oneStep);
             
-            System.out.println("dni dlya vivoda" + cal.get(5));
-            
                 answer.append("<td valign=\"top\">");
                     answer.append("<table>");
                         answer.append("<tr>");
-                            answer.append("<td>");
-                                answer.append("<div class=\"lineDayOfWeek\">").append(cal.get(cal.DAY_OF_MONTH)).append("/").append(cal.get(cal.MONTH) + 1).append("</div>");
+                            answer.append("<td <td align=\"center\" valign=\"middle\">");
+                                answer.append("<div class=\"lineDayOfWeek\" onclick=\"createNewEvent()\">").append(cal.get(cal.DAY_OF_MONTH)).append("/").append(cal.get(cal.MONTH) + 1).append("</div>");
                             answer.append("</td>");
                         answer.append("</tr>");
                         
@@ -261,7 +249,7 @@ public class Calendarpage extends HttpServlet {
                         
                         answer.append("<tr>");
                             answer.append("<td>");
-                                answer.append("<div class=\"lineDayOfWeek\">").append(dayEvent.getTitle()).append("</div>");
+                                answer.append("<div class=\"lineDayOfWeek\" onclick=\"showEvent()\">").append(dayEvent.getTitle()).append("</div>");
                             answer.append("</td>");
                         answer.append("</tr>");
                         }

@@ -119,3 +119,14 @@ $.getJSON('Time', function(json){
         $("#" + json.hourOfDay + "minute" + json.minute).attr("class", "past");
     });
 }
+
+function createNewEvent()
+{
+    alert('TO_DO');
+    //$.get('Event', {instance:'newEventWindow'}, function(responseText){});
+}
+
+function showEvent()
+{
+    alert('TO_DO');
+}
