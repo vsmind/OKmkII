@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -81,7 +82,7 @@ public class Calendarpage extends HttpServlet {
         
         if(action.equals("day"))
         {
-            System.out.println(action);
+            //System.out.println(action);
             getDay(request, response);
         }
         else if(action.equals("timeline"))
@@ -178,19 +179,72 @@ public class Calendarpage extends HttpServlet {
     {
         StringBuilder answer =  new StringBuilder();
         entity.Event ev;
-        answer.append("week");
-        
+        //Get userID from session
+        Integer userID = (Integer)httpsession.getAttribute("userID");
+        //List of events for week
+        List weekEvents = new LinkedList();
+        //List of events for day
         List userEventsList;
 
-        userEventsList = eventFacade.getEventsByUserIDandDate(2,5,1);
-        //String a = eventFacade.getTest();
-
-        for(int i = 0; i < userEventsList.size();i++)
+        int oneStep = 1;
+        
+        Calendar cal = Calendar.getInstance();
+        
+        
+        int maxiumNumberOfEvents = 0;
+        cal.add(Calendar.DAY_OF_WEEK, -3);
+        for(int i = 0; i < 7; i++)
         {
-            ev = (entity.Event)userEventsList.get(i);
-            answer.append(ev.getDescription()).append(" ");
+            cal.add(Calendar.DAY_OF_WEEK, oneStep);
+            userEventsList = eventFacade.getEventsByUserIDandDate(userID,cal.get(Calendar.MONTH)+1,cal.get(Calendar.DAY_OF_MONTH),cal.get(Calendar.YEAR));
+            weekEvents.add(userEventsList);
+            
+            if(userEventsList.size() > maxiumNumberOfEvents)
+                maxiumNumberOfEvents = userEventsList.size();   
         }
         
+        
+        
+        
+        cal.add(Calendar.DAY_OF_WEEK, -7);
+        
+        answer.append("<table>");
+            answer.append("<tr>");       
+ 
+            
+            
+        for(int i = 0; i < 7; i++)      
+        {   
+            cal.add(Calendar.DAY_OF_WEEK, oneStep);
+            
+                answer.append("<td valign=\"top\">");
+                    answer.append("<table>");
+                        answer.append("<tr>");
+                            answer.append("<td>");
+                                answer.append("<div class=\"lineDayOfWeek\">").append(cal.get(Calendar.DAY_OF_MONTH)).append("/").append(cal.get(Calendar.MONTH) + 1).append("</div>");
+                            answer.append("</td>");
+                        answer.append("</tr>");
+                        
+                        userEventsList = (List) weekEvents.get(i);
+                        //Print events from day
+                        for (int j = 0; j < userEventsList.size(); j++)
+                        {
+                        entity.Event dayEvent = (entity.Event) userEventsList.get(j);
+                        
+                        answer.append("<tr>");
+                            answer.append("<td>");
+                                answer.append("<div class=\"lineDayOfWeek\">").append(dayEvent.getTitle()).append("</div>");
+                            answer.append("</td>");
+                        answer.append("</tr>");
+                        }
+                        
+                    answer.append("</table>");
+                answer.append("</td>");
+            
+        }        
+                
+            answer.append("</tr>");        
+        answer.append("</table>");
         
         
         response.setContentType("text/plain");

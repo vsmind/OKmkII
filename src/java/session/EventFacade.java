@@ -39,10 +39,13 @@ public class EventFacade extends AbstractFacade<Event> {
         return e;
     }
     
-    public List<entity.Event> getEventsByUserIDandDate(int _userID, int _month, int _day)
+    public List<entity.Event> getEventsByUserIDandDate(int _userID, int _month, int _day, int _year)
     {
         List<entity.Event> eventList;
-        eventList = (List<entity.Event>)getEntityManager().createNativeQuery("SELECT * FROM Event WHERE Event.userID = ? AND DATE_FORMAT(Event.TIME_START, '%c') = ? AND DATE_FORMAT(Event.TIME_START, '%d') = ?", entity.Event.class ).setParameter(1, _userID).setParameter(2, _month).setParameter(3, _day).getResultList();
+        
+        eventList = (List<entity.Event>)getEntityManager().createNativeQuery("SELECT * FROM Event WHERE Event.userID = ? AND DATE_FORMAT(Event.TIME_START, '%c') = ? AND DATE_FORMAT(Event.TIME_START, '%d') = ? AND DATE_FORMAT(Event.TIME_START, '%Y') = ?", entity.Event.class ).setParameter(1, _userID).setParameter(2, _month).setParameter(3, _day).setParameter(4, _year).getResultList();
+        
+        
         
         return eventList;
     }
