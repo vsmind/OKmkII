@@ -31,7 +31,9 @@ function yearview(){
 }
 
 function timelineview(){
-    alert("TO_DO timelineview");
+    $.get('Calendarpage', {instance:'timeline', period:'week'}, function(responseText){
+        $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"mainp\">" + responseText + "</div>");
+    });
 }
 
 function listview(){
@@ -80,9 +82,15 @@ function saveEvent()
 }
 
 function showhour(){
+    timeForDay();
     setInterval(function() {
     //$.get('Time', function(responseText){$("#" + responseText).attr("class", "past");});
-    $.getJSON('Time', function(json){
+    timeForDay();
+}, 60 * 100);
+}
+
+function timeForDay(){
+$.getJSON('Time', function(json){
         //alert(json.hourOfDay);
         
         for(var i = 0; i < 24; i++){
@@ -104,5 +112,4 @@ function showhour(){
         
         $("#" + json.hourOfDay + "minute" + json.minute).attr("class", "past");
     });
-}, 60 * 100);
 }

@@ -67,6 +67,7 @@ public class Time extends HttpServlet {
         
         Gson gson = new Gson(); 
         
+        response.setContentType("application/json");
         response.getWriter().write(gson.toJson(cal));       
     }
 

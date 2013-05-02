@@ -82,6 +82,7 @@ public class Event extends HttpServlet {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
         
+        int userID;
         String title;
         Integer type;
         String description;
@@ -90,6 +91,7 @@ public class Event extends HttpServlet {
         long location_lat;
         long location_long;
         
+        userID = ((Integer)httpsession.getAttribute("userID"));
         title = request.getParameter("eventtitle");
         type = Integer.parseInt(request.getParameter("eventtype"));
         description = request.getParameter("eventdescription");
@@ -106,6 +108,9 @@ public class Event extends HttpServlet {
         
         entity.Event event = new entity.Event(1);
         
+        
+        
+        event.setUserID(userID);
         event.setTitle(title);
         event.setType(eventTypeFacade.getEventTypeById(type));
         event.setDescription(description);

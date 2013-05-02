@@ -10,11 +10,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import session.EventFacade;
 
 /**
  *
@@ -24,6 +27,9 @@ public class Calendarpage extends HttpServlet {
 
     private HttpSession httpsession;   
     private String action;
+    private String period;
+    @EJB
+    private EventFacade eventFacade;
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -77,6 +83,10 @@ public class Calendarpage extends HttpServlet {
         {
             System.out.println(action);
             getDay(request, response);
+        }
+        else if(action.equals("timeline"))
+        {
+            timeLine(request, response);
         }
         else
         {
@@ -147,8 +157,44 @@ public class Calendarpage extends HttpServlet {
         response.getWriter().write(answer.toString());
     }
     
+    private void timeLine(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        period = (String)request.getParameter("period");
+        if(period.equals("week"))
+            timeLineWeek(request, response);
+        else
+        {
+            response.setContentType("text/html");
+            response.sendRedirect("feil.jsp");
+        }
+    }
+    
     private void goBack()
     {
     
     }
+    
+    private void timeLineWeek(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        StringBuilder answer =  new StringBuilder();
+        entity.Event ev;
+        answer.append("week");
+        
+        List userEventsList;
+
+        userEventsList = eventFacade.getEventsByUserIDandDate(2,5,1);
+        //String a = eventFacade.getTest();
+
+        for(int i = 0; i < userEventsList.size();i++)
+        {
+            ev = (entity.Event)userEventsList.get(i);
+            answer.append(ev.getDescription()).append(" ");
+        }
+        
+        
+        
+        response.setContentType("text/plain");
+        response.getWriter().write(answer.toString());
+    }
+    
 }

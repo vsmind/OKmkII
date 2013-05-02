@@ -135,6 +135,7 @@ public class Login extends HttpServlet {
                 access = true;
                 httpsession.setAttribute("user", user);
                 httpsession.setAttribute("username", username);
+                httpsession.setAttribute("userID", user.getId());
             }
         }
         

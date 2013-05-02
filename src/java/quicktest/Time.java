@@ -17,13 +17,20 @@ public class Time {
     public Time()
     {
         Calendar cal = Calendar.getInstance();
-        
         Gson gson = new Gson();
         
+        cal.add(Calendar.DAY_OF_WEEK, 0);
         String a = gson.toJson(cal);
-        
-        
         System.out.println(a);
+        
+        cal.add(Calendar.DAY_OF_WEEK, 1);
+        a = gson.toJson(cal);
+        System.out.println(a);
+        
+        cal.add(Calendar.DAY_OF_WEEK, 1);
+        a = gson.toJson(cal);
+        System.out.println(a);
+      
     }
 }
 

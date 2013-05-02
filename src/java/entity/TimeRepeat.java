@@ -5,10 +5,12 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -22,6 +24,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TimeRepeat.findById", query = "SELECT t FROM TimeRepeat t WHERE t.id = :id"),
     @NamedQuery(name = "TimeRepeat.findByTimetorepeat", query = "SELECT t FROM TimeRepeat t WHERE t.timetorepeat = :timetorepeat")})
 public class TimeRepeat implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "timeRepeat")
+    private Collection<Event> eventCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,6 +90,15 @@ public class TimeRepeat implements Serializable {
     @Override
     public String toString() {
         return "entity.TimeRepeat[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Event> getEventCollection() {
+        return eventCollection;
+    }
+
+    public void setEventCollection(Collection<Event> eventCollection) {
+        this.eventCollection = eventCollection;
     }
     
 }
