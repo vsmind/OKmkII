@@ -80,10 +80,14 @@ public class Calendarpage extends HttpServlet {
 
 	action = request.getParameter("instance");
         
+        Calendar cal = Calendar.getInstance();
+        httpsession.setAttribute("watchingDate", cal);
+        
         if(action.equals("day"))
         {
             //System.out.println(action);
             getDay(request, response);
+            httpsession.setAttribute("viewpoint", "day");
         }
         else if(action.equals("timeline"))
         {
@@ -108,7 +112,25 @@ public class Calendarpage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        httpsession = request.getSession();
+        response.setContentType("text/html");
+
+	action = request.getParameter("instance");
+        
+        if(action.equals("past"))
+        {
+            past(request, response);
+        }
+        else if(action.equals("present"))
+        {
+            present(request, response);
+        }
+        else if(action.equals("future"))
+        {
+            future(request, response);
+        }
+        else
+        {}
     }
 
     /**
@@ -162,7 +184,10 @@ public class Calendarpage extends HttpServlet {
     {
         period = (String)request.getParameter("period");
         if(period.equals("week"))
+        {
             timeLineWeek(request, response);
+            httpsession.setAttribute("viewpoint", "timeLineWeek");
+        }
         else
         {
             response.setContentType("text/html");
@@ -170,15 +195,9 @@ public class Calendarpage extends HttpServlet {
         }
     }
     
-    private void goBack()
-    {
-    
-    }
-    
     private void timeLineWeek(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         StringBuilder answer =  new StringBuilder();
-        entity.Event ev;
         //Get userID from session
         Integer userID = (Integer)httpsession.getAttribute("userID");
         //List of events for week
@@ -188,15 +207,20 @@ public class Calendarpage extends HttpServlet {
 
         int oneStep = 1;
         
-        Calendar cal = Calendar.getInstance();
-        
-        
+        Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
+        System.out.println("data iz sessii " + cal.get(5));
         int maxiumNumberOfEvents = 0;
-        cal.add(Calendar.DAY_OF_WEEK, -3);
+        cal.add(cal.DAY_OF_MONTH, -4);
+        
+        System.out.println("4 dnya do segodnya " + cal.get(5));
+        
         for(int i = 0; i < 7; i++)
         {
-            cal.add(Calendar.DAY_OF_WEEK, oneStep);
-            userEventsList = eventFacade.getEventsByUserIDandDate(userID,cal.get(Calendar.MONTH)+1,cal.get(Calendar.DAY_OF_MONTH),cal.get(Calendar.YEAR));
+            cal.add(cal.DAY_OF_MONTH, oneStep);
+            
+            System.out.println(i + " dni dlya vivoda " + cal.get(5));
+            
+            userEventsList = eventFacade.getEventsByUserIDandDate(userID,cal.get(cal.MONTH)+1,cal.get(cal.DAY_OF_MONTH),cal.get(cal.YEAR));
             weekEvents.add(userEventsList);
             
             if(userEventsList.size() > maxiumNumberOfEvents)
@@ -206,7 +230,9 @@ public class Calendarpage extends HttpServlet {
         
         
         
-        cal.add(Calendar.DAY_OF_WEEK, -7);
+        cal.add(cal.DAY_OF_MONTH, -7);
+        
+        System.out.println("vernulis' na 8 dney " + cal.get(5));
         
         answer.append("<table>");
             answer.append("<tr>");       
@@ -215,13 +241,15 @@ public class Calendarpage extends HttpServlet {
             
         for(int i = 0; i < 7; i++)      
         {   
-            cal.add(Calendar.DAY_OF_WEEK, oneStep);
+            cal.add(cal.DAY_OF_MONTH, oneStep);
+            
+            System.out.println("dni dlya vivoda" + cal.get(5));
             
                 answer.append("<td valign=\"top\">");
                     answer.append("<table>");
                         answer.append("<tr>");
                             answer.append("<td>");
-                                answer.append("<div class=\"lineDayOfWeek\">").append(cal.get(Calendar.DAY_OF_MONTH)).append("/").append(cal.get(Calendar.MONTH) + 1).append("</div>");
+                                answer.append("<div class=\"lineDayOfWeek\">").append(cal.get(cal.DAY_OF_MONTH)).append("/").append(cal.get(cal.MONTH) + 1).append("</div>");
                             answer.append("</td>");
                         answer.append("</tr>");
                         
@@ -246,9 +274,47 @@ public class Calendarpage extends HttpServlet {
             answer.append("</tr>");        
         answer.append("</table>");
         
+        cal.add(cal.DAY_OF_MONTH, -3);
         
         response.setContentType("text/plain");
         response.getWriter().write(answer.toString());
+    }
+    
+    private void past(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        String viewpoint = (String)httpsession.getAttribute("viewpoint");
+        
+        if(viewpoint.equals("timeLineWeek"))
+        {
+            Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
+            
+            cal.add(cal.DAY_OF_MONTH, -3);
+            timeLineWeek(request, response);
+        }
+    }
+    
+    private void present(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        String viewpoint = (String)httpsession.getAttribute("viewpoint");
+        
+        if(viewpoint.equals("timeLineWeek"))
+        {
+            Calendar cal = Calendar.getInstance();
+            httpsession.setAttribute("watchingDate", cal);
+            timeLineWeek(request, response);
+        }
+    }
+    
+    private void future(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        String viewpoint = (String)httpsession.getAttribute("viewpoint");
+        
+        if(viewpoint.equals("timeLineWeek"))
+        {
+            Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
+            cal.add(cal.DAY_OF_MONTH, 3);
+            timeLineWeek(request, response);
+        }
     }
     
 }

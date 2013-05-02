@@ -41,15 +41,21 @@ function listview(){
 }
 
 function past(){
-    alert("TO_DO past");
+    $.post('Calendarpage',  {instance:'past'}, function(responseText){
+        $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"mainp\">" + responseText + "</div>");
+    });
 }
 
-function today(){
-    alert("TO_DO today");
+function today(){ 
+    $.post('Calendarpage',  {instance:'present'}, function(responseText){
+        $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"mainp\">" + responseText + "</div>");
+    });
 }
 
 function future(){
-    alert("TO_DO future");
+    $.post('Calendarpage',  {instance:'future'}, function(responseText){
+        $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"mainp\">" + responseText + "</div>");
+    });
 }
 
 function createevent(clicked_id){
