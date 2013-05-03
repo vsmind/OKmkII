@@ -11,8 +11,8 @@ package quicktest;
 public class Test {
 
     public static void main(String[] args) {
-        //Time t = new Time();
-        WorkingWithEvents w = new WorkingWithEvents();
+        Time t = new Time();
+        //WorkingWithEvents w = new WorkingWithEvents();
     }
     
 }

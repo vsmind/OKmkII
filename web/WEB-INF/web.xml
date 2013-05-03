@@ -36,6 +36,14 @@
         <servlet-name>Time</servlet-name>
         <servlet-class>servlets.Time</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AndroidLogin</servlet-name>
+        <servlet-class>android.AndroidLogin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AndroidRegistration</servlet-name>
+        <servlet-class>android.AndroidRegistration</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -71,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>Time</servlet-name>
         <url-pattern>/Time</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AndroidLogin</servlet-name>
+        <url-pattern>/AndroidLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AndroidRegistration</servlet-name>
+        <url-pattern>/AndroidRegistration</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

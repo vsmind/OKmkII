@@ -31,7 +31,10 @@ public class Time {
         a = gson.toJson(cal);
         System.out.println(a);
       
+        
     }
+    
+    
 }
 
 class ht{
@@ -40,4 +43,8 @@ class ht{
     private int hour = cal.get(Calendar.HOUR_OF_DAY);
     private int min = cal.get(Calendar.MINUTE);
     
+}
+
+class Alog{
+    private boolean login = true;
 }
