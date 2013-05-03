@@ -7,6 +7,7 @@ package servlets;
 import entity.Eventtype;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -147,6 +148,67 @@ public class Eventspage extends HttpServlet {
                                 answer.append("<option value=\"").append(i+1).append("\">").append(eventList.get(i).getName()).append("</option>");
                             }
                         answer.append("</select>");
+                    answer.append("</td>");
+                answer.append("</tr>");
+                //Displaying the items responsible for the selection of the start date of the event
+                answer.append("<tr>");
+                    answer.append("<td>");
+                        answer.append("From:");
+                    answer.append("</td>");
+                    answer.append("<td>");
+                        
+                        answer.append("<select id=\"eventStartHourSelector\">");
+                            for(int i = 0; i < 24; i++)
+                            {
+                                if(i == Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+                                    answer.append("<option value=\"").append(i).append("\" selected>").append(i).append("</option>");
+                                else
+                                    answer.append("<option value=\"").append(i).append("\">").append(i).append("</option>");
+                            }
+                        answer.append("</select>");
+                        answer.append("<select id=\"eventStartMinuteSelector\">");
+                            for(int i = 0; i < 60; i++)
+                            {
+                                if(i == Calendar.MINUTE)
+                                    answer.append("<option value=\"").append(i).append("\" selected>").append(i).append("</option>");
+                                else
+                                    answer.append("<option value=\"").append(i).append("\">").append(i).append("</option>");
+                            }
+                        answer.append("</select>"); 
+                    answer.append("</td>");
+
+                    
+                    answer.append("<td>");
+                        answer.append("<input type=\"text\" id=\"eventStartDatePicker\"/>");
+                    answer.append("</td>");
+                answer.append("</tr>");
+                //Displaying the items responsible for the selection of the end date of the event
+                answer.append("<tr>");
+                    answer.append("<td>");
+                        answer.append("To:");
+                    answer.append("</td>");
+                    answer.append("<td>");
+                        answer.append("<select id=\"eventEndHourSelector\">");
+                            for(int i = 0; i < 24; i++)
+                            {
+                                if(i == Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1)
+                                    answer.append("<option value=\"").append(i).append("\" selected>").append(i).append("</option>");
+                                else
+                                    answer.append("<option value=\"").append(i).append("\">").append(i).append("</option>");
+                            }
+                        answer.append("</select>");
+                        answer.append("<select id=\"eventEndMinuteSelector\">");
+                            for(int i = 0; i < 60; i++)
+                            {
+                                if(i == Calendar.MINUTE)
+                                    answer.append("<option value=\"").append(i).append("\" selected>").append(i).append("</option>");
+                                else
+                                    answer.append("<option value=\"").append(i).append("\">").append(i).append("</option>");
+                            }
+                        answer.append("</select>"); 
+                    answer.append("</td>");
+                    answer.append("<td>");
+                        answer.append("<input type=\"text\" id=\"eventEndDatePicker\"/>");
                     answer.append("</td>");
                 answer.append("</tr>");
                 

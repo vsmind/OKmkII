@@ -68,6 +68,16 @@ function createEventPanel(){
     $.get('Eventspage', {instance:'createeventform'}, function(responseText){
         $("#dynamicevents").replaceWith("<div id=\"dynamicevents\">" + responseText + "</div>");
     });
+       
+    setTimeout((function() {
+        $( "#eventStartDatePicker" ).datepicker({ dateFormat: "dd/mm/yy" });
+    }), 100);
+    
+    setTimeout((function() {
+        $( "#eventEndDatePicker" ).datepicker({ dateFormat: "dd/mm/yy" });
+    }), 100)
+    
+    
 }
 
 function createModulePanel(){
@@ -79,7 +89,14 @@ function saveEvent()
     var evtitle = $("#eventtitle").val();
     var evtype = $("#eventtype").val();
     var evdescription = $("#eventdescription").val();
-    $.get('Event', {eventtitle:evtitle,eventtype:evtype,eventdescription:evdescription}, function(responseText){
+    var evstarthour = $("#eventStartHourSelector").val();
+    var evstartminute = $("#eventStartMinuteSelector").val();
+    var evstartdate = $("#eventStartDatePicker").val();
+    var evendhour = $("#eventEndHourSelector").val();
+    var evendminute = $("#eventEndMinuteSelector").val();
+    var evenddate = $("#eventEndDatePicker").val();
+    
+    $.get('Event', {eventtitle:evtitle,eventtype:evtype,eventdescription:evdescription, eventstarthour:evstarthour, eventstartminute:evstartminute, eventstartdate:evstartdate, eventendhour:evendhour, eventendminute:evendminute, eventenddate:evenddate}, function(responseText){
         if(responseText == "OK")
             $("#eventtitle").val("");
             $("#eventtype").val(1);

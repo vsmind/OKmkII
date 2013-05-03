@@ -11,8 +11,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Object calendar</title>
         <script src="js/jquery-2.0.0.js"></script>
+        <script src="js/jquery.mousewheel.js"></script>
+        <script src="js/jquery-ui.js"></script>
         <script src="js/calendar.js"></script>
+        <link rel="stylesheet" href="style/jquery-ui.css" type="text/css"/>
         <link rel="stylesheet" href="style/calendar.css" type="text/css"/>
+       
     </head>
     <body>
         <%@ include file="jspf/checklogin.jspf" %>

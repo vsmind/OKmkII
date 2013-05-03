@@ -7,9 +7,12 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -86,8 +89,20 @@ public class Event extends HttpServlet {
         String title;
         Integer type;
         String description;
-        Date timeStart;
-        Date timeEnd;
+        Date timeStart = cal.getTime();
+        Date timeEnd = cal.getTime();
+        
+        String hourStart;
+        String minuteStart;
+        String dateStart;
+        
+        String hourEnd;
+        String minuteEnd;
+        String dateEnd;
+        
+        String formatedStartDate;
+        String formatedEndDate;
+        
         long location_lat;
         long location_long;
         
@@ -96,8 +111,28 @@ public class Event extends HttpServlet {
         type = Integer.parseInt(request.getParameter("eventtype"));
         description = request.getParameter("eventdescription");
         
-        timeStart = cal.getTime();
-        timeEnd = cal.getTime();
+        hourStart = request.getParameter("eventstarthour");
+        minuteStart = request.getParameter("eventstartminute");
+        dateStart = request.getParameter("eventstartdate");
+        
+        hourEnd = request.getParameter("eventendhour");
+        minuteEnd = request.getParameter("eventendminute");
+        dateEnd = request.getParameter("eventenddate");
+        
+        formatedStartDate = dateStart + " " + hourStart + ":" + minuteStart;
+        formatedEndDate = dateEnd + " " + hourEnd + ":" + minuteEnd;
+        
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try 
+        {
+            timeStart =  format.parse(formatedStartDate);
+            timeEnd = format.parse(formatedEndDate);
+        } 
+        catch (ParseException ex) {
+            
+            Logger.getLogger(Event.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         
         location_lat = 1;
         location_long = 1;
