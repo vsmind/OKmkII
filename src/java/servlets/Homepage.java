@@ -73,49 +73,40 @@ public class Homepage extends HttpServlet {
         if(action.equals("sing"))
         {
             answer.append("<form method=\"post\" action=\"Login\">");
+                
+                answer.append("<div class=\"span12\">");
+                    answer.append("<h2>Sign in to your account</h2>");
+                answer.append("</div>");
             
-                answer.append("<table>");
-                    answer.append("<tr>");
-                        answer.append("<td>");
-                            answer.append("Sign in to your account");
-                        answer.append("</td>");
-                    answer.append("</tr>");
-                    
-                    answer.append("</tr>");
-                        answer.append("<td>");
-                            answer.append("Username");
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<input name=\"username\" type=\"text\">");
-                        answer.append("</td>");
-                    answer.append("</tr>");
-                    
-                    answer.append("</tr>");
-                        answer.append("<td>");
-                            answer.append("Password");
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<input name=\"password\" type=\"password\">");
-                        answer.append("</td>");
-                    answer.append("</tr>");
-                    
-                    answer.append("</tr>");
-                        answer.append("<td>");
-                            
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<input type=\"submit\" value=\"Login\">");
-                        answer.append("</td>");
-                    answer.append("</tr>");
-                    
-
-                    
-                    
-                answer.append("</table>");
+                answer.append("<div class=\"row-fluid\">");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("Username");
+                    answer.append("</div>");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("<input name=\"username\" type=\"text\">");
+                    answer.append("</div>");
+                answer.append("</div>");
+                
+                answer.append("<div class=\"row-fluid\">");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("Password");
+                    answer.append("</div>");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("<input name=\"password\" type=\"password\">");
+                    answer.append("</div>");
+                answer.append("</div>");
+                
+                answer.append("<div class=\"span8 offset2\">");
+                    answer.append("<button type=\"submit\" class=\"btn btn-primary btn-large span=8\">Login</button>");
+                answer.append("</div>");
+ 
             answer.append("</form>");
             
-            answer.append("<button onclick=\"restorePassword()\">Restore Password</button>");
-            answer.append("<div id=\"restoreform\"></div>");
+                answer.append("<div class=\"span8 offset2\">");
+                    answer.append("<button class=\"btn btn-info span=6\" onclick=\"restorePassword()\">Restore Password</button>");
+                answer.append("</div>");
+                
+            answer.append("<div id=\"restoreform\" class=\"span12\"></div>");
             
             response.setContentType("text/plain");
             response.getWriter().write(answer.toString());
@@ -200,18 +191,12 @@ public class Homepage extends HttpServlet {
         }
         else if(action.equals("rest"))
         {
-            answer.append("<form method=\"post\" action=\"Restorepassword\">");
-                answer.append("<table>");
-                    answer.append("<tr>");
-                        answer.append("<td>"); 
-                            answer.append("<input name=\"restemail\" type=\"text\" id=\"remail\" />");
-                        answer.append("</td>");
-                        answer.append("<td>"); 
-                            answer.append("<input type=\"submit\" value=\"Register\"/>");
-                        answer.append("</td>");                  
-                    answer.append("</tr>");                   
-            answer.append("</table>");
-            answer.append("</form>");
+            
+            answer.append("<div class=\"alert alert-error\">");
+                answer.append("<button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>");
+                answer.append("Functionality is turned off before the launch of mail server");
+            answer.append("</div>");
+            
             response.setContentType("text/plain");
             response.getWriter().write(answer.toString());
         }

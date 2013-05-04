@@ -237,7 +237,7 @@ public class Calendarpage extends HttpServlet {
                     answer.append("<table>");
                         answer.append("<tr>");
                             answer.append("<td <td align=\"center\" valign=\"middle\">");
-                                answer.append("<div class=\"lineDayOfWeek\" onclick=\"createNewEvent()\">").append(cal.get(cal.DAY_OF_MONTH)).append("/").append(cal.get(cal.MONTH) + 1).append("</div>");
+                                answer.append("<div id=\"").append(cal.get(cal.DAY_OF_MONTH)).append(cal.get(cal.MONTH) + 1).append("\" class=\"lineDayOfWeek\" onclick=\"timelineWeekCreateNewEvent()\">").append(cal.get(cal.DAY_OF_MONTH)).append("/").append(cal.get(cal.MONTH) + 1).append("</div>");//
                             answer.append("</td>");
                         answer.append("</tr>");
                         

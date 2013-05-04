@@ -1,9 +1,3 @@
-<%-- 
-    Document   : index
-    Created on : Apr 25, 2013, 4:01:51 PM
-    Author     : Vitaly
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -11,32 +5,35 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome to Object Calendar</title>
         <script src="js/jquery-2.0.0.js"></script>
+        <script src="js/bootstrap.js"></script>
         <script src="js/home.js"></script>
+        <link rel="stylesheet" href="style/bootstrap.css" type="text/css"/>
+        <link rel="stylesheet" href="style/bootstrap-responsive.css" type="text/css"/>
         <link rel="stylesheet" href="style/index.css" type="text/css"/>       
     </head>
     <body>
-        <h1>Welcome to Object Calendar</h1>
-        <table>
-            <tr>
-                <td>Hello:</td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="button" id="loginbutton" value="login" onclick="singin()" />
-                </td>
-                <td>
-                    <input type="button" id="registerbutton" value="register" onclick="register()"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="loginform"></div>
-                </td>
-                <td>
-                    <div id="registerform"></div> 
-                </td>
-            </tr>              
-        </table>        
+        <div class="container-fluid">
+            <div class="row-fluid" align="center">
+                <div class="span8">
+
+                </div>
+                <div class="span4" align="center">
+                    <h1>Welcome to Object Calendar</h1>
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <button id="loginbutton" class="btn btn-large span12" onclick="singin();">Login</button>
+                        </div>
+                        <div class="span6" >
+                            <button id="registerbutton" class="btn btn-success btn-large span12" onclick="register();">Register</button>
+                        </div>
+                    </div>
+                    <div class="span12">
+                        <div id="loginform" class="span12"></div>
+                        <div id="registerform" class="span12"></div>  
+                    </div>
+                </div>
+            </div>
+        </div>
         
     </body>
 </html>

@@ -6,7 +6,7 @@ function singin(){
     $("#registerform").attr("style","display:none");
     $("#loginform").attr("style","display:inline");
     $.get('homepage', {ac:'sing'}, function(responseText){
-        $("#loginform").replaceWith("<div id=\"loginform\">" + responseText + "</div>");
+        $("#loginform").replaceWith("<div id=\"loginform\" class=\"span12\">" + responseText + "</div>");
     });
 }
 
@@ -14,7 +14,7 @@ function register(){
     $("#loginform").attr("style","display:none");
     $("#registerform").attr("style","display:inline");
     $.get('homepage', {ac:'reg'}, function(responseText){
-        $("#registerform").replaceWith("<div id=\"registerform\">" + responseText + "</div>");
+        $("#registerform").replaceWith("<div id=\"registerform\" class=\"span12\">" + responseText + "</div>");
     });
 }
 
@@ -80,6 +80,6 @@ function checkall(){
 
 function restorePassword(){
     $.get('homepage', {ac:'rest'}, function(responseText){
-        $("#restoreform").replaceWith("<div id=\"restoreform\">" + responseText + "</div>");
+        $("#restoreform").replaceWith("<div id=\"restoreform\" class=\"span12\">" + responseText + "</div>");
     });
 }

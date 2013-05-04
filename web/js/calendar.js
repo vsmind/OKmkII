@@ -97,7 +97,7 @@ function saveEvent()
     var evenddate = $("#eventEndDatePicker").val();
     
     $.get('Event', {eventtitle:evtitle,eventtype:evtype,eventdescription:evdescription, eventstarthour:evstarthour, eventstartminute:evstartminute, eventstartdate:evstartdate, eventendhour:evendhour, eventendminute:evendminute, eventenddate:evenddate}, function(responseText){
-        if(responseText == "OK")
+        if(responseText === "OK")
             $("#eventtitle").val("");
             $("#eventtype").val(1);
             $("#eventdescription").val("");
