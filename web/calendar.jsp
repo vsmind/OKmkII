@@ -53,13 +53,13 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button id="buttonpast" class="butchangedate" onclick="past()">Back</button>
+                        <button id="buttonpast" class="butchangedate" onclick="past();">Back</button>
                     </td>
                     <td colspan="2">
-                        <button id="buttontoday" class="butchangedate" onclick="today()">Today</button> 
+                        <button id="buttontoday" class="butchangedate" onclick="today();">Today</button> 
                     </td>
                     <td colspan="2">
-                        <button id="buttonfuture" class="butchangedate" onclick="future()">Forward</button>
+                        <button id="buttonfuture" class="butchangedate" onclick="future();">Forward</button>
                     </td>
                 </tr>
             </table>

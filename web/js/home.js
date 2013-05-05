@@ -22,7 +22,7 @@ function checkusername(){
     var name = $("#uname").val();
     
     $.get('registration', {instant:'username', name:name}, function(responseText){
-        $("#unamecheck").replaceWith("<div id=\"unamecheck\">" + responseText + "</div>");   
+        $("#unamecheck").replaceWith("<div id=\"unamecheck\" class=\"span12\">" + responseText + "</div>");   
     });
     checkall();
 }
@@ -31,7 +31,7 @@ function checkemail(){
     var email = $("#uemail").val();
     
     $.get('registration', {instant:'mail', mail:email}, function(responseText){
-        $("#uemailcheck").replaceWith("<div id=\"uemailcheck\">" + responseText + "</div>");
+        $("#uemailcheck").replaceWith("<div id=\"uemailcheck\" class=\"span12\>" + responseText + "</div>");
     });
     checkall();
     
@@ -41,7 +41,7 @@ function checkpassword(){
     var pass = $("#upass").val();
     
     $.get('registration', {instant:'pass', pass:pass}, function(responseText){
-        $("#upasswordcheck").replaceWith("<div id=\"upasswordcheck\">" + responseText + "</div>");
+        $("#upasswordcheck").replaceWith("<div id=\"upasswordcheck\" class=\"span12\">" + responseText + "</div>");
     });
     
     
@@ -54,7 +54,7 @@ function checkpasswordconf(){
     var passtwo = $("#upassconf").val();
     
     $.get('registration', {instant:'passcheck', passone:passone, passtwo:passtwo}, function(responseText){
-        $("#upasswordconf").replaceWith("<div id=\"upasswordconf\">" + responseText + "</div>");
+        $("#upasswordconf").replaceWith("<div id=\"upasswordconf\" class=\"span12\">" + responseText + "</div>");
     });
     
     checkall();
@@ -64,7 +64,7 @@ function checkall(){
     $.get('registration', {instant:'checkall'}, function(responseText){
         var action = responseText;
         //alert(action);
-        if(action == "true")
+        if(action === "true")
         {
             $("#regbutton").attr("style","display:inline"); 
             //alert("true " + action);

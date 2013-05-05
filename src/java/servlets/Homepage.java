@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import java.io.IOException;
@@ -13,14 +9,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
+ * Servlet is responsible for dynamic redrawing of the home page
  * @author Vitaly
  */
 public class Homepage extends HttpServlet {
 
+    //Variables
     private HttpSession httpsession;
     private String action = null;
     
+    @Deprecated
+    // <editor-fold defaultstate="collapsed" desc="processReques">
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -51,8 +50,8 @@ public class Homepage extends HttpServlet {
             out.close();
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // </editor-fold>
+    
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -65,13 +64,17 @@ public class Homepage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Returns the current HttpSession associated with this request
         httpsession = request.getSession();
 	response.setContentType("text/html");
+        //html code which is returned in response to a request
         StringBuilder answer =  new StringBuilder();
-        
+        //variable is responsible for selecting actions
         action = request.getParameter("ac");
-        if(action.equals("sing"))
+        //choice of action, depending on the variable being passed
+        if(action.equals("sing"))//create a login form for registered user
         {
+            //code generation
             answer.append("<form method=\"post\" action=\"Login\">");
                 
                 answer.append("<div class=\"span12\">");
@@ -101,8 +104,8 @@ public class Homepage extends HttpServlet {
                 answer.append("</div>");
  
             answer.append("</form>");
-            
                 answer.append("<div class=\"span8 offset2\">");
+                    
                     answer.append("<button class=\"btn btn-info span=6\" onclick=\"restorePassword()\">Restore Password</button>");
                 answer.append("</div>");
                 
@@ -111,85 +114,65 @@ public class Homepage extends HttpServlet {
             response.setContentType("text/plain");
             response.getWriter().write(answer.toString());
         }
-        else if(action.equals("reg"))
+        else if(action.equals("reg"))//create a registration form for new user
         {
             answer.append("<form method=\"post\" action=\"registration\">");
             
-                answer.append("<table>");
-                    answer.append("<tr>");
-                        answer.append("<td>");
-                            answer.append("Register new account");
-                        answer.append("</td>");
-                        answer.append("<td>");
+                answer.append("<div class=\"span12\">");
+                    answer.append("<h2>Register new account</h2>");
+                answer.append("</div>");
+            
+                answer.append("<div class=\"row-fluid\">");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("Username");
+                    answer.append("</div>");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("<input name=\"username\" type=\"text\" id=\"uname\" onkeyup=\"checkusername()\">");
+                    answer.append("</div>");
+                answer.append("</div>");
+                answer.append("<div id=\"unamecheck\" class=\"span12\"></div>");
+                    
+                answer.append("<div class=\"row-fluid\">");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("Email");
+                    answer.append("</div>");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("<input name=\"email\" type=\"text\" id=\"uemail\" onkeyup=\"checkemail()\">");
+                    answer.append("</div>");
+                answer.append("</div>");
+                answer.append("<div id=\"uemailcheck\" class=\"span12\"></div>");    
 
-                        answer.append("</td>");
-                    answer.append("</tr>");
+                answer.append("<div class=\"row-fluid\">");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("Password");
+                    answer.append("</div>");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("<input name=\"password\" type=\"password\" id=\"upass\" onkeyup=\"checkpassword()\">");
+                    answer.append("</div>");
+                answer.append("</div>");
+                answer.append("<div id=\"upasswordcheck\" class=\"span12\"></div>");   
+                
+                answer.append("<div class=\"row-fluid\">");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("Password confirmation");
+                    answer.append("</div>");
+                    answer.append("<div class=\"span4\">");
+                        answer.append("<input name=\"passwordconfirmation\" type=\"password\" id=\"upassconf\" onkeyup=\"checkpasswordconf()\">");
+                    answer.append("</div>");
+                answer.append("</div>");
+                answer.append("<div id=\"upasswordconf\" class=\"span12\"></div>"); 
                     
-                    answer.append("</tr>");
-                        answer.append("<td>");
-                            answer.append("Username");
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<input name=\"username\" type=\"text\" id=\"uname\" onkeyup=\"checkusername()\">");
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<div id=\"unamecheck\"></div>");
-                        answer.append("</td>");
-                    answer.append("</tr>");
-                    
-                    answer.append("</tr>");
-                        answer.append("<td>");
-                            answer.append("Email");
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<input name=\"email\" type=\"text\" id=\"uemail\" onkeyup=\"checkemail()\">");
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<div id=\"uemailcheck\"></div>");
-                        answer.append("</td>");
-                    answer.append("</tr>");
-                    
-                    answer.append("</tr>");
-                        answer.append("<td>");
-                            answer.append("Password");
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<input name=\"password\" type=\"password\" id=\"upass\" onkeyup=\"checkpassword()\">");
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<div id=\"upasswordcheck\"></div>");
-                        answer.append("</td>");
-                    answer.append("</tr>");
-                    
-                    answer.append("</tr>");
-                        answer.append("<td>");
-                            answer.append("Password confirmation");
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<input name=\"passwordconfirmation\" type=\"password\" id=\"upassconf\" onkeyup=\"checkpasswordconf()\">");
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<div id=\"upasswordconf\"></div>");
-                        answer.append("</td>");
-                    answer.append("</tr>");
-                    
-                    answer.append("</tr>");
-                        answer.append("<td>");
-                            
-                        answer.append("</td>");
-                        answer.append("<td>");
-                            answer.append("<input type=\"submit\" id=\"regbutton\" value=\"Register\" style=\"display:none\"/>");
-                        answer.append("</td>");
-                    answer.append("</tr>");
-                                      
-                answer.append("</table>");
+                answer.append("<div class=\"span8 offset2\">");
+                    answer.append("<button id=\"regbutton\" type=\"submit\" class=\"btn btn-primary btn-large span=8\" style=\"display:none\">Register</button>");
+                answer.append("</div>");
+                  
             answer.append("</form>");
             
             
             response.setContentType("text/plain");
             response.getWriter().write(answer.toString());
         }
-        else if(action.equals("rest"))
+        else if(action.equals("rest"))//create a restore password form for registered user
         {
             
             answer.append("<div class=\"alert alert-error\">");
@@ -200,9 +183,9 @@ public class Homepage extends HttpServlet {
             response.setContentType("text/plain");
             response.getWriter().write(answer.toString());
         }
-        else
+        else//action in the case of transfer of an incorrect argument
         {
-        
+            //TO_DO
         }
     }
 
@@ -221,6 +204,7 @@ public class Homepage extends HttpServlet {
         processRequest(request, response);
     }
 
+    // <editor-fold defaultstate="collapsed" desc="getServletInfo">
     /**
      * Returns a short description of the servlet.
      *
