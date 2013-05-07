@@ -10,49 +10,7 @@ root {
     display: block;
 }
 
-.viewp{
-    height: 15%;
-    width: 70%;
-    background: #33ffcc;
-    
-    position: absolute;
-    left: 0px;
-    top: 0px;
-}
-
-.infop{
-    height: 10%;
-    width: 30%;
-    background: #00cccc;
-    
-    position: absolute;
-    left: 70%;
-    top: 0%;
-}
-
-.mainp{
-    height: 85%;
-    width: 70%;
-    background: #ccffff;
-    
-    position: absolute;
-    left: 0%;
-    top: 15%;
-    
-    overflow:scroll;
-}
-
-.eventp{
-    height: 90%;
-    width: 30%;
-    background: #ff66ff;
-    
-    position: absolute;
-    left: 70%;
-    top: 10%;
-}
-
-.butadmin {    
+.buttonmainblue {    
 	-moz-box-shadow:inset 0px 0px 25px 1px #bbdaf7;
 	-webkit-box-shadow:inset 0px 0px 25px 1px #bbdaf7;
 	box-shadow:inset 0px 0px 25px 1px #bbdaf7;
@@ -72,12 +30,12 @@ root {
 	padding:10px 25px;
 	text-decoration:none;
 	text-shadow:1px 1px 0px #528ecc;
-}.butadmin:hover {
+}.buttonmainblue:hover {
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff) );
 	background:-moz-linear-gradient( center top, #378de5 5%, #79bbff 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff');
 	background-color:#378de5;
-}.butadmin:active {
+}.buttonmainblue:active {
 	position:relative;
 	top:1px;
 }
@@ -181,20 +139,19 @@ root {
 }
 
 .eventzone{
-    border: solid 1px black;
     height: 60px;
-    width: 800px;
+    border-bottom : 1px solid grey;
+    border-top: 1px solid grey;
 }
 
 .minute{
-    height: 1px;
-    width: 800px;
+    height: 5px;
+    background: #bee2f9;
 }
 
 .past{
-    height: 1px;
+    height: 5px;
     background: #ccccff;
-    width: 800px;
 }
 
 .lineDayOfWeek{

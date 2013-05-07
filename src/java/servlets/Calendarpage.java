@@ -31,6 +31,9 @@ public class Calendarpage extends HttpServlet {
     private String period;
     @EJB
     private EventFacade eventFacade;
+    
+    @Deprecated
+    // <editor-fold defaultstate="collapsed" desc="processRequest.">
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -61,8 +64,8 @@ public class Calendarpage extends HttpServlet {
             out.close();
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // </editor-fold>
+      
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -132,17 +135,7 @@ public class Calendarpage extends HttpServlet {
         else
         {}
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-    
+  
     private void getDay(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         StringBuilder answer =  new StringBuilder();
@@ -150,9 +143,35 @@ public class Calendarpage extends HttpServlet {
         Calendar calenar = Calendar.getInstance();
         today = calenar.get(Calendar.DATE);
         
-        answer.append("<p align=\"center\">Today is ").append(today).append("</p>");
+        answer.append("<div class=\"span4 offset4\">"
+                + "<h3>").append(today).append("</h3>"
+                + "</div>");
+        
+        for(int i = 0; i < 24; i++)
+        {
+        answer.append("<div class=\"row-fluid span12\">");
+        
+            answer.append("<div class=\"eventzone span2\">");
+                if(i < 10)
+                    answer.append("0").append(i).append(":00");
+                else
+                    answer.append(i).append(":00");
+            answer.append("</div>");
+            
+            answer.append("<div class=\"span10\">");
+            for(int j = 0 ; j < 60; j=j+5)
+            {
+                answer.append("<div id=\"").append(i).append("m").append(j).append("\" class=\"minute \"value=\"").append(j).append("\"onclick=\"createevent(this)\">");
+                                //answer.append(j);
+                answer.append("</div>");
+            }
+            answer.append("</div>");
+        answer.append("</div>");
+        }
+        
         
         //Create a time field
+        /*
         for(int i = 0; i < 24; i++)
         {
             answer.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" margin=\"0\">");
@@ -175,7 +194,7 @@ public class Calendarpage extends HttpServlet {
                 answer.append("</tr>");
             answer.append("</table>");
         }
-        
+        */
         response.setContentType("text/plain");
         response.getWriter().write(answer.toString());
     }
@@ -304,5 +323,16 @@ public class Calendarpage extends HttpServlet {
             timeLineWeek(request, response);
         }
     }
+    
+    // <editor-fold defaultstate="collapsed" desc="getServletInfo.">
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
     
 }
