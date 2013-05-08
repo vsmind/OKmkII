@@ -94,6 +94,9 @@ function createevent(clicked_id){
         showSeconds: false,
         showMeridian: false
 });
+
+    
+
 }
 
 function createEventPanel(){
@@ -123,14 +126,17 @@ function saveEvent()
     var evtitle = $("#eventtitle").val();
     var evtype = $("#eventtype").val();
     var evdescription = $("#eventdescription").val();
-    var evstarthour = $("#eventStartHourSelector").val();
-    var evstartminute = $("#eventStartMinuteSelector").val();
-    var evstartdate = $("#eventStartDatePicker").val();
-    var evendhour = $("#eventEndHourSelector").val();
-    var evendminute = $("#eventEndMinuteSelector").val();
-    var evenddate = $("#eventEndDatePicker").val();
+    var evstarttime = $("#timepickerOne").val();
+    var evstartdate = $("#datepickerOne").val();
+    var evendtime = $("#timepickerTwo").val();
+    var evenddate = $("#datepickerTwo").val();
     
-    $.get('Event', {eventtitle:evtitle,eventtype:evtype,eventdescription:evdescription, eventstarthour:evstarthour, eventstartminute:evstartminute, eventstartdate:evstartdate, eventendhour:evendhour, eventendminute:evendminute, eventenddate:evenddate}, function(responseText){
+    alert(evstarttime);
+    alert(evstartdate);
+    alert(evendtime);
+    alert(evenddate);
+    
+    $.get('Event', {eventtitle:evtitle,eventtype:evtype,eventdescription:evdescription,eventstarttime:evstarttime,eventstartdate:evstartdate,eventendtime:evendtime,eventenddate:evenddate}, function(responseText){
         if(responseText === "OK")
             $("#eventtitle").val("");
             $("#eventtype").val(1);

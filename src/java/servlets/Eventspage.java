@@ -151,16 +151,8 @@ public class Eventspage extends HttpServlet {
                     answer.append("</td>");
                 answer.append("</tr>");
                 
-                answer.append("<tr>");
-                    answer.append("<td>");
-                        answer.append("new calc test");
-                    answer.append("</td>");
-                    answer.append("<td>");
-                        answer.append("<input type=\"text\" data-date-format=\"mm/dd/yyyy\" class=\"datepicker\" placeholder=\"mm/dd/yyyy\"/>");
-                    answer.append("</td>");
-                answer.append("</tr>");
-                
                 //Displaying the items responsible for the selection of the start date of the event
+                /*
                 answer.append("<tr>");
                     answer.append("<td>");
                         answer.append("From:");
@@ -222,6 +214,8 @@ public class Eventspage extends HttpServlet {
                     answer.append("</td>");
                 answer.append("</tr>");
                 
+                */
+                
                 answer.append("<tr>");
                     answer.append("<td>");
                         answer.append("Description:");
@@ -231,11 +225,13 @@ public class Eventspage extends HttpServlet {
                     answer.append("</td>");
                 answer.append("</tr>");
                 
+                /*
                 answer.append("<tr>");
                     answer.append("<td>");
                         answer.append("<input type=\"submit\" id=\"regbutton\" value=\"Save Event\" onclick=\"saveEvent()\" />");
                     answer.append("</td>");
                 answer.append("</tr>");
+                */
                 
             answer.append("</table>");
         

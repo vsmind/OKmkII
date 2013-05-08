@@ -100,6 +100,9 @@ public class Event extends HttpServlet {
         String minuteEnd;
         String dateEnd;
         
+        String startTime;
+        String endTime;
+        
         String formatedStartDate;
         String formatedEndDate;
         
@@ -111,16 +114,22 @@ public class Event extends HttpServlet {
         type = Integer.parseInt(request.getParameter("eventtype"));
         description = request.getParameter("eventdescription");
         
-        hourStart = request.getParameter("eventstarthour");
-        minuteStart = request.getParameter("eventstartminute");
-        dateStart = request.getParameter("eventstartdate");
         
-        hourEnd = request.getParameter("eventendhour");
-        minuteEnd = request.getParameter("eventendminute");
+        /*hourStart = request.getParameter("eventstarthour");
+         * minuteStart = request.getParameter("eventstartminute");
+         * hourEnd = request.getParameter("eventendhour");
+         * minuteEnd = request.getParameter("eventendminute");*/
+        
+        
+        dateStart = request.getParameter("eventstartdate");
         dateEnd = request.getParameter("eventenddate");
         
-        formatedStartDate = dateStart + " " + hourStart + ":" + minuteStart;
-        formatedEndDate = dateEnd + " " + hourEnd + ":" + minuteEnd;
+        startTime = request.getParameter("eventstarttime");
+        endTime = request.getParameter("eventendtime");
+        
+        formatedStartDate = dateStart + " " + startTime;
+        formatedEndDate = dateEnd + " " + endTime;
+        
         
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try 
@@ -140,6 +149,8 @@ public class Event extends HttpServlet {
         System.out.println(title);
         System.out.println(type);
         System.out.println(description);
+        System.out.println(timeStart);
+        System.out.println(timeEnd);
         
         entity.Event event = new entity.Event(1);
         
@@ -160,7 +171,7 @@ public class Event extends HttpServlet {
         event.setTimeRepeat(timeRepeatFacade.getEventTypeById(1));
          
         eventFacade.create(event);
-        
+        System.out.println(event);
         
         response.getWriter().write("OK");
     }

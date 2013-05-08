@@ -115,7 +115,7 @@
                             </div>
                         </td>
                         <td>
-                            <input type="text" data-date-format="mm/dd/yyyy" class="datepicker" readonly="" placeholder="mm/dd/yyyy"/>
+                            <input id="datepickerOne" type="text" data-date-format="dd/mm/yyyy" class="datepicker" readonly="" placeholder="dd/mm/yyyy"/>
                         </td>
                     </tr>
                     <tr>
@@ -124,14 +124,14 @@
                         </td>
                         <td>
                             <div class="input-append bootstrap-timepicker">
-                                <input id="timepickerTo" type="text" class="input-small timeset" readonly="">
+                                <input id="timepickerTwo" type="text" class="input-small timeset" readonly="">
                                     <span class="add-on">
                                         <i class="icon-time"></i>
                                     </span>
                             </div>
                         </td>
                         <td>
-                            <input type="text" data-date-format="mm/dd/yyyy" class="datepicker" readonly="" placeholder="mm/dd/yyyy"/>
+                            <input id="datepickerTwo" type="text" data-date-format="dd/mm/yyyy" class="datepicker" readonly="" placeholder="dd/mm/yyyy"/>
                         </td>
                     </tr>
                     
@@ -141,7 +141,7 @@
 
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                <button class="btn btn-primary" onclick="saveEvent();">Save changes</button>
+                <button class="btn btn-primary" onclick="saveEvent();" data-dismiss="modal" aria-hidden="true">Save changes</button>
             </div>
         </div>
                         
