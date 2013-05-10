@@ -13,7 +13,7 @@
         <script src="js/bootstrap-timepicker.js"></script>
         <script src="js/bootstrap-datepicker.js"></script>
         <link rel="stylesheet" href="style/jquery-ui.css" type="text/css"/>
-        <link rel="stylesheet" href="style/bootstrap.css" type="text/css">
+        <link rel="stylesheet" href="style/bootstrap.css" type="text/css"/>
         <link rel="stylesheet" href="style/bootstrap-responsive.css" type="text/css"/>
         <link rel="stylesheet" href="style/bootstrap-timepicker.css" type="text/css"/>
         <link rel="stylesheet" href="style/datepicker.css" type="text/css"/>
@@ -49,12 +49,17 @@
                 </div>
                 <div class="span4">
                     <div class="row-fluid">
-                        <div class="span6">
+                        <div class="span4">
                             <form method="get" action="Administration">
                                 <button id="buttonadm" class="buttonmainblue" onclick="admin();">Administration</button>
                             </form>
                         </div>
-                        <div class="span6">
+                        <div class="span4">
+                            <form method="post" action="Modulespage">
+                                <button id="buttonmdl" class="buttonmainblue" onclick="modules();">Modules</button>
+                            </form>
+                        </div>
+                        <div class="span4">
                             <form method="get" action="Logout">
                                 <button id="buttonlogout" class="butlogout" onclick="logout();">Log Out</button>
                             </form>
@@ -66,9 +71,9 @@
             </div>
             <div class="row-fluid">
                 <div class="span8">
-                    <button id="buttonpast" class="butchangedate" onclick="past();">Back</button>
-                    <button id="buttontoday" class="butchangedate" onclick="today();">Today</button> 
-                    <button id="buttonfuture" class="butchangedate" onclick="future();">Forward</button>
+                    <button id="buttonpast" class="span4 butchangedate" onclick="past();">Back</button>
+                    <button id="buttontoday" class="span4 butchangedate" onclick="today();">Today</button> 
+                    <button id="buttonfuture" class="span4 butchangedate" onclick="future();">Forward</button>
                 </div>
             </div>
         </div>

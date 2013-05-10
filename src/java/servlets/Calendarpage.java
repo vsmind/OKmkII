@@ -216,7 +216,7 @@ public class Calendarpage extends HttpServlet {
         
         int firstDayInMonth;
         
-        answer.append("<div class=\"row-fluid span12\">");
+        answer.append("<div class=\"row-fluid span8\">");
             //show current month and year
             answer.append("<div class=\"span2 offset5\">").append("<h4>").append(month).append("</h4>").append("</div>");
                 //month view
@@ -271,10 +271,21 @@ public class Calendarpage extends HttpServlet {
                                 }
                                 else
                                 {
-                                    answer.append("<td>");
-                                        answer.append(dayInMonth);
-                                    answer.append("</td>");
-                                    dayInMonth++;
+                                    //mark saturday og sunday
+                                    if(j==6|j==7)
+                                    {
+                                        answer.append("<td class=\"weekend\">");
+                                            answer.append("<div id=\"").append(dayInMonth).append("h").append(calenar.get(Calendar.MONTH)).append("h").append(calenar.get(Calendar.YEAR)).append("\" onclick=\"zoomDay(this);\">").append(dayInMonth).append("</div>");
+                                        answer.append("</td>");
+                                        dayInMonth++;
+                                    }
+                                    else
+                                    {
+                                        answer.append("<td>");
+                                            answer.append("<div id=\"").append(dayInMonth).append("h").append(calenar.get(Calendar.MONTH)).append("h").append(calenar.get(Calendar.YEAR)).append("\" onclick=\"zoomDay(this);\">").append(dayInMonth).append("</div>");
+                                        answer.append("</td>");
+                                        dayInMonth++;
+                                    }
                                 }
                             }
                             answer.append("</tr>");
@@ -286,10 +297,22 @@ public class Calendarpage extends HttpServlet {
                             {
                                 if(dayInMonth <= daysInMonth)
                                 {
-                                    answer.append("<td>");
-                                        answer.append(dayInMonth);
-                                    answer.append("</td>");
-                                    dayInMonth++;
+                                    //mark saturday og sunday
+                                    if(j==5|j==6)
+                                    {
+                                        answer.append("<td class=\"weekend\">");
+                                            answer.append("<div id=\"").append(dayInMonth).append("h").append(calenar.get(Calendar.MONTH)).append("h").append(calenar.get(Calendar.YEAR)).append("\" onclick=\"zoomDay(this);\">").append(dayInMonth).append("</div>");
+                                        answer.append("</td>");
+                                        dayInMonth++;
+                                    }
+                                    else
+                                    {
+                                        answer.append("<td>");
+                                            answer.append("<div id=\"").append(dayInMonth).append("h").append(calenar.get(Calendar.MONTH)).append("h").append(calenar.get(Calendar.YEAR)).append("\" onclick=\"zoomDay(this);\">").append(dayInMonth).append("</div>");
+                                        answer.append("</td>");
+                                        dayInMonth++;
+                                    }
+                                    
                                 }
                                 else
                                 {

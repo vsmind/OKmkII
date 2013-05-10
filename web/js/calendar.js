@@ -22,25 +22,36 @@ function logout(){
     $.get('Logout');
 }
 
+function modules(){
+    
+}
+
 function dayview(){
     alert("TO_DO dayview");
     $("#calendararea").replaceWith("<div id=\"calendararea\" class=\"row-fluid span12\"><div id=\"mainpanel\" class=\"span8\"></div><div id=\"eventpanel\" class=\"span4\"></div></div>");
     $.get('Calendarpage', {instance:'day'}, function(responseText){
         $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"span8\">" + responseText + "</div>");
     });
+    $("#buttonpast").html("Yesterday");
+    $("#buttontoday").html("Today");
+    $("#buttonfuture").html("Tomorrow");
     //showhour();
 }
 
 function weekview(){
     alert("TO_DO weekview");
     $("#calendararea").replaceWith("<div id=\"calendararea\" class=\"row-fluid span12\"><div id=\"mainpanel\" class=\"span12\"></div></div>");
+    
 }
 
 function monthview(){
     $("#calendararea").replaceWith("<div id=\"calendararea\" class=\"row-fluid span12\"><div id=\"mainpanel\" class=\"span8\"></div><div id=\"eventpanel\" class=\"span4\"></div></div>");
     $.get('Calendarpage', {instance:'month'}, function(responseText){
-        $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"span8\">" + responseText + "</div>");
+        $("#mainpanel").replaceWith("<div id=\"mainpanel\">" + responseText + "</div>");
     });
+    $("#buttonpast").html("Last Month");
+    $("#buttontoday").html("Current Month");
+    $("#buttonfuture").html("Next Month");
 }
 
 function timelineview(){
@@ -48,6 +59,9 @@ function timelineview(){
     $.get('Calendarpage', {instance:'timeline', period:'week'}, function(responseText){
         $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"span12\">" + responseText + "</div>");
     });
+    $("#buttonpast").html("Last Week");
+    $("#buttontoday").html("Current Week");
+    $("#buttonfuture").html("Next Week");
 }
 
 function listview(){
@@ -197,4 +211,9 @@ function setTimePickers()
         showSeconds: false,
         showMeridian: false
 });
+}
+
+function zoomDay(day)
+{
+    alert(day.id);
 }

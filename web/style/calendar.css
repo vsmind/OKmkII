@@ -168,3 +168,11 @@ root {
 .testdiv{
     z-index:-1000;
 }
+
+.weekend{
+    background: #ff3333;
+}
+
+.currentdate{
+    background: #99ff99;
+}

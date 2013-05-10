@@ -44,6 +44,10 @@
         <servlet-name>AndroidRegistration</servlet-name>
         <servlet-class>android.AndroidRegistration</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Modulespage</servlet-name>
+        <servlet-class>servlets.Modulespage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>AndroidRegistration</servlet-name>
         <url-pattern>/AndroidRegistration</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Modulespage</servlet-name>
+        <url-pattern>/Modulespage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
