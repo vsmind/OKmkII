@@ -4,6 +4,7 @@
  */
 package servlets;
 
+import entity.Event;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -208,13 +209,21 @@ public class Calendarpage extends HttpServlet {
     private void getMonth(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         StringBuilder answer =  new StringBuilder();
-        Calendar calenar = (Calendar) httpsession.getAttribute("watchingDate");
+        Calendar calendar = (Calendar) httpsession.getAttribute("watchingDate");
         //get the name of the current month in the required format 
-        String month = new SimpleDateFormat("MMM").format(calenar.getTime());
+        String month = new SimpleDateFormat("MMM").format(calendar.getTime());
         
-        month = month + " " + calenar.get(Calendar.YEAR);
+        month = month + " " + calendar.get(Calendar.YEAR);
+        
+        //Get userID from session
+        Integer userID = (Integer)httpsession.getAttribute("userID");
         
         int firstDayInMonth;
+        
+        List monthEventsList;
+        monthEventsList = eventFacade.getMonthEvents(userID,calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
+        
+        
         
         answer.append("<div class=\"row-fluid span8\">");
             //show current month and year
@@ -233,8 +242,8 @@ public class Calendarpage extends HttpServlet {
                         answer.append("</tr>");
                     answer.append("</thead>");
                     //get the first day of a month
-                    calenar.set(Calendar.DAY_OF_MONTH,Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
-                    firstDayInMonth = calenar.get(Calendar.DAY_OF_WEEK);
+                    calendar.set(Calendar.DAY_OF_MONTH,Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
+                    firstDayInMonth = calendar.get(Calendar.DAY_OF_WEEK);
                     
                     System.out.println(firstDayInMonth);
                     //change format of the week (start from monday)
@@ -244,9 +253,29 @@ public class Calendarpage extends HttpServlet {
                         firstDayInMonth = firstDayInMonth - 1;
                     
                     //number of weeks in month
-                    int weeksInMonth = calenar.getActualMaximum(Calendar.WEEK_OF_MONTH);
+                    int weeksInMonth = calendar.getActualMaximum(Calendar.WEEK_OF_MONTH);
                     //number of days in month
-                    int daysInMonth = calenar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    
+                    LinkedList<Boolean> daysWithEventsList = new LinkedList<Boolean>();
+                    for(int i = 0; i < daysInMonth; i++)
+                    {
+                        daysWithEventsList.add(false);
+                    }
+                    
+                    entity.Event dayEvent;
+                    Date eventDate;
+                    Calendar eventCalendar = Calendar.getInstance();
+                    int eventDay;
+                    
+                    for(int i = 0; i < monthEventsList.size(); i++)
+                    {
+                        dayEvent = (Event) monthEventsList.get(i);
+                        eventDate = dayEvent.getTimeStart();
+                        eventCalendar.setTime(eventDate);
+                        eventDay = eventCalendar.get(Calendar.DAY_OF_WEEK);
+                        daysWithEventsList.set(eventDay, true);
+                    }
                     
                     System.out.println(firstDayInMonth);
                     System.out.println(weeksInMonth);
@@ -274,15 +303,40 @@ public class Calendarpage extends HttpServlet {
                                     //mark saturday og sunday
                                     if(j==6|j==7)
                                     {
+                                        if(daysWithEventsList.get(dayInMonth-1)==true)
+                                        {
                                         answer.append("<td class=\"weekend\">");
-                                            answer.append("<div id=\"").append(dayInMonth).append("h").append(calenar.get(Calendar.MONTH)).append("h").append(calenar.get(Calendar.YEAR)).append("\" onclick=\"zoomDay(this);\">").append(dayInMonth).append("</div>");
+                                            answer.append("<div id=\"").append(dayInMonth).append("h")
+                                                    .append(calendar.get(Calendar.MONTH))
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.YEAR))
+                                                    .append("\" onclick=\"zoomDay(this);\">")
+                                                    .append(dayInMonth)
+                                                    .append("<div class=\"span3 eventm\">")
+                                                    .append("</div>")
+                                                    .append("</div>");
                                         answer.append("</td>");
                                         dayInMonth++;
+                                        }
+                                        else
+                                        {
+                                        answer.append("<td class=\"weekend\">");
+                                            answer.append("<div id=\"").append(dayInMonth)
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.MONTH))
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.YEAR))
+                                                    .append("\" onclick=\"zoomDay(this);\">")
+                                                    .append(dayInMonth)
+                                                    .append("</div>");
+                                        answer.append("</td>");
+                                        dayInMonth++;
+                                        }
                                     }
                                     else
                                     {
                                         answer.append("<td>");
-                                            answer.append("<div id=\"").append(dayInMonth).append("h").append(calenar.get(Calendar.MONTH)).append("h").append(calenar.get(Calendar.YEAR)).append("\" onclick=\"zoomDay(this);\">").append(dayInMonth).append("</div>");
+                                            answer.append("<div id=\"").append(dayInMonth).append("h").append(calendar.get(Calendar.MONTH)).append("h").append(calendar.get(Calendar.YEAR)).append("\" onclick=\"zoomDay(this);\">").append(dayInMonth).append("</div>");
                                         answer.append("</td>");
                                         dayInMonth++;
                                     }
@@ -300,17 +354,73 @@ public class Calendarpage extends HttpServlet {
                                     //mark saturday og sunday
                                     if(j==5|j==6)
                                     {
+                                        if(daysWithEventsList.get(dayInMonth-1)==true)
+                                        {
                                         answer.append("<td class=\"weekend\">");
-                                            answer.append("<div id=\"").append(dayInMonth).append("h").append(calenar.get(Calendar.MONTH)).append("h").append(calenar.get(Calendar.YEAR)).append("\" onclick=\"zoomDay(this);\">").append(dayInMonth).append("</div>");
+                                            answer.append("<div id=\"")
+                                                    .append(dayInMonth)
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.MONTH))
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.YEAR))
+                                                    .append("\" onclick=\"zoomDay(this);\">")
+                                                    .append("<div class=\"span3 eventm\">")
+                                                    .append("</div>")
+                                                    .append(dayInMonth)
+                                                    .append("</div>");
                                         answer.append("</td>");
                                         dayInMonth++;
+                                        }
+                                        else
+                                        {
+                                        answer.append("<td class=\"weekend\">");
+                                            answer.append("<div id=\"")
+                                                    .append(dayInMonth)
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.MONTH))
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.YEAR))
+                                                    .append("\" onclick=\"zoomDay(this);\">")
+                                                    .append(dayInMonth)
+                                                    .append("<div class=\"span3 eventm\">")
+                                                    .append("</div>")
+                                                    .append("</div>");
+                                        answer.append("</td>");
+                                        dayInMonth++;
+                                        }
                                     }
                                     else
                                     {
+                                        if(daysWithEventsList.get(dayInMonth-1)==true)
+                                        {
                                         answer.append("<td>");
-                                            answer.append("<div id=\"").append(dayInMonth).append("h").append(calenar.get(Calendar.MONTH)).append("h").append(calenar.get(Calendar.YEAR)).append("\" onclick=\"zoomDay(this);\">").append(dayInMonth).append("</div>");
+                                            answer.append("<div id=\"")
+                                                    .append(dayInMonth)
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.MONTH))
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.YEAR))
+                                                    .append("\" onclick=\"zoomDay(this);\">")
+                                                    .append(dayInMonth)
+                                                    .append("</div>");
                                         answer.append("</td>");
                                         dayInMonth++;
+                                        }
+                                        else
+                                        {
+                                        answer.append("<td>");
+                                            answer.append("<div id=\"")
+                                                    .append(dayInMonth)
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.MONTH))
+                                                    .append("h")
+                                                    .append(calendar.get(Calendar.YEAR))
+                                                    .append("\" onclick=\"zoomDay(this);\">")
+                                                    .append(dayInMonth)
+                                                    .append("</div>");
+                                        answer.append("</td>");
+                                        dayInMonth++;
+                                        }
                                     }
                                     
                                 }
@@ -476,6 +586,10 @@ public class Calendarpage extends HttpServlet {
             getMonth(request, response);
         }
     }
+    
+    
+    
+
     
     // <editor-fold defaultstate="collapsed" desc="getServletInfo.">
     /**
