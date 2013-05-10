@@ -82,10 +82,7 @@
             <div id="eventpanel" class="span4">
                 <button onclick="createEventPanel();">Event</button>
                 <button onclick="createModulePanel();">Module</button>
-                <input id="estartdate" class="span2" />
-                <input type="text" value="02/16/12" data-date-format="mm/dd/yy" class="datepicker" >
-
-
+                
                 
             </div>
             </div>

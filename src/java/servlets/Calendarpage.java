@@ -92,6 +92,11 @@ public class Calendarpage extends HttpServlet {
             getDay(request, response);
             httpsession.setAttribute("viewpoint", "day");
         }
+        else if(action.equals("month"))
+        {
+            getMonth(request, response);
+            httpsession.setAttribute("viewpoint", "month");
+        }
         else if(action.equals("timeline"))
         {
             timeLine(request, response);
@@ -159,6 +164,7 @@ public class Calendarpage extends HttpServlet {
             answer.append("</div>");
             
             answer.append("<div class=\"span10\">");
+            answer.append("<div class=\"testdiv\">5</div>");
             for(int j = 0 ; j < 60; j=j+5)
             {
                 answer.append("<div id=\"").append(i).append("m").append(j).append("\" class=\"minute \"value=\"").append(j).append("\"onclick=\"createevent(this)\">");
@@ -195,6 +201,112 @@ public class Calendarpage extends HttpServlet {
             answer.append("</table>");
         }
         */
+        response.setContentType("text/plain");
+        response.getWriter().write(answer.toString());
+    }
+    
+    private void getMonth(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        StringBuilder answer =  new StringBuilder();
+        Calendar calenar = Calendar.getInstance();
+        //get the name of the current month in the required format 
+        String month = new SimpleDateFormat("MMM").format(calenar.getTime());
+        
+        month = month + " " + calenar.get(Calendar.YEAR);
+        
+        int firstDayInMonth;
+        
+        answer.append("<div class=\"row-fluid span12\">");
+            //show current month and year
+            answer.append("<div class=\"span2 offset5\">").append("<h4>").append(month).append("</h4>").append("</div>");
+                //month view
+                answer.append("<table class=\"table table-bordered\">");
+                    answer.append("<thead>");
+                        answer.append("<tr>");
+                            answer.append("<th class=\"span2\">").append("Monday").append("</th>");
+                            answer.append("<th class=\"span2\">").append("Tuesday").append("</th>");
+                            answer.append("<th class=\"span2\">").append("Wednesday").append("</th>");
+                            answer.append("<th class=\"span2\">").append("Thursday").append("</th>");
+                            answer.append("<th class=\"span2\">").append("Friday").append("</th>");
+                            answer.append("<th class=\"span2\">").append("Saturday").append("</th>");
+                            answer.append("<th class=\"span2\">").append("Sunday").append("</th>");
+                        answer.append("</tr>");
+                    answer.append("</thead>");
+                    //get the first day of a month
+                    calenar.set(Calendar.DAY_OF_MONTH,Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
+                    firstDayInMonth = calenar.get(Calendar.DAY_OF_WEEK);
+                    
+                    System.out.println(firstDayInMonth);
+                    //change format of the week (start from monday)
+                    if(firstDayInMonth == 1)
+                        firstDayInMonth = 7;
+                    else
+                        firstDayInMonth = firstDayInMonth - 1;
+                    
+                    //number of weeks in month
+                    int weeksInMonth = calenar.getActualMaximum(Calendar.WEEK_OF_MONTH);
+                    //number of days in month
+                    int daysInMonth = calenar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    
+                    System.out.println(firstDayInMonth);
+                    System.out.println(weeksInMonth);
+                    System.out.println(daysInMonth);
+                    
+                    int dayInMonth = 1;
+                    
+                    for (int i = 0; i < weeksInMonth; i++)
+                    {
+                    answer.append("<tbody>");
+                        //first week
+                        if(i == 0)
+                        {
+                            answer.append("<tr>");
+                            for(int j = 1; j < 8; j++)
+                            {
+                                if(j < firstDayInMonth)
+                                {
+                                    answer.append("<td>");
+                                        answer.append(" ");
+                                    answer.append("</td>");
+                                }
+                                else
+                                {
+                                    answer.append("<td>");
+                                        answer.append(dayInMonth);
+                                    answer.append("</td>");
+                                    dayInMonth++;
+                                }
+                            }
+                            answer.append("</tr>");
+                        }
+                        else
+                        {
+                            answer.append("<tr>");
+                            for(int j = 0; j < 7; j++)
+                            {
+                                if(dayInMonth <= daysInMonth)
+                                {
+                                    answer.append("<td>");
+                                        answer.append(dayInMonth);
+                                    answer.append("</td>");
+                                    dayInMonth++;
+                                }
+                                else
+                                {
+                                    answer.append("<td>");
+                                        answer.append(" ");
+                                    answer.append("</td>");
+                                }
+                            }
+                            answer.append("</tr>");
+                        }
+                    answer.append("</tbody>");
+                    }
+                    
+                answer.append("</table>");
+            
+        answer.append("</div>");
+        
         response.setContentType("text/plain");
         response.getWriter().write(answer.toString());
     }

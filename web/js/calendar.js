@@ -37,8 +37,10 @@ function weekview(){
 }
 
 function monthview(){
-    alert("TO_DO monthview");
     $("#calendararea").replaceWith("<div id=\"calendararea\" class=\"row-fluid span12\"><div id=\"mainpanel\" class=\"span8\"></div><div id=\"eventpanel\" class=\"span4\"></div></div>");
+    $.get('Calendarpage', {instance:'month'}, function(responseText){
+        $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"span8\">" + responseText + "</div>");
+    });
 }
 
 function timelineview(){
@@ -75,8 +77,6 @@ function createevent(clicked_id){
     var test = clicked_id.id;
     //$("#" + clicked_id.id).attr("class", "past");
     var startTime = test.split('m');
-    $("#testlabel1").text(startTime[0]);
-    $("#testlabel2").text(startTime[1]);
     
     $.get('Eventspage', {instance:'createeventform'}, function(responseText){
         $("#dynamicevents").replaceWith("<div id=\"dynamicevents\">" + responseText + "</div>");
@@ -85,15 +85,14 @@ function createevent(clicked_id){
     
     
     $('#createEventModal').modal();
+    var stime = startTime[0] + ":"+ startTime[1];
+    var timeplus = parseInt(startTime[0]) + 1;
+    timeplus = timeplus + '';
+    var etime = (timeplus) + ":"+ startTime[1];
+    $("#timepickerOne").timepicker('setTime', stime);
+    $("#timepickerTwo").timepicker('setTime', etime);
+    
     $('.datepicker').datepicker();
-    $('#timepickerS').timepicker({
-        minuteStep: 5,
-        showInputs: false,
-        template: 'modal',
-        modalBackdrop: true,
-        showSeconds: false,
-        showMeridian: false
-});
 
     
 
