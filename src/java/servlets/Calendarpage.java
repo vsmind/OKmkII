@@ -208,7 +208,7 @@ public class Calendarpage extends HttpServlet {
     private void getMonth(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         StringBuilder answer =  new StringBuilder();
-        Calendar calenar = Calendar.getInstance();
+        Calendar calenar = (Calendar) httpsession.getAttribute("watchingDate");
         //get the name of the current month in the required format 
         String month = new SimpleDateFormat("MMM").format(calenar.getTime());
         
@@ -254,7 +254,7 @@ public class Calendarpage extends HttpServlet {
                     
                     int dayInMonth = 1;
                     
-                    for (int i = 0; i < weeksInMonth; i++)
+                    for (int i = 0; i <= daysInMonth; i = dayInMonth)
                     {
                     answer.append("<tbody>");
                         //first week
@@ -410,6 +410,12 @@ public class Calendarpage extends HttpServlet {
             cal.add(cal.DAY_OF_MONTH, -3);
             timeLineWeek(request, response);
         }
+        else if(viewpoint.equals("month"))
+        {
+            Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
+            cal.add(cal.MONTH, -1);
+            getMonth(request, response);
+        }
     }
     
     private void present(HttpServletRequest request, HttpServletResponse response) throws IOException
@@ -422,6 +428,12 @@ public class Calendarpage extends HttpServlet {
             httpsession.setAttribute("watchingDate", cal);
             timeLineWeek(request, response);
         }
+        else if(viewpoint.equals("month"))
+        {
+            Calendar cal = Calendar.getInstance();
+            httpsession.setAttribute("watchingDate", cal);
+            getMonth(request, response);
+        }
     }
     
     private void future(HttpServletRequest request, HttpServletResponse response) throws IOException
@@ -433,6 +445,12 @@ public class Calendarpage extends HttpServlet {
             Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
             cal.add(cal.DAY_OF_MONTH, 3);
             timeLineWeek(request, response);
+        }
+        else if(viewpoint.equals("month"))
+        {
+            Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
+            cal.add(cal.MONTH, 1);
+            getMonth(request, response);
         }
     }
     
