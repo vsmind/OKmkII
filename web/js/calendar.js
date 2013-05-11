@@ -215,5 +215,15 @@ function setTimePickers()
 
 function zoomDay(day)
 {
-    alert(day.id);
+    var eventday = day.id;
+    var selectedDay = eventday.split('h');
+    
+    var sday = selectedDay[0];
+    var smonth = selectedDay[1];
+    var syear = selectedDay[2];
+    
+     $.get('Eventspage', {instance:'dayinmonth', day:sday, month:smonth, year:syear}, function(responseText){
+        $("#selectedDayEvents").replaceWith("<div id=\"selectedDayEvents\" class=\"span11\">" + responseText + "</div>");
+    });
+    
 }

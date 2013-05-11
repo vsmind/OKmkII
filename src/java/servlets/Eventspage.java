@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import session.EventFacade;
 import session.EventtypeFacade;
 
 /**
@@ -26,7 +27,9 @@ public class Eventspage extends HttpServlet {
     private HttpSession httpsession;   
     private String action;
     @EJB
-    EventtypeFacade eventtypeFacade;
+    private EventtypeFacade eventtypeFacade;
+    @EJB
+    private EventFacade eventFacade;
     
     /**
      * Processes requests for both HTTP
@@ -75,11 +78,17 @@ public class Eventspage extends HttpServlet {
         httpsession = request.getSession();
         response.setContentType("text/plain");
 
+        
+        
 	action = request.getParameter("instance");
         
         if(action.equals("createeventform"))
         {
             createEventForm(request, response);
+        }
+        else if(action.equals("dayinmonth"))
+        {
+            getEventsForDay(request, response);
         }
         else
         {
@@ -235,6 +244,47 @@ public class Eventspage extends HttpServlet {
                 
             answer.append("</table>");
         
+        
+        response.setContentType("text/plain");
+        response.getWriter().write(answer.toString());
+    }
+    
+    private void getEventsForDay(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        int selectedDay = Integer.parseInt(request.getParameter("day"));
+        int selectedMonth = Integer.parseInt(request.getParameter("month")) + 1;
+        int selectefYear = Integer.parseInt(request.getParameter("year"));
+        Integer userID = (Integer)httpsession.getAttribute("userID");
+        
+        StringBuilder answer =  new StringBuilder();
+        
+        List dayEvents;
+        dayEvents = eventFacade.getEventsByUserIDandDate(userID, selectedMonth, selectedDay, selectefYear);
+        entity.Event dayEvnt;
+        
+        answer.append("<table class=\"table-hover\">");
+            answer.append("<thead>");
+                answer.append("<tr>");
+                    answer.append("<th>");
+                        answer.append("Title");
+                    answer.append("</th>");
+                    answer.append("<th>");
+                        answer.append("Type");
+                    answer.append("</th>");
+                    answer.append("<th>");
+                        answer.append("Description");
+                    answer.append("</th>");
+                    answer.append("<th>");
+                        answer.append("Start");
+                    answer.append("</th>");
+                    answer.append("<th>");
+                        answer.append("End");
+                    answer.append("</th>");
+
+
+                answer.append("</tr>");
+            answer.append("</thead>");
+        answer.append("</table>");
         
         response.setContentType("text/plain");
         response.getWriter().write(answer.toString());
