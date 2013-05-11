@@ -69,6 +69,10 @@ public class Registration extends HttpServlet {
      * Handles the HTTP
      * <code>GET</code> method.
      *
+     * get processing
+     * method responsible for action choice with checking 
+     * (username, email, password, repeat password)
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -81,34 +85,35 @@ public class Registration extends HttpServlet {
         httpsession = request.getSession();
         //variable is responsible for selecting actions
         action = (String)request.getParameter("instant");
+        //response type
         response.setContentType("text/plain");
         
         //choice of action
         if(action.equals("mail"))
         {
-            chechEmail(request, response);
+            chechEmail(request, response);//check email
         }
         else if(action.equals("username"))
         {
-            checkUsername(request, response);
+            checkUsername(request, response);//check username
         }
         else if(action.equals("pass"))
         {
-            checkPass(request, response);
+            checkPass(request, response);//check password
         }
         else if(action.equals("checkall"))
         {
-            checkAll(request, response);
+            checkAll(request, response);//check all parametrs
         }
         else if(action.equals("passcheck"))
         {
-            checkPasswords(request, response);
+            checkPasswords(request, response);//check password repeat
         }
         else
         {
             answer =  new StringBuilder();
             answer.append("Something happened, but it's not what you expected");
-            response.getWriter().write(answer.toString());
+            response.getWriter().write(answer.toString());//feil
         }
     }
 
@@ -152,7 +157,7 @@ public class Registration extends HttpServlet {
     }
  
     /**
-     * Method is responsible for checking the format of e-mail addresses
+     * Method chechEmail is responsible for checking the format of e-mail addresses
      * This function was created with help from: 
      * http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
      * @param request
@@ -188,11 +193,12 @@ public class Registration extends HttpServlet {
             answer.append("<p class=\"label label-important\">e-mail format is incorrect</p>");
             httpsession.setAttribute("regformemail", "false");//email registration condition
         }
+        //send response from servlet
         response.getWriter().write(answer.toString());
     }
     
     /**
-     * Method is responsible for checking the format of the user name, its length and its availability
+     * Method checkUsername is responsible for checking the format of the user name, its length and its availability
      * @param request
      * @param response
      * @throws IOException 
@@ -242,12 +248,12 @@ public class Registration extends HttpServlet {
             answer.append("<p class=\"label label-important\">Username can innhold just letters and numbers</p>");
             httpsession.setAttribute("regformname", "false");//username registration condition
         }
-        
+        //send response from servlet
         response.getWriter().write(answer.toString());
     }
     
     /**
-     * Method is responsible for checking the password complexity
+     * Method checkPass is responsible for checking the password complexity
      * http://www.zorched.net/2009/05/08/password-strength-validation-with-regular-expressions/
      * @param request
      * @param response
@@ -322,11 +328,12 @@ public class Registration extends HttpServlet {
             answer.append("<p class=\"label label-important\">Password are too short</p>");
             httpsession.setAttribute("regformpass", "false");//password registration condition
         } 
+        //send response from servlet
         response.getWriter().write(answer.toString());
     }
     
     /**
-     * Method verifies all registration conditions
+     * Method checkAll verifies all registration conditions
      * @param request
      * @param response
      * @throws IOException 
@@ -352,11 +359,13 @@ public class Registration extends HttpServlet {
         //check conditions
         if(namecheck==true && mailcheck == true && passcheck == true && passpasscheck == true)
         {
+            //send response from servlet
             response.getWriter().write("true");
             //System.out.println("true" + namecheck.toString() + mailcheck.toString() + passcheck.toString());
         }
         else
         {
+            //send response from servlet
             response.getWriter().write("false");
             //System.out.println("false" + namecheck.toString() + mailcheck.toString() + passcheck.toString());
         }
@@ -364,7 +373,7 @@ public class Registration extends HttpServlet {
     }
     
     /**
-     * Method compares the first and re-enter the password
+     * Method checkPasswords compares the first and re-enter the password
      * @param request
      * @param response
      * @throws IOException 
@@ -378,11 +387,13 @@ public class Registration extends HttpServlet {
         if(passone.equals(passtwo))
         {
             httpsession.setAttribute("regformpasspass", "true");//password checking registration condition
+            //send response from servlet
             response.getWriter().write("<p class=\"label label-success\">Passwords Correct</p>");
         }
         else
         {
             httpsession.setAttribute("regformpasspass", "false");//password checking registration condition
+            //send response from servlet
             response.getWriter().write("<p class=\"label label-important\">Passwords Inncorect</p>");
         }
         

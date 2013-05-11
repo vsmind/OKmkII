@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Servlet is responsible for user password restoration
+ * Not in use, waiting for mail server
  * @author Vitaly
  */
 public class Restorepassword extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="processRequest method.">
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -47,8 +49,8 @@ public class Restorepassword extends HttpServlet {
             out.close();
         }
     }
+    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -80,6 +82,8 @@ public class Restorepassword extends HttpServlet {
         response.sendRedirect("index.jsp");
     }
 
+    // <editor-fold defaultstate="collapsed" desc="getServletInfo method">
+    
     /**
      * Returns a short description of the servlet.
      *
