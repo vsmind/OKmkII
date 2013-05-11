@@ -18,7 +18,6 @@ public class Homepage extends HttpServlet {
     private HttpSession httpsession;
     private String action = null;
     
-    @Deprecated
     // <editor-fold defaultstate="collapsed" desc="processReques">
     /**
      * Processes requests for both HTTP
@@ -56,6 +55,9 @@ public class Homepage extends HttpServlet {
      * Handles the HTTP
      * <code>GET</code> method.
      *
+     * get processing
+     * generate dynamic code for user login, user registration and restore password
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -74,7 +76,7 @@ public class Homepage extends HttpServlet {
         //choice of action, depending on the variable being passed
         if(action.equals("sing"))//create a login form for registered user
         {
-            //code generation
+            //html code generation
             answer.append("<form method=\"post\" action=\"Login\">");
                 
                 answer.append("<div class=\"span12\">");
@@ -110,8 +112,9 @@ public class Homepage extends HttpServlet {
                 answer.append("</div>");
                 
             answer.append("<div id=\"restoreform\" class=\"span12\"></div>");
-            
+            //responce type
             response.setContentType("text/plain");
+            //send response from servlet
             response.getWriter().write(answer.toString());
         }
         else if(action.equals("reg"))//create a registration form for new user
@@ -168,8 +171,9 @@ public class Homepage extends HttpServlet {
                   
             answer.append("</form>");
             
-            
+            //response type
             response.setContentType("text/plain");
+            //send response from servlet
             response.getWriter().write(answer.toString());
         }
         else if(action.equals("rest"))//create a restore password form for registered user
@@ -179,8 +183,9 @@ public class Homepage extends HttpServlet {
                 answer.append("<button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>");
                 answer.append("Functionality is turned off before the launch of mail server");
             answer.append("</div>");
-            
+            //responce type
             response.setContentType("text/plain");
+            //send response from servlet
             response.getWriter().write(answer.toString());
         }
         else//action in the case of transfer of an incorrect argument
@@ -193,6 +198,8 @@ public class Homepage extends HttpServlet {
      * Handles the HTTP
      * <code>POST</code> method.
      *
+     * post processing
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
