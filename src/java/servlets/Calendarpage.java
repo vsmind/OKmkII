@@ -133,9 +133,8 @@ public class Calendarpage extends HttpServlet {
         //Returns the current HttpSession associated with this request
         httpsession = request.getSession();
         response.setContentType("text/html");
-         //variable is responsible for selecting actions
+        //variable is responsible for selecting actions
 	action = request.getParameter("instance");
-        
         //choice of actions depending on the request parameter
         if(action.equals("past"))
         {
@@ -226,7 +225,9 @@ public class Calendarpage extends HttpServlet {
             answer.append("</table>");
         }
         */
+        //responce type
         response.setContentType("text/plain");
+        //send response from servlet
         response.getWriter().write(answer.toString());
     }
     

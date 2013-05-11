@@ -24,19 +24,20 @@ import session.EventtypeFacade;
 import session.TimeRepeatFacade;
 
 /**
- *
+ * Servlet Event is responsible for event saving in database
  * @author Vitaly
  */
 public class Event extends HttpServlet {
-
+    //variables
     private HttpSession httpsession;   
-    
     @EJB
     private EventFacade eventFacade;
     @EJB
     private EventtypeFacade eventTypeFacade;
     @EJB
     private TimeRepeatFacade timeRepeatFacade;
+    
+    // <editor-fold defaultstate="collapsed" desc="processRequest">
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -67,12 +68,15 @@ public class Event extends HttpServlet {
             out.close();
         }
     }
+    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+        /**
      * Handles the HTTP
      * <code>GET</code> method.
-     *
+     * 
+     * get processing
+     * save event to database
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -81,16 +85,19 @@ public class Event extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Returns the current HttpSession associated with this request
         httpsession = request.getSession();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        //Date format
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");//test
         Calendar cal = Calendar.getInstance();
         
-        int userID;
-        String title;
-        Integer type;
-        String description;
-        Date timeStart = cal.getTime();
-        Date timeEnd = cal.getTime();
+        //variable
+        int userID;//user id
+        String title;//event title
+        Integer type;//event type
+        String description;//event description
+        Date timeStart = cal.getTime();//event start
+        Date timeEnd = cal.getTime();//event end
         
         String hourStart;
         String minuteStart;
@@ -108,7 +115,7 @@ public class Event extends HttpServlet {
         
         long location_lat;
         long location_long;
-        
+        //getting variables from request
         userID = ((Integer)httpsession.getAttribute("userID"));
         title = request.getParameter("eventtitle");
         type = Integer.parseInt(request.getParameter("eventtype"));
@@ -123,14 +130,13 @@ public class Event extends HttpServlet {
         
         dateStart = request.getParameter("eventstartdate");
         dateEnd = request.getParameter("eventenddate");
-        
         startTime = request.getParameter("eventstarttime");
         endTime = request.getParameter("eventendtime");
-        
+        //lead to the required date format
         formatedStartDate = dateStart + " " + startTime;
         formatedEndDate = dateEnd + " " + endTime;
         
-        
+        //date parsing
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try 
         {
@@ -142,20 +148,21 @@ public class Event extends HttpServlet {
             Logger.getLogger(Event.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
+        //set latitude and langitude
         location_lat = 1;
         location_long = 1;
         
+        /*
         System.out.println(title);
         System.out.println(type);
         System.out.println(description);
         System.out.println(timeStart);
         System.out.println(timeEnd);
+        */
         
+        //create new event
         entity.Event event = new entity.Event(1);
-        
-        
-        
+        //set information to event
         event.setUserID(userID);
         event.setTitle(title);
         event.setType(eventTypeFacade.getEventTypeById(type));
@@ -169,10 +176,10 @@ public class Event extends HttpServlet {
         
         event.setReminder(Boolean.TRUE);
         event.setTimeRepeat(timeRepeatFacade.getEventTypeById(1));
-         
+        //Save event to DB
         eventFacade.create(event);
-        System.out.println(event);
-        
+        //System.out.println(event);
+        //send response from servlet
         response.getWriter().write("OK");
     }
 
@@ -180,6 +187,9 @@ public class Event extends HttpServlet {
      * Handles the HTTP
      * <code>POST</code> method.
      *
+     * post processing
+     * used for tests
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -188,24 +198,23 @@ public class Event extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        //Returns the current HttpSession associated with this request
         httpsession = request.getSession();
         
         String title;
         Integer type;
         String description;
-        
+        //getting variables from request
         title = request.getParameter("eventtitle");
         type = Integer.parseInt(request.getParameter("eventtype"));
         description = request.getParameter("eventdescription");
         
         System.out.println(title);
         System.out.println(type);
-        System.out.println(description);
-        
-        
+        System.out.println(description);  
     }
 
+    // <editor-fold defaultstate="collapsed" desc="getServletInfor()">
     /**
      * Returns a short description of the servlet.
      *

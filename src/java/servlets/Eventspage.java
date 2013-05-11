@@ -23,14 +23,14 @@ import session.EventtypeFacade;
  * @author Vitaly
  */
 public class Eventspage extends HttpServlet {
-
+    //variables
     private HttpSession httpsession;   
     private String action;
     @EJB
     private EventtypeFacade eventtypeFacade;
     @EJB
     private EventFacade eventFacade;
-    
+    // <editor-fold defaultstate="collapsed" desc="processRequest method">
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -61,12 +61,15 @@ public class Eventspage extends HttpServlet {
             out.close();
         }
     }
+    //</editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
-     *
+     *  
+     * get processing
+     * 
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -75,24 +78,24 @@ public class Eventspage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Returns the current HttpSession associated with this request
         httpsession = request.getSession();
+        //responce type
         response.setContentType("text/plain");
-
-        
-        
+        //variable is responsible for selecting actions
 	action = request.getParameter("instance");
-        
+        //choice of actions depending on the request parameter
         if(action.equals("createeventform"))
         {
-            createEventForm(request, response);
+            createEventForm(request, response);//add elements to event form
         }
         else if(action.equals("dayinmonth"))
         {
-            getEventsForDay(request, response);
+            getEventsForDay(request, response);//add days events on month view
         }
         else
         {
-            response.setContentType("text/html");
+            response.setContentType("text/html");//feil
             response.sendRedirect("feil.jsp");
         }
     }
@@ -101,6 +104,8 @@ public class Eventspage extends HttpServlet {
      * Handles the HTTP
      * <code>POST</code> method.
      *
+     * post processing
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -109,11 +114,10 @@ public class Eventspage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-        
+            
     }
 
+    // <editor-fold defaultstate="collapsed" desc="getServletInfo() method">
     /**
      * Returns a short description of the servlet.
      *
@@ -124,10 +128,18 @@ public class Eventspage extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
+    /**
+     * Method createEventForm 
+     * adds elements to the modal form to create a new event
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void createEventForm(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //html code which is returned in response to a request
         StringBuilder answer =  new StringBuilder();
-        
+        //generate html code
             answer.append("<table>");
                 answer.append("<tr>");
                     answer.append("<td>");
@@ -148,7 +160,7 @@ public class Eventspage extends HttpServlet {
                     answer.append("<td>");
                         answer.append("Event type:");
                     answer.append("</td>");
-                    
+                    //event type selecter
                     answer.append("<td>");
                         List<Eventtype> eventList = getAllEventsType();
                         answer.append("<select name=\"eventtype\" id=\"eventtype\">");
@@ -244,24 +256,35 @@ public class Eventspage extends HttpServlet {
                 
             answer.append("</table>");
         
-        
+        //response type
         response.setContentType("text/plain");
+        //send response from servlet
         response.getWriter().write(answer.toString());
     }
     
+    /**
+     * Method createEventForm 
+     * adds elements add events to month view,
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void getEventsForDay(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //variables from request
         int selectedDay = Integer.parseInt(request.getParameter("day"));
         int selectedMonth = Integer.parseInt(request.getParameter("month")) + 1;
         int selectefYear = Integer.parseInt(request.getParameter("year"));
+        //userid from session
         Integer userID = (Integer)httpsession.getAttribute("userID");
-        
+        //html code which is returned in response to a request
         StringBuilder answer =  new StringBuilder();
-        
+        //list with entity.Events for selected day
         List dayEvents;
         dayEvents = eventFacade.getEventsByUserIDandDate(userID, selectedMonth, selectedDay, selectefYear);
+        //event object
         entity.Event dayEvnt;
-        
+        //generate html code
         answer.append("<table class=\"table-hover\">");
             answer.append("<thead>");
                 answer.append("<tr>");
@@ -290,6 +313,10 @@ public class Eventspage extends HttpServlet {
         response.getWriter().write(answer.toString());
     }
     
+    /**
+     * Method getAllEventsType() 
+     * @return List<Eventtype> from database
+     */
     private List<Eventtype> getAllEventsType()
     {
         List<Eventtype> eventList;
