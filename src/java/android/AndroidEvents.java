@@ -4,8 +4,11 @@
  */
 package android;
 
+import com.google.gson.Gson;
+import help.ConnectionResult;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -77,9 +80,13 @@ public class AndroidEvents extends HttpServlet {
         //variable is responsible for selecting actions
 	action = request.getParameter("instance");
         
-        if(action.equals("dayevent"))
+        if(action.equals("dayevents"))
         {
             getDayEvents(request, response);
+        }
+        else if(action.equals("monthevents"))
+        {
+            getMonthEvents(request, response);
         }
         else
         {
@@ -103,10 +110,63 @@ public class AndroidEvents extends HttpServlet {
         processRequest(request, response);
     }
     
-    private void getDayEvents(HttpServletRequest request, HttpServletResponse response)
+    private void getDayEvents(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        
+        //Variables
+        int userID;
+        int eventDay;
+        int eventMonth;
+        int eventYear;
+        //get userID from session
+        userID = (Integer)httpsession.getAttribute("userID");
+        //get variables from request
+        eventDay = Integer.parseInt((String)request.getAttribute("day"));
+        eventMonth = Integer.parseInt((String)request.getAttribute("month"));
+        eventYear = Integer.parseInt((String)request.getAttribute("year"));
+        //list with events
+        List<entity.Event> eventList;
+        eventList = eventsFacade.getEventsByUserIDandDate(userID, eventMonth, eventDay, eventYear);
+        //response type
+        response.setContentType("application/json");
+        //Google gson object
+        Gson gson = new Gson();
+        //servlet response
+        response.getWriter().write(gson.toJson(eventList));
     }
+    
+    private void getMonthEvents(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        //Variables
+        int userID;
+        int eventMonth;
+        int eventYear;
+        //get userID from session
+        userID = (Integer)httpsession.getAttribute("userID");
+        //get variables from request
+        eventMonth = Integer.parseInt((String)request.getAttribute("month"));
+        eventYear = Integer.parseInt((String)request.getAttribute("year"));
+        //list with events
+        List<entity.Event> eventList;
+        eventList = eventsFacade.getMonthEvents(userID, eventMonth, eventYear);
+        //response type
+        response.setContentType("application/json");
+        //Google gson object
+        Gson gson = new Gson();
+        //servlet response
+        response.getWriter().write(gson.toJson(eventList));
+    }
+    
+    private void requestFeil(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        //Google gson object
+        Gson gson = new Gson();
+        //converted object used as a response from the server
+        ConnectionResult result = new ConnectionResult(false);
+        //servlet response
+        response.getWriter().write(gson.toJson(result));
+    }
+    
+    
     
     
 
