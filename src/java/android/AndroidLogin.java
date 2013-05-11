@@ -73,7 +73,21 @@ public class AndroidLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         httpsession = request.getSession();
         
         username = request.getParameter("username");
@@ -92,7 +106,7 @@ public class AndroidLogin extends HttpServlet {
             }
             else
             {
-            	result.setResult(false);
+                result.setResult(false);
                 response.getWriter().write(gson.toJson(result));
             }
         }
@@ -101,22 +115,6 @@ public class AndroidLogin extends HttpServlet {
         	result.setResult(false);
                 response.getWriter().write(gson.toJson(result));
         }
-        
-    }
-
-    /**
-     * Handles the HTTP
-     * <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**
