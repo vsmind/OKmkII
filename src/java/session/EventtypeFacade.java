@@ -27,6 +27,11 @@ public class EventtypeFacade extends AbstractFacade<Eventtype> {
         super(Eventtype.class);
     }
     
+    /**
+     * Method getEventTypeById return Eventtype 
+     * @param _id int eventtype id
+     * @return Eventtype
+     */
     public Eventtype getEventTypeById(int _id)
     {
         Eventtype etype;

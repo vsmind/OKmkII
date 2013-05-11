@@ -28,6 +28,11 @@ public class UserFacade extends AbstractFacade<User> {
         super(User.class);
     }
     
+    /**
+     * Method getUserByUsername returns User object
+     * @param _username String username
+     * @return User
+     */
     public User getUserByUsername(String _username)
     {
         List <User> userList;
