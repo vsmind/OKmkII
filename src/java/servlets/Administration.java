@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Servlet Administration is responsible for forwarding to the Administration page 
+ * and also for the withdrawal of dynamic elements on the page
  * @author Vitaly
  */
 public class Administration extends HttpServlet {
-
+    
+    // <editor-fold defaultstate="collapsed" desc="processReques metode">
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -47,12 +49,15 @@ public class Administration extends HttpServlet {
             out.close();
         }
     }
+    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+  
     /**
      * Handles the HTTP
      * <code>GET</code> method.
-     *
+     * 
+     * method call forwarding to administration page
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -69,6 +74,9 @@ public class Administration extends HttpServlet {
      * Handles the HTTP
      * <code>POST</code> method.
      *
+     * method processes the post request and responsible for displaying 
+     * dynamic information on the Administration page
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -77,9 +85,10 @@ public class Administration extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //TO_DO
     }
 
+    // <editor-fold defaultstate="collapsed" desc="getServletInfo">
     /**
      * Returns a short description of the servlet.
      *

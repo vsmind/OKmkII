@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 import session.EventFacade;
 
 /**
- *
+ * Servlet Calendarpage is responsible for displaying dynamic information on the calendar page
  * @author Vitaly
  */
 public class Calendarpage extends HttpServlet {
@@ -33,7 +33,6 @@ public class Calendarpage extends HttpServlet {
     @EJB
     private EventFacade eventFacade;
     
-    @Deprecated
     // <editor-fold defaultstate="collapsed" desc="processRequest.">
     /**
      * Processes requests for both HTTP
@@ -71,6 +70,10 @@ public class Calendarpage extends HttpServlet {
      * Handles the HTTP
      * <code>GET</code> method.
      *
+     * get processing 
+     * processing of the request and call the methods 
+     * responsible for the output of various calendar views
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -79,32 +82,35 @@ public class Calendarpage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Returns the current HttpSession associated with this request
         httpsession = request.getSession();
         response.setContentType("text/html");
-
+        //variable is responsible for selecting actions
 	action = request.getParameter("instance");
-        
+        //initialize the Calender object
         Calendar cal = Calendar.getInstance();
+        //writes an Calendar object to the session
         httpsession.setAttribute("watchingDate", cal);
         
+        //choice of actions depending on the request parameter
         if(action.equals("day"))
         {
             //System.out.println(action);
-            getDay(request, response);
-            httpsession.setAttribute("viewpoint", "day");
+            getDay(request, response);//day view
+            httpsession.setAttribute("viewpoint", "day");//save viewpoint object
         }
         else if(action.equals("month"))
         {
-            getMonth(request, response);
-            httpsession.setAttribute("viewpoint", "month");
+            getMonth(request, response);//month view
+            httpsession.setAttribute("viewpoint", "month");//save viewpoint object
         }
         else if(action.equals("timeline"))
         {
-            timeLine(request, response);
+            timeLine(request, response);//week view
         }
         else
         {
-            response.sendRedirect("feil.jsp");
+            response.sendRedirect("feil.jsp");//getting invalid parameters from the request
         }
         
     }
@@ -113,6 +119,9 @@ public class Calendarpage extends HttpServlet {
      * Handles the HTTP
      * <code>POST</code> method.
      *
+     * post processing
+     * responsible for navigation on the calendar
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -121,38 +130,53 @@ public class Calendarpage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Returns the current HttpSession associated with this request
         httpsession = request.getSession();
         response.setContentType("text/html");
-
+         //variable is responsible for selecting actions
 	action = request.getParameter("instance");
         
+        //choice of actions depending on the request parameter
         if(action.equals("past"))
         {
-            past(request, response);
+            past(request, response);//moving back on the calendar
         }
         else if(action.equals("present"))
         {
-            present(request, response);
+            present(request, response);//go to current date on the calendar
         }
         else if(action.equals("future"))
         {
-            future(request, response);
+            future(request, response);//moving forward on the calendar
         }
         else
         {}
     }
   
+    /**
+     * Dynamic day output in calendar area
+     * 
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void getDay(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //html code which is returned in response to a request
         StringBuilder answer =  new StringBuilder();
-        int today;
+        int today;//Day
+        //initialize the Calender object
         Calendar calenar = Calendar.getInstance();
+        //today date
         today = calenar.get(Calendar.DATE);
         
+        //output header with date
         answer.append("<div class=\"span4 offset4\">"
                 + "<h3>").append(today).append("</h3>"
                 + "</div>");
         
+        //output hour element
+        //TO_DO
         for(int i = 0; i < 24; i++)
         {
         answer.append("<div class=\"row-fluid span12\">");
@@ -206,28 +230,33 @@ public class Calendarpage extends HttpServlet {
         response.getWriter().write(answer.toString());
     }
     
+    /**
+     * Dynamic month output in calendar area
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void getMonth(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //html code which is returned in response to a request
         StringBuilder answer =  new StringBuilder();
+        //get wathcing date from session
         Calendar calendar = (Calendar) httpsession.getAttribute("watchingDate");
         //get the name of the current month in the required format 
         String month = new SimpleDateFormat("MMM").format(calendar.getTime());
-        
+        //variable used in the header to display the month and year
         month = month + " " + calendar.get(Calendar.YEAR);
-        
         //Get userID from session
         Integer userID = (Integer)httpsession.getAttribute("userID");
-        
+        //first day in month (0 Sunday - ... - 6 Saturday)
         int firstDayInMonth;
-        
+        //month events
         List monthEventsList;
+        //get a list of events of the month from the database
         monthEventsList = eventFacade.getMonthEvents(userID,calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
-        System.out.println("***************************************************");
-        for(int i = 0; i < monthEventsList.size();i++)
-        {
-            entity.Event ee = (entity.Event) monthEventsList.get(i);
-            System.out.println(ee.getTimeStart());
-        }
+        //System.out.println("***************************************************");
+        
+        //html code generation
         answer.append("<div class=\"span8\">");
         
         answer.append("<div class=\"span12\">");
@@ -250,7 +279,6 @@ public class Calendarpage extends HttpServlet {
                     calendar.set(Calendar.DAY_OF_MONTH,Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
                     firstDayInMonth = calendar.get(Calendar.DAY_OF_WEEK);
                     
-                    System.out.println(firstDayInMonth);
                     //change format of the week (start from monday)
                     if(firstDayInMonth == 1)
                         firstDayInMonth = 7;
@@ -261,37 +289,36 @@ public class Calendarpage extends HttpServlet {
                     int weeksInMonth = calendar.getActualMaximum(Calendar.WEEK_OF_MONTH);
                     //number of days in month
                     int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                    
+                    //an information list with days some have events, is used to mark the event on month view
                     LinkedList<Boolean> daysWithEventsList = new LinkedList<Boolean>();
+                    //list filling
                     for(int i = 0; i < daysInMonth + 1; i++)
                     {
                         daysWithEventsList.add(false);
                     }
-                    
+                    //entity.Event object
                     entity.Event dayEvent;
+                    //event date
                     Date eventDate;
+                    //calendar instance
                     Calendar eventCalendar = Calendar.getInstance();
+                    //event date(day)
                     int eventDay;
-                    
+                    //find the date of the event began and note the date in the list
+                    //change false to true
                     for(int i = 0; i < monthEventsList.size(); i++)
                     {
                         dayEvent = (Event) monthEventsList.get(i);
                         eventDate = dayEvent.getTimeStart();
                         eventCalendar.setTime(eventDate);
-                        eventDay = eventCalendar.get(Calendar.DAY_OF_MONTH);
-                        
-                        
-                        
-                        System.out.println("eventday" + eventDay);
-                        
+                        eventDay = eventCalendar.get(Calendar.DAY_OF_MONTH);                        
                         daysWithEventsList.set(eventDay, true);
                     }
                     
-                    System.out.println(daysWithEventsList);
-                    
-                   
+                    //day number in  month
                     int dayInMonth = 1;
                     
+                    //dynamisk output of the month
                     for (int i = 0; i <= daysInMonth; i = dayInMonth)
                     {
                     answer.append("<tbody>");
@@ -301,14 +328,14 @@ public class Calendarpage extends HttpServlet {
                             answer.append("<tr>");
                             for(int j = 1; j < 8; j++)
                             {
-                                //placeholders
+                                //placeholders (days are not included in a rolling month)
                                 if(j < firstDayInMonth)
                                 {
                                     answer.append("<td>");
                                         answer.append(" ");
                                     answer.append("</td>");
                                 }
-                                //first week
+                                //first week of the month
                                 else
                                 {
                                     //mark saturday og sunday
@@ -507,20 +534,27 @@ public class Calendarpage extends HttpServlet {
         answer.append("</div>");
         
         answer.append("</div>");
-        
-        
-        
+        //response type
         response.setContentType("text/plain");
+        //send response from servlet
         response.getWriter().write(answer.toString());
     }
     
+    /**
+     * timeline type definition
+     * method is simplified 
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void timeLine(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //get view period from session
         period = (String)request.getParameter("period");
         if(period.equals("week"))
         {
-            timeLineWeek(request, response);
-            httpsession.setAttribute("viewpoint", "timeLineWeek");
+            timeLineWeek(request, response);//dynamic week view
+            httpsession.setAttribute("viewpoint", "timeLineWeek");//save view point in session
         }
         else
         {
@@ -529,8 +563,15 @@ public class Calendarpage extends HttpServlet {
         }
     }
     
+    /**
+     * Dynamic week output in calendar area
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs 
+     */
     private void timeLineWeek(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //html code which is returned in response to a request
         StringBuilder answer =  new StringBuilder();
         //Get userID from session
         Integer userID = (Integer)httpsession.getAttribute("userID");
@@ -540,29 +581,33 @@ public class Calendarpage extends HttpServlet {
         List userEventsList;
 
         int oneStep = 1;
-        
+        //get wathcing date from session
         Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
-
+        
+        //maximum number of events per day, it is necessary 
+        //to determine the number of rows in the generated table
         int maxiumNumberOfEvents = 0;
+        //date changing for 4 days before wathing dte because we make a step in the begin
         cal.add(cal.DAY_OF_MONTH, -4);
-
+        
+        //Define the maximum number of events
         for(int i = 0; i < 7; i++)
         {
+            //starting for 3 days before wathing date
             cal.add(cal.DAY_OF_MONTH, oneStep);
-            
+            //get the list of the events for a day
             userEventsList = eventFacade.getEventsByUserIDandDate(userID,cal.get(cal.MONTH)+1,cal.get(cal.DAY_OF_MONTH),cal.get(cal.YEAR));
             weekEvents.add(userEventsList);
-            
+            //change the maxium number of events
             if(userEventsList.size() > maxiumNumberOfEvents)
                 maxiumNumberOfEvents = userEventsList.size();   
         }
-        
+        //change the date by 7 days ago for week view generation
         cal.add(cal.DAY_OF_MONTH, -7);
         
         answer.append("<table>");
             answer.append("<tr>");       
- 
-          
+        //week cycle
         for(int i = 0; i < 7; i++)      
         {   
             cal.add(cal.DAY_OF_MONTH, oneStep);
@@ -595,17 +640,26 @@ public class Calendarpage extends HttpServlet {
                 
             answer.append("</tr>");        
         answer.append("</table>");
-        
+        //return date in the initial position
         cal.add(cal.DAY_OF_MONTH, -3);
-        
+        //responce type
         response.setContentType("text/plain");
+        //send responce from servlet
         response.getWriter().write(answer.toString());
     }
     
+    /**
+     * Method past is responsible for the change of calendar date and 
+     * calling redrawing method (go back in time)
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs 
+     */
     private void past(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //getting viewpoint from session
         String viewpoint = (String)httpsession.getAttribute("viewpoint");
-        
+        //date change
         if(viewpoint.equals("timeLineWeek"))
         {
             Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
@@ -621,10 +675,18 @@ public class Calendarpage extends HttpServlet {
         }
     }
     
+    /**
+     * Method past is responsible for the change of calendar date and 
+     * calling redrawing method (go to the current date)
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs 
+     */
     private void present(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //getting viewpoint frokm session
         String viewpoint = (String)httpsession.getAttribute("viewpoint");
-        
+        //date change
         if(viewpoint.equals("timeLineWeek"))
         {
             Calendar cal = Calendar.getInstance();
@@ -639,10 +701,18 @@ public class Calendarpage extends HttpServlet {
         }
     }
     
+    /**
+     * Method past is responsible for the change of calendar date and 
+     * calling redrawing method (go to the future)
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs 
+     */
     private void future(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //getting viewpoint from session
         String viewpoint = (String)httpsession.getAttribute("viewpoint");
-        
+        //date change
         if(viewpoint.equals("timeLineWeek"))
         {
             Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
@@ -656,10 +726,6 @@ public class Calendarpage extends HttpServlet {
             getMonth(request, response);
         }
     }
-    
-    
-    
-
     
     // <editor-fold defaultstate="collapsed" desc="getServletInfo.">
     /**
