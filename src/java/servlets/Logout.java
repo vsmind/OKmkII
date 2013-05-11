@@ -15,13 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
+ * Servlet is responsible for user logout 
  * @author Vitaly
  */
 public class Logout extends HttpServlet {
 
     private HttpSession httpsession;  
     
+    // <editor-fold defaultstate="collapsed" desc="processRequest() method">
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -52,12 +53,15 @@ public class Logout extends HttpServlet {
             out.close();
         }
     }
+    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
      *
+     * get processing
+     * responsible for user logout
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -66,14 +70,15 @@ public class Logout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+            //Returns the current HttpSession associated with this request
             httpsession = request.getSession();
+            //get user object from session
             User user = (User) httpsession.getAttribute("user");
-            if(user!=null)
+            if(user!=null)//check if user exists in session
             {
-                httpsession.removeAttribute("user");
+                httpsession.removeAttribute("user");//remove user from session
             }
-         response.sendRedirect("index.jsp");
+         response.sendRedirect("index.jsp");//redirect to home page
     }
 
     /**
@@ -91,6 +96,7 @@ public class Logout extends HttpServlet {
         processRequest(request, response);
     }
 
+    // <editor-fold defaultstate="collapsed" desc="getServletInfo() methods.">
     /**
      * Returns a short description of the servlet.
      *

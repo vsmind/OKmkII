@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
+ * Servlet is responsible for module page dynamic elements
  * @author Vitaly
  */
 public class Modulespage extends HttpServlet {
-
+    //variables
     private HttpSession httpsession;   
     private String action;
     
@@ -58,6 +58,9 @@ public class Modulespage extends HttpServlet {
      * Handles the HTTP
      * <code>GET</code> method.
      *
+     * get processing
+     * responsible for dynamic elements on modules page
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -66,22 +69,23 @@ public class Modulespage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        //Returns the current HttpSession associated with this request
         httpsession = request.getSession();
+        //variable is responsible for selecting actions
 	action = request.getParameter("instance");
-        
+        //choice of actions depending on the request parameter
         if(action.equals("active"))
         {
-            getActiveModules(request, response);
+            getActiveModules(request, response);//generate code for show users active modules
         }
         else if(action.equals("available"))
         {
-            getAvailableModules(request, response);
+            getAvailableModules(request, response);//generate code for show available modules
         }
         else
         {
             response.setContentType("text/html");
-            response.sendRedirect("feil.jsp");
+            response.sendRedirect("feil.jsp");//feil
         }
     }
 
@@ -89,6 +93,9 @@ public class Modulespage extends HttpServlet {
      * Handles the HTTP
      * <code>POST</code> method.
      *
+     * post processing
+     * redirects to modules page
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -101,10 +108,17 @@ public class Modulespage extends HttpServlet {
         response.sendRedirect("modules.jsp");
     }
     
+    /**
+     * Method getActiveModules generates html code for user active modules demonstration
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     private void getActiveModules(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //variable is responsible for selecting actions
         StringBuilder answer =  new StringBuilder();
-        
+        //html code generation
         answer.append("<table class=\"table table-hover\">");
         
             answer.append("<thead>");
@@ -166,11 +180,18 @@ public class Modulespage extends HttpServlet {
                     
         
         answer.append("</table>");
-        
+        //response type
         response.setContentType("text/plain");
+        //send response from servlet
         response.getWriter().write(answer.toString());
     }
     
+    /**
+     * Method getAvailableModules generates html code for available modules demonstration
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     private void getAvailableModules(HttpServletRequest request, HttpServletResponse response)
     {
     
