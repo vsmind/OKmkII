@@ -44,9 +44,6 @@ function dayview(){
     
     dayPosition();
     //showhour();
-    $.get('Eventspage', {instance:'eventsforday'}, function(responseText){
-        $("#eventarea").append(responseText);
-    });
     
 }
 

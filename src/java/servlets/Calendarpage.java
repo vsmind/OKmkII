@@ -164,19 +164,28 @@ public class Calendarpage extends HttpServlet {
         //html code which is returned in response to a request
         StringBuilder answer =  new StringBuilder();
         int today;//Day
+        int month;//month
+        int year;
         //initialize the Calender object
-        Calendar calenar = Calendar.getInstance();
+        Calendar calendar = (Calendar) httpsession.getAttribute("watchingDate");
         //today date
-        today = calenar.get(Calendar.DATE);
+        today = calendar.get(Calendar.DATE);
+        month = calendar.get(Calendar.MONTH) + 1;
+        year = calendar.get(Calendar.YEAR);
         
         //output header with date
         answer.append("<div class=\"span4 offset4\">"
-                + "<h3>").append(today).append("</h3>"
+                + "<h3>").append(today)
+                .append("/")
+                .append(month)
+                .append("/")
+                .append(year)
+                .append("</h3>"
                 + "</div>");
         
         //output hour element
         //TO_DO
-        
+        answer.append("<div class=\"span8\">");
         answer.append("<div class=\"row-fluid span12\">");
         
             answer.append("<div class=\"span2\">");
@@ -198,6 +207,98 @@ public class Calendarpage extends HttpServlet {
             
             answer.append("<div class=\"span10\">");
                 answer.append("<div id=\"eventarea\" STYLE=\"position:inherit;\" class=\"eventarea\">");
+                
+                    //import
+                
+                    //userid from session
+                    Integer userID = (Integer)httpsession.getAttribute("userID");
+
+                    //list with entity.Events for selected day
+                    List dayEvents;
+                    dayEvents = eventFacade.getEventsByUserIDandDate(userID, month, today, year);
+                    //event object
+                    entity.Event dayEvnt;
+                    //list with information of the number of events beginning within one hour
+                    List hourEventList = new LinkedList();
+
+
+                    for(int i = 0; i < 24; i++)
+                    {
+                        hourEventList.add(0);
+                    }
+
+                    //Calendar instance
+                    Calendar cal = Calendar.getInstance();
+                    //event counter
+                    int counter = 0;
+                    for(int i = 0; i < dayEvents.size(); i++)
+                    {
+                        dayEvnt = (entity.Event)dayEvents.get(i);
+                        //event start date
+                        Date startdate = dayEvnt.getTimeStart();
+                        cal.setTime(startdate);
+                        int hour = cal.get(Calendar.HOUR_OF_DAY);
+                        counter = (Integer)hourEventList.get(hour);
+                        counter++;
+                        hourEventList.set(i, counter);
+                    }
+
+                    //generate html code
+                    int correction = 0;
+                    for(int i = 0; i < dayEvents.size(); i++)
+                    {
+                        //event object
+                        dayEvnt = (entity.Event)dayEvents.get(i);
+
+                        //event start date
+                        Date startdate = dayEvnt.getTimeStart();
+                        cal.setTime(startdate);
+                        System.out.println(startdate);
+                        int hour = cal.get(Calendar.HOUR_OF_DAY);
+                        int eventCouner = (Integer)hourEventList.get(hour);
+                        int minute = cal.get(Calendar.MINUTE);
+
+                        int timeStart = (hour * 60 - correction) + minute;
+
+                        //event start date
+                        Date endDate = dayEvnt.getTimeEnd();
+                        cal.setTime(endDate);
+                        hour = cal.get(Calendar.HOUR_OF_DAY);
+                        minute = cal.get(Calendar.MINUTE);
+
+                        int timeStop = (hour * 60 - correction) + minute;
+
+                        if(eventCouner == 1)
+                        {
+                            answer.append("<div id=\"")
+                                    .append(dayEvnt.getId())
+                                    .append("\" STYLE=\"position: relative; top:")
+                                    .append(timeStart)
+                                    .append("px; left: 50%; height: ")
+                                    .append(timeStop - timeStart)
+                                    .append("px; width : 50%;\" class=\"dayevent")
+                                    .append("\" onclick=\"eventinfo();\">")
+                                    .append(dayEvnt.getTitle())
+                                    .append("</div>");
+                        }
+                        else
+                        {
+                            answer.append("<div id=\"")
+                                    .append(dayEvnt.getId())
+                                    .append("\" STYLE=\"position: relative; top:")
+                                    .append(timeStart)
+                                    .append("px; height: ")
+                                    .append(timeStop - timeStart)
+                                    .append("px; width : 50%;\" class=\"dayevent")
+                                    .append("\" onclick=\"eventinfo();\">")
+                                    .append(dayEvnt.getTitle())
+                                    .append("</div>");
+                        }
+                        correction = correction + (timeStop - timeStart);
+                    }
+                
+                    //end of import
+                
                 answer.append("</div>");
             /*
             for(int j = 0 ; j < 60; j=j+5)
@@ -209,7 +310,7 @@ public class Calendarpage extends HttpServlet {
             */
             answer.append("</div>");
         answer.append("</div>");
-        
+        answer.append("</div>");
         
         
         //Create a time field
@@ -686,6 +787,12 @@ public class Calendarpage extends HttpServlet {
             cal.add(cal.MONTH, -1);
             getMonth(request, response);
         }
+        else if(viewpoint.equals("day"))
+        {
+            Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
+            cal.add(cal.DAY_OF_MONTH, -1);
+            getDay(request, response);
+        }
     }
     
     /**
@@ -712,6 +819,12 @@ public class Calendarpage extends HttpServlet {
             httpsession.setAttribute("watchingDate", cal);
             getMonth(request, response);
         }
+        else if(viewpoint.equals("day"))
+        {
+            Calendar cal = Calendar.getInstance();
+            httpsession.setAttribute("watchingDate", cal);
+            getDay(request, response);
+        }
     }
     
     /**
@@ -737,6 +850,12 @@ public class Calendarpage extends HttpServlet {
             Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
             cal.add(cal.MONTH, 1);
             getMonth(request, response);
+        }
+        else if(viewpoint.equals("day"))
+        {
+            Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
+            cal.add(cal.DAY_OF_MONTH, 1);
+            getDay(request, response);
         }
     }
     

@@ -458,7 +458,7 @@ public class Eventspage extends HttpServlet {
                         .append(dayEvnt.getId())
                         .append("\" STYLE=\"position: relative; top:")
                         .append(timeStart)
-                        .append("px; height: ")
+                        .append("px; left: 50%; height: ")
                         .append(timeStop - timeStart)
                         .append("px; width : 50%;\" class=\"dayevent")
                         .append("\" onclick=\"eventinfo();\">")
