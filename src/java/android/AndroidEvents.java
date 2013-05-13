@@ -5,9 +5,14 @@
 package android;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import help.ConnectionResult;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -120,18 +125,39 @@ public class AndroidEvents extends HttpServlet {
         //get userID from session
         userID = (Integer)httpsession.getAttribute("userID");
         //get variables from request
-        eventDay = Integer.parseInt((String)request.getAttribute("day"));
-        eventMonth = Integer.parseInt((String)request.getAttribute("month"));
-        eventYear = Integer.parseInt((String)request.getAttribute("year"));
+        eventDay = Integer.parseInt((String)request.getParameter("day"));
+        eventMonth = Integer.parseInt((String)request.getParameter("month"));
+        eventYear = Integer.parseInt((String)request.getParameter("year"));
         //list with events
         List<entity.Event> eventList;
         eventList = eventsFacade.getEventsByUserIDandDate(userID, eventMonth, eventDay, eventYear);
+        //Serializeble help class
+        List<help.AndroidEvent> androidEventList = new LinkedList<help.AndroidEvent>();
+        entity.Event ev;
+        
+        for(int i = 0; i < eventList.size(); i++)
+        {
+            help.AndroidEvent ae = new help.AndroidEvent();
+            ev = eventList.get(i);
+            ae.setId(ev.getId());
+            ae.setUserID(userID);
+            ae.setTitle(ev.getTitle());
+            ae.setType(ev.getType().getId());
+            ae.setDescription(ev.getDescription());
+            ae.setTimeStart(ev.getTimeStart());
+            ae.setTimeEnd(ev.getTimeEnd());
+            ae.setLocationLat(ev.getLocationLat());
+            ae.setLocationLong(ev.getLocationLong());
+            ae.setReminder(ev.getReminder());
+            ae.setTimeRepeat(ev.getTimeRepeat().getId()); 
+            androidEventList.add(ae);
+        }
         //response type
         response.setContentType("application/json");
         //Google gson object
         Gson gson = new Gson();
         //servlet response
-        response.getWriter().write(gson.toJson(eventList));
+        response.getWriter().write(gson.toJson(androidEventList));
     }
     
     private void getMonthEvents(HttpServletRequest request, HttpServletResponse response) throws IOException
@@ -143,17 +169,38 @@ public class AndroidEvents extends HttpServlet {
         //get userID from session
         userID = (Integer)httpsession.getAttribute("userID");
         //get variables from request
-        eventMonth = Integer.parseInt((String)request.getAttribute("month"));
-        eventYear = Integer.parseInt((String)request.getAttribute("year"));
+        eventMonth = Integer.parseInt((String)request.getParameter("month"));
+        eventYear = Integer.parseInt((String)request.getParameter("year"));
         //list with events
         List<entity.Event> eventList;
         eventList = eventsFacade.getMonthEvents(userID, eventMonth, eventYear);
+        //Serializeble help class
+        List<help.AndroidEvent> androidEventList = new LinkedList<help.AndroidEvent>();
+        entity.Event ev;
+        
+        for(int i = 0; i < eventList.size(); i++)
+        {
+            help.AndroidEvent ae = new help.AndroidEvent();
+            ev = eventList.get(i);
+            ae.setId(ev.getId());
+            ae.setUserID(userID);
+            ae.setTitle(ev.getTitle());
+            ae.setType(ev.getType().getId());
+            ae.setDescription(ev.getDescription());
+            ae.setTimeStart(ev.getTimeStart());
+            ae.setTimeEnd(ev.getTimeEnd());
+            ae.setLocationLat(ev.getLocationLat());
+            ae.setLocationLong(ev.getLocationLong());
+            ae.setReminder(ev.getReminder());
+            ae.setTimeRepeat(ev.getTimeRepeat().getId()); 
+            androidEventList.add(ae);
+        }
         //response type
         response.setContentType("application/json");
         //Google gson object
         Gson gson = new Gson();
         //servlet response
-        response.getWriter().write(gson.toJson(eventList));
+        response.getWriter().write(gson.toJson(androidEventList));
     }
     
     private void requestFeil(HttpServletRequest request, HttpServletResponse response) throws IOException

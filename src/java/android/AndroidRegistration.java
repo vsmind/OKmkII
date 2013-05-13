@@ -104,6 +104,7 @@ public class AndroidRegistration extends HttpServlet {
      * <code>POST</code> method.
      *
      * post processing
+     * method check action and use corresponding methods
      * 
      * @param request servlet request
      * @param response servlet response
@@ -113,7 +114,25 @@ public class AndroidRegistration extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+          //Returns the current HttpSession associated with this request
+        httpsession = request.getSession();
+        //variables from session, responsible for selecting actions
+        action = (String)request.getParameter("instant");
+        
+        if(action.equals("registration"))
+        {
+            registerNewUser(request, response);//register new user
+        }
+        else if(action.equals("username"))
+        {
+            checkUsername(request, response);//check if username is free
+        }
+        else
+        {
+            Gson gson = new Gson();
+            ConnectionResult result = new ConnectionResult(false);
+            response.getWriter().write(gson.toJson(result));//fail
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="getServletInfo method.">
@@ -158,6 +177,9 @@ public class AndroidRegistration extends HttpServlet {
         Gson gson = new Gson();
         //converted object used as a response from the server
         ConnectionResult result = new ConnectionResult(true);
+        
+        user = userFacade.getUserByUsername(registerName);
+        result.setUserID(user.getId());
         //servlet response
         response.getWriter().write(gson.toJson(result));
     }

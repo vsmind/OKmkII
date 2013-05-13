@@ -117,6 +117,9 @@ public class AndroidLogin extends HttpServlet {
      * Handles the HTTP
      * <code>POST</code> method.
      *
+     * get processing
+     * method responsible for user login check
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -125,7 +128,40 @@ public class AndroidLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //Returns the current HttpSession associated with this request
+        httpsession = request.getSession();
+        //variables from session
+        username = request.getParameter("username");
+        password = request.getParameter("password");
+        //converted object used as a response from the server
+        ConnectionResult result = new ConnectionResult();
+        //Gson object
+        Gson gson = new Gson();
+        //response type
+        response.setContentType("application/json");
+        //check if obtained variables not null
+        if ((!username.equals(""))&(!password.equals("")))
+        {
+            if (checkUser())//check username and password
+            {
+                result.setResult(true);
+                result.setUserID((Integer)httpsession.getAttribute("userID"));
+                //servlet response
+                response.getWriter().write(gson.toJson(result));    
+            }
+            else
+            {
+            	result.setResult(false);
+                //servlet response
+                response.getWriter().write(gson.toJson(result));
+            }
+        }
+        else
+        {
+        	result.setResult(false);
+                //servlet response
+                response.getWriter().write(gson.toJson(result));
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="getServletInfo method.">

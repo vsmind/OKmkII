@@ -30,6 +30,8 @@ public class Eventspage extends HttpServlet {
     private EventtypeFacade eventtypeFacade;
     @EJB
     private EventFacade eventFacade;
+    @EJB
+    private EventtypeFacade eventTypeFacade;
     // <editor-fold defaultstate="collapsed" desc="processRequest method">
     /**
      * Processes requests for both HTTP
@@ -289,6 +291,12 @@ public class Eventspage extends HttpServlet {
             answer.append("<thead>");
                 answer.append("<tr>");
                     answer.append("<th>");
+                        answer.append("Start date");
+                    answer.append("</th>");
+                    answer.append("<th>");
+                        answer.append("End date");
+                    answer.append("</th>");
+                    answer.append("<th>");
                         answer.append("Title");
                     answer.append("</th>");
                     answer.append("<th>");
@@ -298,15 +306,48 @@ public class Eventspage extends HttpServlet {
                         answer.append("Description");
                     answer.append("</th>");
                     answer.append("<th>");
-                        answer.append("Start");
+                        answer.append("D");
                     answer.append("</th>");
                     answer.append("<th>");
-                        answer.append("End");
+                        answer.append("E");
                     answer.append("</th>");
-
-
                 answer.append("</tr>");
             answer.append("</thead>");
+            
+            answer.append("<tbody>");
+            
+                for(int i = 0; i < dayEvents.size(); i++)
+                {
+                    dayEvnt = (entity.Event)dayEvents.get(i);
+                    answer.append("<tr>");
+
+                        answer.append("<td>");
+                            answer.append(dayEvnt.getTimeStart());
+                        answer.append("</td>");
+                        answer.append("<td>");
+                            answer.append(dayEvnt.getTimeEnd());
+                        answer.append("</td>");
+                        answer.append("<td>");
+                            answer.append(dayEvnt.getTitle());
+                        answer.append("</td>");
+                        answer.append("<td>");
+                            entity.Eventtype evtp = dayEvnt.getType();
+                            answer.append(evtp.getName());
+                        answer.append("</td>");   
+                        answer.append("<td>");
+                            answer.append(dayEvnt.getDescription());
+                        answer.append("</td>");
+                        answer.append("<td>");
+                            answer.append("<i class=\"icon-remove\"></i>");
+                        answer.append("</td>");
+                        answer.append("<td>");
+                            answer.append("<i class=\"icon-pencil\"></i>");
+                        answer.append("</td>");
+                    answer.append("</tr>");
+                }
+            answer.append("</tbody>");
+            
+            
         answer.append("</table>");
         
         response.setContentType("text/plain");
