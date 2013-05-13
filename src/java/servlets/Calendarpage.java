@@ -176,28 +176,40 @@ public class Calendarpage extends HttpServlet {
         
         //output hour element
         //TO_DO
-        for(int i = 0; i < 24; i++)
-        {
+        
         answer.append("<div class=\"row-fluid span12\">");
         
-            answer.append("<div class=\"eventzone span2\">");
+            answer.append("<div class=\"span2\">");
+                for(int i = 0; i < 24; i++)
+                {
                 if(i < 10)
-                    answer.append("0").append(i).append(":00");
+                    answer.append("<div class=\"eventzone span12\">")
+                            .append("0")
+                            .append(i)
+                            .append(":00")
+                            .append("</div>");
                 else
-                    answer.append(i).append(":00");
+                    answer.append("<div class=\"eventzone span12\">")
+                            .append(i)
+                            .append(":00")
+                            .append("</div>");
+                }
             answer.append("</div>");
             
             answer.append("<div class=\"span10\">");
-            answer.append("<div class=\"testdiv\">5</div>");
+                answer.append("<div id=\"eventarea\" STYLE=\"position:inherit;\" class=\"eventarea\">");
+                answer.append("</div>");
+            /*
             for(int j = 0 ; j < 60; j=j+5)
             {
                 answer.append("<div id=\"").append(i).append("m").append(j).append("\" class=\"minute \"value=\"").append(j).append("\"onclick=\"createevent(this)\">");
                                 //answer.append(j);
                 answer.append("</div>");
             }
+            */
             answer.append("</div>");
         answer.append("</div>");
-        }
+        
         
         
         //Create a time field

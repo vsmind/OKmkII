@@ -7,7 +7,11 @@ package servlets;
 import entity.Eventtype;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -94,6 +98,10 @@ public class Eventspage extends HttpServlet {
         else if(action.equals("dayinmonth"))
         {
             getEventsForDay(request, response);//add days events on month view
+        }
+        else if(action.equals("eventsforday"))
+        {
+            getEventsForDayView(request, response);
         }
         else
         {
@@ -286,23 +294,38 @@ public class Eventspage extends HttpServlet {
         dayEvents = eventFacade.getEventsByUserIDandDate(userID, selectedMonth, selectedDay, selectefYear);
         //event object
         entity.Event dayEvnt;
+        
+        //Date formating
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+
+        answer.append("<div class=\"row-fluid\">");
+        answer.append("<div class=\"span4\">");
+        answer.append("<h3><u>")
+                    .append(selectedDay).append("/").append(selectedMonth).append("/").append(selectefYear)
+                    .append("</u></h3>");
+        answer.append("</div>");
+        answer.append("<div class=\"span4\">");
+        answer.append("<button class=\"btn btn-success btn-large\">Create New Event</button>");
+        answer.append("</div>");
+        answer.append("</div>");
+        
         //generate html code
-        answer.append("<table class=\"table-hover\">");
-            answer.append("<thead>");
+        answer.append("<table class=\"table-hover span12\">");
+            answer.append("<thead class=\"info\">");
                 answer.append("<tr>");
-                    answer.append("<th>");
+                    answer.append("<th class=\"span1\">");
                         answer.append("Start date");
                     answer.append("</th>");
-                    answer.append("<th>");
+                    answer.append("<th class=\"span1\">");
                         answer.append("End date");
                     answer.append("</th>");
-                    answer.append("<th>");
+                    answer.append("<th class=\"span2\">");
                         answer.append("Title");
                     answer.append("</th>");
-                    answer.append("<th>");
+                    answer.append("<th class=\"span1\">");
                         answer.append("Type");
                     answer.append("</th>");
-                    answer.append("<th>");
+                    answer.append("<th class=\"span7\">");
                         answer.append("Description");
                     answer.append("</th>");
                     answer.append("<th>");
@@ -322,10 +345,10 @@ public class Eventspage extends HttpServlet {
                     answer.append("<tr>");
 
                         answer.append("<td>");
-                            answer.append(dayEvnt.getTimeStart());
+                            answer.append(dateFormat.format(dayEvnt.getTimeStart()));
                         answer.append("</td>");
                         answer.append("<td>");
-                            answer.append(dayEvnt.getTimeEnd());
+                            answer.append(dateFormat.format(dayEvnt.getTimeEnd()));
                         answer.append("</td>");
                         answer.append("<td>");
                             answer.append(dayEvnt.getTitle());
@@ -349,8 +372,121 @@ public class Eventspage extends HttpServlet {
             
             
         answer.append("</table>");
-        
+        //response type
         response.setContentType("text/plain");
+        //send response from servlet
+        response.getWriter().write(answer.toString());
+    }
+    
+    /**
+     * Method getEventsForDayView shows events on day view
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
+    private void getEventsForDayView(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        //userid from session
+        Integer userID = (Integer)httpsession.getAttribute("userID");
+        //html code which is returned in response to a request
+        StringBuilder answer =  new StringBuilder();
+        //Calendar object form session
+        Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
+        //Date
+        int selectedDay = cal.get(Calendar.DATE);
+        int selectedMonth = cal.get(Calendar.MONTH) + 1;
+        int selectefYear = cal.get(Calendar.YEAR);
+        
+        //list with entity.Events for selected day
+        List dayEvents;
+        dayEvents = eventFacade.getEventsByUserIDandDate(userID, selectedMonth, selectedDay, selectefYear);
+        //event object
+        entity.Event dayEvnt;
+        //list with information of the number of events beginning within one hour
+        List hourEventList = new LinkedList();
+        
+        
+        for(int i = 0; i < 24; i++)
+        {
+            hourEventList.add(0);
+        }
+        
+        //Calendar instance
+        Calendar calendar = Calendar.getInstance();
+        //event counter
+        int counter = 0;
+        for(int i = 0; i < dayEvents.size(); i++)
+        {
+            dayEvnt = (entity.Event)dayEvents.get(i);
+            //event start date
+            Date startdate = dayEvnt.getTimeStart();
+            calendar.setTime(startdate);
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            counter = (Integer)hourEventList.get(hour);
+            counter++;
+            hourEventList.set(i, counter);
+        }
+        
+        //generate html code
+        int correction = 0;
+        for(int i = 0; i < dayEvents.size(); i++)
+        {
+            //event object
+            dayEvnt = (entity.Event)dayEvents.get(i);
+            
+            //event start date
+            Date startdate = dayEvnt.getTimeStart();
+            calendar.setTime(startdate);
+            System.out.println(startdate);
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int eventCouner = (Integer)hourEventList.get(hour);
+            int minute = calendar.get(Calendar.MINUTE);
+            
+            int timeStart = (hour * 60 - correction) + minute;
+            
+            //event start date
+            Date endDate = dayEvnt.getTimeEnd();
+            calendar.setTime(endDate);
+            hour = calendar.get(Calendar.HOUR_OF_DAY);
+            minute = calendar.get(Calendar.MINUTE);
+            
+            int timeStop = (hour * 60 - correction) + minute;
+            
+            if(eventCouner == 1)
+            {
+                answer.append("<div id=\"")
+                        .append(dayEvnt.getId())
+                        .append("\" STYLE=\"position: relative; top:")
+                        .append(timeStart)
+                        .append("px; height: ")
+                        .append(timeStop - timeStart)
+                        .append("px; width : 50%;\" class=\"dayevent")
+                        .append("\" onclick=\"eventinfo();\">")
+                        .append(dayEvnt.getTitle())
+                        .append("</div>");
+            }
+            else
+            {
+                answer.append("<div id=\"")
+                        .append(dayEvnt.getId())
+                        .append("\" STYLE=\"position: relative; top:")
+                        .append(timeStart)
+                        .append("px; height: ")
+                        .append(timeStop - timeStart)
+                        .append("px; width : 50%;\" class=\"dayevent")
+                        .append("\" onclick=\"eventinfo();\">")
+                        .append(dayEvnt.getTitle())
+                        .append("</div>");
+            }
+            correction = correction + (timeStop - timeStart);
+        }
+        
+        
+        //answer.append("<div id=\"GLAVNIY\" STYLE=\"position: relative; top: 60px; height: 1000px\" class=\"dayevent span6\">42</div>");
+        //answer.append("<div id=\"GLAVNIY\" STYLE=\"position: relative; top: 400px\" class=\"dayevent span6\">43</div>");
+        //response type
+        response.setContentType("text/plain");
+        //send response from servlet
         response.getWriter().write(answer.toString());
     }
     

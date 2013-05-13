@@ -144,6 +144,10 @@ root {
     border-top: 1px solid grey;
 }
 
+.eventarea{
+    height: 1440px;
+}
+
 .minute{
     height: 5px;
     background: #bee2f9;
@@ -179,4 +183,8 @@ root {
 
 .eventm{
     background: #009900;
+}
+
+.dayevent{
+    background: #00cccc;
 }

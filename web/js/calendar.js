@@ -1,8 +1,9 @@
 $(document).ready(function(){
+    $("#calendararea").replaceWith("<div id=\"calendararea\" class=\"row-fluid span12\"><div id=\"mainpanel\" class=\"span8\"></div><div id=\"eventpanel\" class=\"span4\"></div></div>");
     $.get('Calendarpage', {instance:'day'}, function(responseText){
         $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"span8\">" + responseText + "</div>");
     });
-    showhour();
+    //showhour();
     $('.datepicker').datepicker();
     
     $('.timeset').timepicker({
@@ -11,6 +12,12 @@ $(document).ready(function(){
         showSeconds: false,
         showMeridian: false
     });
+    
+    $("#buttonpast").html("Yesterday");
+    $("#buttontoday").html("Today");
+    $("#buttonfuture").html("Tomorrow");
+    
+    dayPosition();
 });
 
 function admin(){
@@ -27,7 +34,6 @@ function modules(){
 }
 
 function dayview(){
-    alert("TO_DO dayview");
     $("#calendararea").replaceWith("<div id=\"calendararea\" class=\"row-fluid span12\"><div id=\"mainpanel\" class=\"span8\"></div><div id=\"eventpanel\" class=\"span4\"></div></div>");
     $.get('Calendarpage', {instance:'day'}, function(responseText){
         $("#mainpanel").replaceWith("<div id=\"mainpanel\" class=\"span8\">" + responseText + "</div>");
@@ -35,7 +41,13 @@ function dayview(){
     $("#buttonpast").html("Yesterday");
     $("#buttontoday").html("Today");
     $("#buttonfuture").html("Tomorrow");
+    
+    dayPosition();
     //showhour();
+    $.get('Eventspage', {instance:'eventsforday'}, function(responseText){
+        $("#eventarea").append(responseText);
+    });
+    
 }
 
 function weekview(){
@@ -96,8 +108,6 @@ function createevent(clicked_id){
         $("#dynamicevents").replaceWith("<div id=\"dynamicevents\">" + responseText + "</div>");
     });
     
-    
-    
     $('#createEventModal').modal();
     var stime = startTime[0] + ":"+ startTime[1];
     var timeplus = parseInt(startTime[0]) + 1;
@@ -107,9 +117,6 @@ function createevent(clicked_id){
     $("#timepickerTwo").timepicker('setTime', etime);
     
     $('.datepicker').datepicker();
-
-    
-
 }
 
 function createEventPanel(){
@@ -125,7 +132,7 @@ function createEventPanel(){
     
     setTimeout((function() {
         $( "#eventEndDatePicker" ).datepicker({ dateFormat: "dd/mm/yy" });
-    }), 100)
+    }), 100);
     
     
 }
@@ -224,6 +231,70 @@ function zoomDay(day)
     
      $.get('Eventspage', {instance:'dayinmonth', day:sday, month:smonth, year:syear}, function(responseText){
         $("#selectedDayEvents").replaceWith("<div id=\"selectedDayEvents\" class=\"span11\">" + responseText + "</div>");
+    });   
+}
+
+function dayPosition(){
+    //alert('start');
+    setTimeout((function() {
+        jQuery(document).ready(function(){
+         $("#eventarea").click(function(e){
+             var y = e.pageY - this.offsetTop;
+             alert(y);
+             
+             $.get('Eventspage', {instance:'createeventform'}, function(responseText){
+                $("#dynamicevents").replaceWith("<div id=\"dynamicevents\">" + responseText + "</div>");
+             });
+    
+            $('#createEventModal').modal();
+            
+            var hour = y / 60;
+            hour = Math.floor(hour);
+            var minute = y - (hour * 60);
+            hourplusone = hour + 1;
+            hour = hour + '';
+            hourplusone = hourplusone + '';
+            minute = minute + '';
+            
+            var stime = hour + ":"+ minute;
+            var etime = hourplusone + ":"+ minute;
+            $("#timepickerOne").timepicker('setTime', stime);
+            $("#timepickerTwo").timepicker('setTime', etime);
+    
+        $('.datepicker').datepicker();
+             
+        }); 
     });
     
+    
+    
+ 
+ }), 100);
+    
+}
+
+function dayclick(ee){
+   
+    //$(document).mousemove(function(e){
+  //    alert(e.pageX +', '+ e.pageY);
+  // });
+   //jQuery(document).ready(function(){
+   //$("#eventarea").click(function(e){
+  //    alert(e.pageX +', '+ e.pageY);
+ //  }); 
+//});
+
+    jQuery(document).ready(function(){
+         $("#eventarea").click(function(e){
+             var x = e.pageX - this.offsetLeft;
+             var y = e.pageY - this.offsetTop;
+             alert(x +', '+ y);
+        }); 
+    });
+
+}
+
+function eventinfo()
+{
+    alert('to_do eventinfo');
 }
