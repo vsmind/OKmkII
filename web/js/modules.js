@@ -22,3 +22,16 @@ function moduleInfo(e){
     });
     
 }
+
+function checkcity(){
+    
+    var cityName = $("#cityname").val();
+    $.get('yr',{instance:'search', city:cityName}, function(responseText){
+        $("#cityarea").replaceWith("<div id=\"cityarea\" class=\"span12\">" + responseText + "</div>");
+    });
+}
+
+function saveYr(e)
+{
+    alert(e.id);
+}

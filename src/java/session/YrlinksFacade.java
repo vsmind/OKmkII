@@ -28,10 +28,10 @@ public class YrlinksFacade extends AbstractFacade<Yrlinks> {
         super(Yrlinks.class);
     }
     
-    public List<entity.Yrlinks> getLinkByName(String _name)
+    public List<help.Yrlinks> getLinkByName(String _name)
     {
-        List<entity.Yrlinks> l;
-        l = getEntityManager().createNativeQuery("SELECT * FROM `Yrlinks` WHERE `stadnamn` like ?%").setParameter(1, _name).getResultList();
+        List<help.Yrlinks> l;
+        l = (List<help.Yrlinks>)getEntityManager().createNativeQuery("SELECT * FROM `Yrlinks` WHERE `stadnamn` like ?").setParameter(1, _name).getResultList();
         return l;
     }
     
