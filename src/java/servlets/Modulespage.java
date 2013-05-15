@@ -6,11 +6,15 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import session.ModulesFacade;
+import session.ModulesstatusFacade;
 
 /**
  * Servlet is responsible for module page dynamic elements
@@ -20,6 +24,11 @@ public class Modulespage extends HttpServlet {
     //variables
     private HttpSession httpsession;   
     private String action;
+    
+    @EJB
+    ModulesFacade modulesFacade;
+    @EJB
+    ModulesstatusFacade modulesStatusFacade;
     
     // <editor-fold defaultstate="collapsed" desc="Processes requests for both HTTP">
     /**
@@ -82,6 +91,10 @@ public class Modulespage extends HttpServlet {
         {
             getAvailableModules(request, response);//generate code for show available modules
         }
+        else if(action.equals("showmodule"))
+        {
+           showModule(request, response);//generates code with module options
+        }
         else
         {
             response.setContentType("text/html");
@@ -123,59 +136,68 @@ public class Modulespage extends HttpServlet {
         
             answer.append("<thead>");
                 answer.append("<tr>");
-                    answer.append("<th class=\"span6\">").append("Module name").append("</th>")
+                    answer.append("<th class=\"span3\">")
+                            .append("Module name")
+                            .append("</th>")
+                    .append("<th class=\"span2\">")
+                        .append("Type")
+                    .append("</th>")
                     .append("<th class=\"span1\">")
                         .append("D")
                     .append("</th>")
                     .append("<th class=\"span1\">")
-                        .append("M")
+                        .append("W")
                     .append("</th>")
                     .append("<th class=\"span1\">")
-                        .append("Y")
+                        .append("M")
+                    .append("</th>")
+                    .append("<th class=\"span2\">")
+                        .append("Status")
+                    .append("</th>")
+                    .append("<th class=\"span2\">")
+                        .append("")
                     .append("</th>");
-
-
-                    answer.append("<th class=\"span1\">")
-                            .append("Status")
-                            .append("</th>");
-                    answer.append("<th class=\"span1\">")
-                            .append("Change")
-                            .append("</th>");
-                    answer.append("<th class=\"span1\">")
-                            .append("Delete")
-                            .append("</th>");
                 answer.append("</tr>");
             answer.append("</thead>");
             
             answer.append("<tbody>");
-                
-                //TO_DO Cikl dlya polucheniya spiska vseh moduley pol'zovatelya
+                         
             
+            //Get all available modules          
+            List modulesList = modulesFacade.findAll();
+            entity.Modules module;
+            entity.Modulesstatus moduleStatus;
+            for(int i = 0; i < modulesList.size(); i++)
+            {
+                module = (entity.Modules)modulesList.get(i);
+                moduleStatus = (module.getModulestatus());
                 answer.append("<tr>")
-                            .append("<td class=\"span6\">")
-                                .append("1")
+                            .append("<td>")
+                                .append(module.getModulename())
                             .append("</td>")
-                            .append("<td class=\"span1\">")
-                                .append("1")
+                            .append("<td>")
+                                .append(module.getType())
                             .append("</td>")
-                            .append("<td class=\"span1\">")
-                                .append("1")
+                            .append("<td>")
+                                .append(module.getMday().toString())
                             .append("</td>")
-                            .append("<td class=\"span1\">")
-                                .append("1")
+                            .append("<td>")
+                                .append(module.getMweek().toString())
                             .append("</td>")
-                            .append("<td class=\"span1\">")
-                                .append("1")
+                            .append("<td>")
+                                .append(module.getMmonth().toString())
                             .append("</td>")
-                            .append("<td class=\"span1\">")
-                                .append("1")
+                            .append("<td>")
+                                .append(moduleStatus.getMstatus())
                             .append("</td>")
-                            .append("<td class=\"span1\">")
-                                .append("1")
+                            .append("<td>")
+                                .append("<button id=\"")
+                                    .append(module.getId())
+                                    .append("\" class=\"btn btn-info span11\" onlick=\"moduleInfo(this)\">Open</button>")
                             .append("</td>")
                         .append("</tr>");
-                
-                
+            }
+   
             answer.append("</tbody>");
                     
         
@@ -192,9 +214,105 @@ public class Modulespage extends HttpServlet {
      * @param response
      * @throws IOException 
      */
-    private void getAvailableModules(HttpServletRequest request, HttpServletResponse response)
+    private void getAvailableModules(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //variable is responsible for selecting actions
+        StringBuilder answer =  new StringBuilder();
+        //html code generation
+        answer.append("<table class=\"table table-hover\">");
+        
+            answer.append("<thead>");
+                answer.append("<tr>");
+                    answer.append("<th class=\"span3\">")
+                            .append("Module name")
+                            .append("</th>")
+                    .append("<th class=\"span2\">")
+                        .append("Type")
+                    .append("</th>")
+                    .append("<th class=\"span1\">")
+                        .append("D")
+                    .append("</th>")
+                    .append("<th class=\"span1\">")
+                        .append("W")
+                    .append("</th>")
+                    .append("<th class=\"span1\">")
+                        .append("M")
+                    .append("</th>")
+                    .append("<th class=\"span2\">")
+                        .append("Status")
+                    .append("</th>")
+                    .append("<th class=\"span2\">")
+                        .append("")
+                    .append("</th>");
+                answer.append("</tr>");
+            answer.append("</thead>");
+            
+            answer.append("<tbody>");
+                         
+            
+            //Get all available modules          
+            List modulesList = modulesFacade.findAll();
+            entity.Modules module;
+            entity.Modulesstatus moduleStatus;
+            for(int i = 0; i < modulesList.size(); i++)
+            {
+                module = (entity.Modules)modulesList.get(i);
+                moduleStatus = (module.getModulestatus());
+                answer.append("<tr>")
+                            .append("<td>")
+                                .append(module.getModulename())
+                            .append("</td>")
+                            .append("<td>")
+                                .append(module.getType())
+                            .append("</td>")
+                            .append("<td>")
+                                .append(module.getMday().toString())
+                            .append("</td>")
+                            .append("<td>")
+                                .append(module.getMweek().toString())
+                            .append("</td>")
+                            .append("<td>")
+                                .append(module.getMmonth().toString())
+                            .append("</td>")
+                            .append("<td>")
+                                .append(moduleStatus.getMstatus())
+                            .append("</td>")
+                            .append("<td>")
+                                .append("<button id=\"")
+                                    .append(module.getId())
+                                    .append("\" class=\"btn btn-info span11\" onclick=\"moduleInfo(this)\">Open</button>")
+                            .append("</td>")
+                        .append("</tr>");
+            }
+   
+            answer.append("</tbody>");
+                    
+        
+        answer.append("</table>");
+        //response type
+        response.setContentType("text/plain");
+        //send response from servlet
+        response.getWriter().write(answer.toString());
+    }
     
+    private void showModule(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        //variable is responsible for selecting actions
+        StringBuilder answer =  new StringBuilder();
+        //html code generation
+        int moduleID = Integer.parseInt(request.getParameter("id"));
+        
+        
+        entity.Modules module = modulesFacade.getModulebyID(moduleID);
+        
+        answer.append("<h2 class=\"muted\">")
+                .append(module.getModuledescription())
+                .append("</h2>");
+        
+        //response type
+        response.setContentType("text/plain");
+        //send response from servlet
+        response.getWriter().write(answer.toString());
     }
 
     // <editor-fold defaultstate="collapsed" desc="Short description of the servlet.">
