@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import session.ModulesFacade;
 import session.ModulesstatusFacade;
+import session.YrlinksFacade;
+import session.ModulesusersFacade;
 
 /**
  * Servlet is responsible for module page dynamic elements
@@ -29,7 +31,10 @@ public class Modulespage extends HttpServlet {
     ModulesFacade modulesFacade;
     @EJB
     ModulesstatusFacade modulesStatusFacade;
-    
+    @EJB
+    ModulesusersFacade modulesUserFacade;
+    @EJB
+    YrlinksFacade yrlinksFacade;
     // <editor-fold defaultstate="collapsed" desc="Processes requests for both HTTP">
     /**
      * Processes requests for both HTTP
@@ -136,9 +141,12 @@ public class Modulespage extends HttpServlet {
         
             answer.append("<thead>");
                 answer.append("<tr>");
-                    answer.append("<th class=\"span3\">")
+                    answer.append("<th class=\"span2\">")
                             .append("Module name")
                             .append("</th>")
+                    .append("<th class=\"span2\">")
+                        .append("About")
+                    .append("</th>")
                     .append("<th class=\"span2\">")
                         .append("Type")
                     .append("</th>")
@@ -154,26 +162,42 @@ public class Modulespage extends HttpServlet {
                     .append("<th class=\"span2\">")
                         .append("Status")
                     .append("</th>")
-                    .append("<th class=\"span2\">")
+                    .append("<th class=\"span1\">")
+                        .append("")
+                    .append("</th>")
+                    .append("<th class=\"span1\">")
                         .append("")
                     .append("</th>");
                 answer.append("</tr>");
             answer.append("</thead>");
             
             answer.append("<tbody>");
-                         
             
-            //Get all available modules          
-            List modulesList = modulesFacade.findAll();
-            entity.Modules module;
-            entity.Modulesstatus moduleStatus;
+            int userID = (Integer)httpsession.getAttribute("userID");
+            
+            //Get all modules for user
+            List modulesList = modulesUserFacade.getModulesByUserUD(userID);
+            
+           
+            
             for(int i = 0; i < modulesList.size(); i++)
             {
-                module = (entity.Modules)modulesList.get(i);
-                moduleStatus = (module.getModulestatus());
-                answer.append("<tr>")
+                entity.Modulesusers userModules = (entity.Modulesusers) modulesList.get(i);
+                //Module info 
+                entity.Modules module = modulesFacade.getModulebyID(userModules.getId());
+                //Module status
+                entity.Modulesstatus moduleStatus = module.getModulestatus();
+                if(userModules.getId()==1)
+                {
+                    
+                    String place = yrlinksFacade.getLinkByPlaceID(userModules.getModuleData());
+                    
+                    answer.append("<tr>")
                             .append("<td>")
                                 .append(module.getModulename())
+                            .append("</td>")
+                            .append("<td>")
+                                .append(place)
                             .append("</td>")
                             .append("<td>")
                                 .append(module.getType())
@@ -192,12 +216,20 @@ public class Modulespage extends HttpServlet {
                             .append("</td>")
                             .append("<td>")
                                 .append("<button id=\"")
-                                    .append(module.getId())
-                                    .append("\" class=\"btn btn-info span11\" onlick=\"moduleInfo(this)\">Open</button>")
+                                    .append(userModules.getId())
+                                    .append("\" class=\"span11\" onlick=\"moduleInfo(this)\">x</button>")
+                            .append("</td>")
+                            .append("<td>")
+                                .append("<button id=\"")
+                                    .append(userModules.getId())
+                                    .append("\" class=\"span11\" onlick=\"moduleInfo(this)\">e</button>")
                             .append("</td>")
                         .append("</tr>");
+                }
+                
+                
+                
             }
-   
             answer.append("</tbody>");
                     
         

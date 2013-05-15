@@ -5,7 +5,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,10 +18,12 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,6 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Modules.findByMweek", query = "SELECT m FROM Modules m WHERE m.mweek = :mweek"),
     @NamedQuery(name = "Modules.findByMmonth", query = "SELECT m FROM Modules m WHERE m.mmonth = :mmonth")})
 public class Modules implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "moduleId")
+    private Collection<Modulesusers> modulesusersCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -170,6 +176,15 @@ public class Modules implements Serializable {
     @Override
     public String toString() {
         return "entity.Modules[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Modulesusers> getModulesusersCollection() {
+        return modulesusersCollection;
+    }
+
+    public void setModulesusersCollection(Collection<Modulesusers> modulesusersCollection) {
+        this.modulesusersCollection = modulesusersCollection;
     }
     
 }

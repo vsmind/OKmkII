@@ -35,4 +35,11 @@ public class YrlinksFacade extends AbstractFacade<Yrlinks> {
         return l;
     }
     
+    public String getLinkByPlaceID(String _id)
+    {
+        String name;
+        name = (String)getEntityManager().createNativeQuery("SELECT Stadnamn FROM `Yrlinks` WHERE id = ?").setParameter(1, _id).getSingleResult();
+        return name;
+    }
+    
 }

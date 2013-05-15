@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import session.ModulesusersFacade;
+import session.ModulesFacade;
+import session.ModulesstatusFacade;
 import session.YrlinksFacade;
 
 /**
@@ -33,7 +36,12 @@ public class Yr extends HttpServlet {
     private String action;
     @EJB
     YrlinksFacade yrlinksFacade;
-    
+    @EJB
+    ModulesusersFacade moduleUsersFacade;
+    @EJB
+    ModulesFacade modulesFacade;
+    @EJB
+    ModulesstatusFacade moduleStatusFacade;
     // <editor-fold defaultstate="collapsed" desc="processRequest method.">
     /**
      * Processes requests for both HTTP
@@ -86,6 +94,10 @@ public class Yr extends HttpServlet {
         if(action.equals("search"))
         {
             getCity(request, response);
+        }
+        else if(action.equals("save"))
+        {
+            saveUserModule(request, response);
         }
     }
 
@@ -220,6 +232,34 @@ public class Yr extends HttpServlet {
 
         }
         
+        //response type
+        response.setContentType("text/plain");
+        //send response from servlet
+        response.getWriter().write(answer.toString());
+    }
+    
+    private void saveUserModule(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        //html code which is returned in response to a request
+        StringBuilder answer =  new StringBuilder();
+        //id of city in DB
+        int cityID = Integer.parseInt(request.getParameter("cityid"));
+        
+        entity.Modulesusers moduleUser = new entity.Modulesusers(1);
+        
+        entity.Modules moduleYr = modulesFacade.getModulebyID(1);
+        moduleUser.setModuleId(moduleYr);
+        int userID;
+        userID = (Integer)httpsession.getAttribute("userID");
+        moduleUser.setUserId(userID);
+        
+        moduleUser.setModuleData(String.valueOf(cityID));
+        
+        moduleUsersFacade.create(moduleUser);
+        
+        answer.append("<h2 class=\"muted\">");
+            answer.append("Success, now you can continue to choose new modules for your profile.");
+        answer.append("</h2>");
         //response type
         response.setContentType("text/plain");
         //send response from servlet

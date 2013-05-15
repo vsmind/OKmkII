@@ -33,5 +33,8 @@ function checkcity(){
 
 function saveYr(e)
 {
-    alert(e.id);
+    var cityId = e.id;
+    $.get('yr',{instance:'save', cityid:cityId}, function(responseText){
+        $("#modulescontrol").replaceWith("<div id=\"modulescontrol\" class=\"span12\">" + responseText + "</div>");
+    });
 }
