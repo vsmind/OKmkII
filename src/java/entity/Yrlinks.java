@@ -5,7 +5,6 @@
 package entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,9 +72,9 @@ public class Yrlinks implements Serializable {
     private String fylke;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "Lat")
-    private BigDecimal lat;
+    private Double lat;
     @Column(name = "Lon")
-    private BigDecimal lon;
+    private Double lon;
     @Size(max = 4)
     @Column(name = "Hoegd")
     private String hoegd;
@@ -168,19 +167,19 @@ public class Yrlinks implements Serializable {
         this.fylke = fylke;
     }
 
-    public BigDecimal getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(BigDecimal lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public BigDecimal getLon() {
+    public Double getLon() {
         return lon;
     }
 
-    public void setLon(BigDecimal lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 
