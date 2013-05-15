@@ -309,6 +309,14 @@ public class Modulespage extends HttpServlet {
                 .append(module.getModuledescription())
                 .append("</h2>");
         
+        
+        answer.append("<div class=\"span10\">")
+                .append("<input name=\"city\" type=\"text\" id=\"cityname\" onkeyup=\"checkcity()\" placeholder=\"City name\"></input>")
+                .append("</div>");
+        
+        answer.append("<div id=\"cityarea\" class=\"span12\">")
+                .append("</div>");
+        
         //response type
         response.setContentType("text/plain");
         //send response from servlet
