@@ -52,6 +52,10 @@
         <servlet-name>AndroidEvents</servlet-name>
         <servlet-class>android.AndroidEvents</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>yr</servlet-name>
+        <servlet-class>modules.weather.Yr</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -103,6 +107,10 @@
     <servlet-mapping>
         <servlet-name>AndroidEvents</servlet-name>
         <url-pattern>/AndroidEvents</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>yr</servlet-name>
+        <url-pattern>/yr</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
