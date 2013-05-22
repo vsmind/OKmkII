@@ -61,6 +61,10 @@ function monthview(){
     $("#buttonpast").html("Last Month");
     $("#buttontoday").html("Current Month");
     $("#buttonfuture").html("Next Month");
+    
+    $.get('Modules', {instance:'showm'}, function(responseText){
+        $("#eventpanel").replaceWith("<div id=\"eventpanel\" class=\"span4\">" + responseText + "</div>");
+    });
 }
 
 function timelineview(){

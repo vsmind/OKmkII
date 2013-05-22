@@ -178,38 +178,41 @@ public class Modulespage extends HttpServlet {
             //Get all modules for user
             List modulesList = modulesUserFacade.getModulesByUserUD(userID);
             
-           
-            
+            //Module id
+            int moduleID;
+            entity.Modules tempModule;
             for(int i = 0; i < modulesList.size(); i++)
             {
                 entity.Modulesusers userModules = (entity.Modulesusers) modulesList.get(i);
+                //get module id
+                tempModule = userModules.getModuleId();
                 //Module info 
-                entity.Modules module = modulesFacade.getModulebyID(userModules.getId());
+                entity.Modules module = modulesFacade.getModulebyID(tempModule.getId());
                 //Module status
                 entity.Modulesstatus moduleStatus = module.getModulestatus();
-                if(userModules.getId()==1)
+                if(tempModule.getId() == 1)
                 {
                     
                     String place = yrlinksFacade.getLinkByPlaceID(userModules.getModuleData());
                     
                     answer.append("<tr>")
                             .append("<td>")
-                                .append(module.getModulename())
+                                .append(tempModule.getModulename())
                             .append("</td>")
                             .append("<td>")
                                 .append(place)
                             .append("</td>")
                             .append("<td>")
-                                .append(module.getType())
+                                .append(tempModule.getType())
                             .append("</td>")
                             .append("<td>")
-                                .append(module.getMday().toString())
+                                .append(tempModule.getMday().toString())
                             .append("</td>")
                             .append("<td>")
-                                .append(module.getMweek().toString())
+                                .append(tempModule.getMweek().toString())
                             .append("</td>")
                             .append("<td>")
-                                .append(module.getMmonth().toString())
+                                .append(tempModule.getMmonth().toString())
                             .append("</td>")
                             .append("<td>")
                                 .append(moduleStatus.getMstatus())

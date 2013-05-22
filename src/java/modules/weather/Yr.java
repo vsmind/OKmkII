@@ -99,6 +99,10 @@ public class Yr extends HttpServlet {
         {
             saveUserModule(request, response);
         }
+        else if(action.equals("showm"))
+        {
+            showWeatherOnMonth(request, response);
+        }
     }
 
     /**
@@ -255,6 +259,10 @@ public class Yr extends HttpServlet {
         
         moduleUser.setModuleData(String.valueOf(cityID));
         
+        System.out.println(moduleUser.getModuleId());
+        System.out.println(moduleUser.getUserId());
+        System.out.println(moduleUser.getModuleData());
+        
         moduleUsersFacade.create(moduleUser);
         
         answer.append("<h2 class=\"muted\">");
@@ -265,6 +273,19 @@ public class Yr extends HttpServlet {
         //send response from servlet
         response.getWriter().write(answer.toString());
     }
+    
+     private void showWeatherOnMonth(HttpServletRequest request, HttpServletResponse response) throws IOException
+     {
+        //html code which is returned in response to a request
+        StringBuilder answer =  new StringBuilder();
+        
+        
+        
+        //response type
+        response.setContentType("text/plain");
+        //send response from servlet
+        response.getWriter().write(answer.toString());
+     }
 
     // <editor-fold defaultstate="collapsed" desc="getServletInfo method.">
     /**
