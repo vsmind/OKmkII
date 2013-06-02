@@ -102,7 +102,6 @@ function future(){
 
 function createevent(clicked_id){
     var test = clicked_id.id;
-    //$("#" + clicked_id.id).attr("class", "past");
     var startTime = test.split('m');
     
     $.get('Eventspage', {instance:'createeventform'}, function(responseText){

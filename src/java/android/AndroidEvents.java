@@ -10,17 +10,25 @@ import help.ConnectionResult;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import servlets.Event;
 import session.EventFacade;
+import session.EventtypeFacade;
+import session.TimeRepeatFacade;
 
 /**
  * Servlet responsible for events transfer for android client
@@ -32,6 +40,13 @@ public class AndroidEvents extends HttpServlet {
     private HttpSession httpsession;
     @EJB
     EventFacade eventsFacade;
+    
+    @EJB
+    private EventFacade eventFacade;
+    @EJB
+    private EventtypeFacade eventTypeFacade;
+    @EJB
+    private TimeRepeatFacade timeRepeatFacade;
     
     // <editor-fold defaultstate="collapsed" desc="processRequest method.">
     /**
@@ -92,6 +107,10 @@ public class AndroidEvents extends HttpServlet {
         else if(action.equals("monthevents"))
         {
             getMonthEvents(request, response);
+        }
+        else if(action.equals("save"))
+        {
+            saveNewEvent(request, response);
         }
         else
         {
@@ -211,6 +230,93 @@ public class AndroidEvents extends HttpServlet {
         ConnectionResult result = new ConnectionResult(false);
         //servlet response
         response.getWriter().write(gson.toJson(result));
+    }
+    
+    private void saveNewEvent(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        //Event object
+        Object[] evnt;
+        //get variables from request
+        String ev = (String)request.getParameter("event");
+        //Google gson object
+        Gson gson = new Gson();
+        evnt = gson.fromJson(action, Object[].class);
+        
+        
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");//test
+        Calendar cal = Calendar.getInstance();
+        
+        //variable
+        int userID;//user id
+        String title;//event title
+        Integer type;//event type
+        String description;//event description
+        Date timeStart = cal.getTime();//event start
+        Date timeEnd = cal.getTime();//event end
+        
+        String hourStart;
+        String minuteStart;
+        String dateStart;
+        
+        String hourEnd;
+        String minuteEnd;
+        String dateEnd;
+        
+        String startTime;
+        String endTime;
+        
+        String formatedStartDate;
+        String formatedEndDate;
+        
+        long location_lat;
+        long location_long;
+        
+        //getting userID from session
+        userID = ((Integer)httpsession.getAttribute("userID"));
+        //getting variables from json
+        title = (String)evnt[0];
+        type = Integer.parseInt((String)evnt[10]);
+        description = (String)evnt[2];
+        
+        //lead to the required date format
+        formatedStartDate = (String)evnt[3];
+        formatedEndDate = (String)evnt[5];
+        
+        //date parsing
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try 
+        {
+            timeStart =  format.parse(formatedStartDate);
+            timeEnd = format.parse(formatedEndDate);
+        } 
+        catch (ParseException ex) {
+            
+            Logger.getLogger(Event.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //set latitude and langitude
+        location_lat = 1;
+        location_long = 1;
+        
+        //create new event
+        entity.Event event = new entity.Event(1);
+        //set information to event
+        event.setUserID(userID);
+        event.setTitle(title);
+        event.setType(eventTypeFacade.getEventTypeById(type));
+        event.setDescription(description);
+        
+        event.setTimeStart(timeStart);
+        event.setTimeEnd(timeEnd);
+        
+        event.setLocationLat(location_lat);
+        event.setLocationLong(location_long);
+        
+        event.setReminder(Boolean.TRUE);
+        event.setTimeRepeat(timeRepeatFacade.getEventTypeById(1));
+        //Save event to DB
+        eventFacade.create(event);
+   
     }
     
     
