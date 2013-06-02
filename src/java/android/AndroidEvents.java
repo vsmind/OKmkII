@@ -5,6 +5,8 @@
 package android;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import help.ConnectionResult;
 import java.io.IOException;
@@ -237,11 +239,14 @@ public class AndroidEvents extends HttpServlet {
         //Event object
         Object[] evnt;
         //get variables from request
-        String ev = (String)request.getParameter("event");
+        String events = (String)request.getParameter("event");
         //Google gson object
         Gson gson = new Gson();
-        evnt = gson.fromJson(action, Object[].class);
+        evnt = gson.fromJson(events, Object[].class);
+        JsonArray jarray;
+        jarray = new JsonParser().parse(events).getAsJsonArray();
         
+        System.out.println(jarray);
         
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");//test
         Calendar cal = Calendar.getInstance();
