@@ -140,7 +140,9 @@ public class ModulesShow extends HttpServlet {
     
     private void showWeather(String placeID, HttpServletRequest request, HttpServletResponse response)
     {
-        answer.append("<p class=\"muted\">yr.no</p>");
+        answer.append("<p class=\"muted\">yr.no -")
+                .append(yrlinksFacade.getLinkByPlaceID(placeID))
+                .append("</p>");
         String url;
         url = yrlinksFacade.getURLByPlaceID(placeID);
         
