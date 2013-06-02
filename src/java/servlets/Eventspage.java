@@ -290,6 +290,11 @@ public class Eventspage extends HttpServlet {
         //html code which is returned in response to a request
         StringBuilder answer =  new StringBuilder();
         //list with entity.Events for selected day
+        
+        Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
+        cal.set(selectefYear, selectedMonth - 1, selectedDay);
+        
+        
         List dayEvents;
         dayEvents = eventFacade.getEventsByUserIDandDate(userID, selectedMonth, selectedDay, selectefYear);
         //event object

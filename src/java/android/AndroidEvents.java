@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -247,6 +248,7 @@ public class AndroidEvents extends HttpServlet {
         jarray = new JsonParser().parse(events).getAsJsonArray();
         
         System.out.println(jarray);
+        
         
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");//test
         Calendar cal = Calendar.getInstance();

@@ -17,7 +17,7 @@ public class Test {
         //WorkingWithEvents w = new WorkingWithEvents();
         
         YrDataParser yr = new YrDataParser("http://www.yr.no/place/Norway/Oslo/Oslo/Oslo/forecast.xml");
-        System.out.println(yr.getWeather());
+        System.out.println(yr.getWeather("2013-06-02"));
     }
     
 }

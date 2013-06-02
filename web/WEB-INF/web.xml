@@ -60,6 +60,10 @@
         <servlet-name>Modules</servlet-name>
         <servlet-class>servlets.ModulesShow</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AndroidModules</servlet-name>
+        <servlet-class>android.AndroidModules</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>Modules</servlet-name>
         <url-pattern>/Modules</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AndroidModules</servlet-name>
+        <url-pattern>/AndroidModules</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

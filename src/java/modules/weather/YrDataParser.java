@@ -4,7 +4,9 @@
  */
 package modules.weather;
 
+import help.YrForecast;
 import java.net.URL;
+import java.util.LinkedList;
 import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,7 +36,6 @@ public class YrDataParser {
             documentBuilder = documentBuilderFactory.newDocumentBuilder();
             document = documentBuilder.parse(new URL(url).openStream());
             document.getDocumentElement().normalize();
-
         } 
         catch (Exception ex) 
         {
@@ -42,7 +43,7 @@ public class YrDataParser {
         }
     }
     
-    public String getWeather()
+    public LinkedList<YrForecast> getWeather(String _date)
     {
         StringBuilder answer = new StringBuilder();
         nodeList = document.getElementsByTagName("time");
@@ -56,26 +57,43 @@ public class YrDataParser {
             }
         }
         
+        LinkedList<YrForecast> weatherList = new LinkedList();
+        
         for(int i = offset; i < nodeList.getLength();i++)
         {
             node = nodeList.item(i);
-            answer.append(node.getAttributes().getNamedItem("from").toString()).append(" ");
+            String weatherForecastDate = node.getAttributes().getNamedItem("from").toString();
+            weatherForecastDate = weatherForecastDate.substring(6, 16);
             
-            NodeList nl = node.getChildNodes();
-            answer.append(nl.item(13).getAttributes().getNamedItem("value")).append(" ");
-            //answer.append(node.getAttributes().getNamedItem("from").toString()).append(" ");
-            //answer.append(node.getChildNodes().toString());
-            //answer.append(node.getChildNodes().item(4).getAttributes().toString());
+            String timeStart = node.getAttributes().getNamedItem("from").toString();
+            timeStart = timeStart.substring(17,22);
+            
+            String timeEnd = node.getAttributes().getNamedItem("to").toString();
+            timeEnd = timeEnd.substring(15,20);
             /*
-            if (node.getNodeType() == Node.ELEMENT_NODE)
+            System.out.println(_date);
+            System.out.println(weatherForecastDate);
+            System.out.println(timeStart);
+            System.out.println(timeEnd);
+            */
+            if(_date.equals(weatherForecastDate))
             {
-                Element element = (Element) node;
-                String timeOut = node.getAttributes().getNamedItem("from").toString();
-                answer.append(getTempValue()).append(" ");
-            }
-            * */
+                NodeList nl = node.getChildNodes();
+                YrForecast yf = new YrForecast();
+                yf.setTime(timeStart + " - " + timeEnd);
+                yf.setIcon(nl.item(3).getAttributes().getNamedItem("var").getNodeValue());
+                yf.setTemp(nl.item(13).getAttributes().getNamedItem("value").getNodeValue());
+                
+                weatherList.add(yf);
+                
+                /*
+                 * answer.append(node.getAttributes().getNamedItem("from").toString()).append(" ");
+                 * answer.append(nl.item(13).getAttributes().getNamedItem("value").getNodeValue()).append("-");
+                 * answer.append(nl.item(3).getAttributes().getNamedItem("number").getNodeValue()).append(" ");
+                 */
+            }    
         }    
-        return answer.toString();
+        return weatherList;
     }
     
     private String getTempValue()

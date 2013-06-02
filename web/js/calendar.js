@@ -231,7 +231,11 @@ function zoomDay(day)
     
      $.get('Eventspage', {instance:'dayinmonth', day:sday, month:smonth, year:syear}, function(responseText){
         $("#selectedDayEvents").replaceWith("<div id=\"selectedDayEvents\" class=\"span11\">" + responseText + "</div>");
-    });   
+    });
+    
+    $.get('Modules', {instance:'showm'}, function(responseText){
+        $("#eventpanel").replaceWith("<div id=\"eventpanel\" class=\"span4\">" + responseText + "</div>");
+    });
 }
 
 function dayPosition(){
