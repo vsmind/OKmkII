@@ -23,11 +23,11 @@ import session.ModulesusersFacade;
 import session.YrlinksFacade;
 
 /**
- *
+ * Servlet responsible for module information transfer for android client
  * @author Vitaly
  */
 public class AndroidModules extends HttpServlet {
-
+    //Variables
      private HttpSession httpsession; 
      private String action;
      @EJB
@@ -97,6 +97,12 @@ public class AndroidModules extends HttpServlet {
         
     }
     
+    /**
+     * Method returns jSON object with temperature information to android client
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void weather(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         int userID = (Integer)httpsession.getAttribute("userID");
@@ -108,6 +114,7 @@ public class AndroidModules extends HttpServlet {
         String moduleData;
         
         entity.Modules tempModule;
+        
         for(int i = 0; i < modulesList.size(); i++)
         {
             entity.Modulesusers userModules = (entity.Modulesusers) modulesList.get(i);
@@ -130,16 +137,22 @@ public class AndroidModules extends HttpServlet {
         response.getWriter().write(gson.toJson(yrForecastList));
     }
     
-    
+    /**
+     * Method Run weather parser for every yr.com weather module for user
+     * return list with help class that has time, weather icon id or temperature value
+     * @param placeID - city id from database
+     * @param request servlet request
+     * @param response servlet response
+     */
     private void showWeather(String placeID, HttpServletRequest request, HttpServletResponse response)
     {
-        
+        //url to weather forecast XML
         String url;
         url = yrlinksFacade.getURLByPlaceID(placeID);
         
         //variable is responsible for selecting actions
 	String wDate = request.getParameter("wdate");
-        
+        //parser
         YrDataParser yr = new YrDataParser(url);
         
         LinkedList<YrForecast> forecast = new LinkedList();

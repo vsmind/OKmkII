@@ -43,7 +43,6 @@ public class AndroidEvents extends HttpServlet {
     private HttpSession httpsession;
     @EJB
     EventFacade eventsFacade;
-    
     @EJB
     private EventFacade eventFacade;
     @EJB
@@ -105,19 +104,19 @@ public class AndroidEvents extends HttpServlet {
         
         if(action.equals("dayevents"))
         {
-            getDayEvents(request, response);
+            getDayEvents(request, response);//events for one day
         }
         else if(action.equals("monthevents"))
         {
-            getMonthEvents(request, response);
+            getMonthEvents(request, response);//events for month
         }
         else if(action.equals("save"))
         {
-            saveNewEvent(request, response);
+            saveNewEvent(request, response);//save new event from android
         }
         else
         {
-            
+            requestFeil(request,response);//feil
         }
         
     }
@@ -137,6 +136,12 @@ public class AndroidEvents extends HttpServlet {
         processRequest(request, response);
     }
     
+    /**
+     * Method returns jSON object with events for selected day
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void getDayEvents(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         //Variables
@@ -157,6 +162,7 @@ public class AndroidEvents extends HttpServlet {
         List<help.AndroidEvent> androidEventList = new LinkedList<help.AndroidEvent>();
         entity.Event ev;
         
+        //Create help.AndroidEvent for next converting to jSON
         for(int i = 0; i < eventList.size(); i++)
         {
             help.AndroidEvent ae = new help.AndroidEvent();
@@ -182,6 +188,12 @@ public class AndroidEvents extends HttpServlet {
         response.getWriter().write(gson.toJson(androidEventList));
     }
     
+    /**
+     * Method returns jSON object with events for selected month
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void getMonthEvents(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         //Variables
@@ -200,6 +212,7 @@ public class AndroidEvents extends HttpServlet {
         List<help.AndroidEvent> androidEventList = new LinkedList<help.AndroidEvent>();
         entity.Event ev;
         
+        //Create help.AndroidEvent for next converting to jSON
         for(int i = 0; i < eventList.size(); i++)
         {
             help.AndroidEvent ae = new help.AndroidEvent();
@@ -225,6 +238,13 @@ public class AndroidEvents extends HttpServlet {
         response.getWriter().write(gson.toJson(androidEventList));
     }
     
+    /**
+     * Method returns connection fail 
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void requestFeil(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         //Google gson object
@@ -235,6 +255,12 @@ public class AndroidEvents extends HttpServlet {
         response.getWriter().write(gson.toJson(result));
     }
     
+    /**
+     * Method saves android events in database
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void saveNewEvent(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         //Event object
@@ -323,12 +349,7 @@ public class AndroidEvents extends HttpServlet {
         event.setTimeRepeat(timeRepeatFacade.getEventTypeById(1));
         //Save event to DB
         eventFacade.create(event);
-   
     }
-    
-    
-    
-    
 
     // <editor-fold defaultstate="collapsed" desc="getServletInfo method.">
     /**
