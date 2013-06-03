@@ -11,7 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Auto generated session bean class
+ * that interacts with TimeRepeat entity
+ * Yrlinks entity
  * @author Vitaly
  */
 @Stateless
@@ -28,6 +30,11 @@ public class YrlinksFacade extends AbstractFacade<Yrlinks> {
         super(Yrlinks.class);
     }
     
+    /**
+     * Method returns List<help.Yrlinks> that has _name in the begin of their name
+     * @param _name - city name
+     * @return 
+     */
     public List<help.Yrlinks> getLinkByName(String _name)
     {
         List<help.Yrlinks> l;
@@ -35,6 +42,11 @@ public class YrlinksFacade extends AbstractFacade<Yrlinks> {
         return l;
     }
     
+    /**
+     * Method returns city name
+     * @param _id - city ID
+     * @return String
+     */
     public String getLinkByPlaceID(String _id)
     {
         String name;
@@ -42,6 +54,11 @@ public class YrlinksFacade extends AbstractFacade<Yrlinks> {
         return name;
     }
     
+    /**
+     * Method returns url to XML file with weather forecast
+     * @param _id - city id
+     * @return String 
+     */
     public String getURLByPlaceID(String _id)
     {
         String url;

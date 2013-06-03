@@ -8,7 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 /**
- *
+ * Auto generated session bean class
  * @author Vitaly
  */
 public abstract class AbstractFacade<T> {

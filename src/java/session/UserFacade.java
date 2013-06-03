@@ -11,7 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Auto generated session bean class
+ * that interacts with TimeRepeat entity
+ * UserFacade entity
  * @author Vitaly
  */
 @Stateless

@@ -10,7 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Auto generated session bean class
+ * that interacts with
+ * Priority entity
  * @author Vitaly
  */
 @Stateless

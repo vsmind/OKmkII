@@ -10,7 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Auto generated session bean class
+ * that interacts with TimeRepeat entity
  * @author Vitaly
  */
 @Stateless
@@ -27,6 +28,11 @@ public class TimeRepeatFacade extends AbstractFacade<TimeRepeat> {
         super(TimeRepeat.class);
     }
     
+    /**
+     * Method returns TimeRepeat object
+     * @param _id id
+     * @return TimeRepeat
+     */
     public TimeRepeat getEventTypeById(int _id)
     {
         TimeRepeat tRepeat;

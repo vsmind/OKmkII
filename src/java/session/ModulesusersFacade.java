@@ -11,7 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Auto generated session bean class
+ * that interacts with
+ * Modulesusers entity
  * @author Vitaly
  */
 @Stateless
@@ -28,6 +30,11 @@ public class ModulesusersFacade extends AbstractFacade<Modulesusers> {
         super(Modulesusers.class);
     }
     
+    /**
+     * Method returns list with all user modules
+     * @param _userID - user id
+     * @return List<entity.Modulesusers>
+     */
     public List<entity.Modulesusers> getModulesByUserUD(int _userID)
     {
         List l;

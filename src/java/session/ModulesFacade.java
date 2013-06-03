@@ -10,7 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Auto generated session bean class
+ * that interacts with
+ * Modules entity
  * @author Vitaly
  */
 @Stateless
@@ -27,6 +29,11 @@ public class ModulesFacade extends AbstractFacade<Modules> {
         super(Modules.class);
     }
     
+    /**
+     * Method gets module with given id
+     * @param _id - module is
+     * @return entiry.Module
+     */
     public entity.Modules getModulebyID(int _id)
     {
         entity.Modules m;

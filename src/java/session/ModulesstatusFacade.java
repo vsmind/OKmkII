@@ -11,7 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Auto generated session bean class
+ * that interacts with
+ * Modulestatus entity
  * @author Vitaly
  */
 @Stateless
@@ -28,6 +30,11 @@ public class ModulesstatusFacade extends AbstractFacade<Modulesstatus> {
         super(Modulesstatus.class);
     }
     
+    /**
+     * Method gets module status
+     * @param _id - module status id
+     * @return entity.Modulesstatus
+     */
     public entity.Modulesstatus getModuleStatusByID(int _id)
     {
         entity.Modulesstatus l;
