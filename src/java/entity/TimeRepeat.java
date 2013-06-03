@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Generated entity class for TimeRepeat table
  * @author Vitaly
  */
 @Entity

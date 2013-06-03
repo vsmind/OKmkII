@@ -7,7 +7,8 @@ package help;
 import java.io.Serializable;
 
 /**
- *
+ * Help class which is used to create the jSON object for Android client
+ * that used in connection
  * @author Vitaly
  */
 public class ConnectionResult implements Serializable

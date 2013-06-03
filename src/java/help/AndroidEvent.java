@@ -8,7 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
+ * Help class which is used to create the jSON object for Android client
+ * that used for events sending
  * @author Vitaly
  */
 public class AndroidEvent implements Serializable
@@ -28,6 +29,9 @@ public class AndroidEvent implements Serializable
     public AndroidEvent() {
     }
 
+    /*
+     * Getter or Setter Methods
+     */
     public Integer getId() {
         return id;
     }

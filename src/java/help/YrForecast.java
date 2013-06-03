@@ -7,7 +7,8 @@ package help;
 import java.io.Serializable;
 
 /**
- *
+ * Help class which is used to create the jSON object for Android client
+ * that used with yr.no module
  * @author Vitaly
  */
 public class YrForecast implements Serializable

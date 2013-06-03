@@ -8,7 +8,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- *
+ * Help class which is used to create the jSON object for Android client
+ * class would be used along with the android client
  * @author Vitaly
  */
 public class Yrlinks implements Serializable

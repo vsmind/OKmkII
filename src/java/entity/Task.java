@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Generated entity class for Task table
  * @author Vitaly
  */
 @Entity
