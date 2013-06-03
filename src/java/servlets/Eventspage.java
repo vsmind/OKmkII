@@ -23,7 +23,8 @@ import session.EventFacade;
 import session.EventtypeFacade;
 
 /**
- *
+ * Servlet Eventspage is responsible showing dynamic information 
+ * about events on calender page
  * @author Vitaly
  */
 public class Eventspage extends HttpServlet {

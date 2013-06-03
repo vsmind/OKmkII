@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet responsible for Time
+ * Servlet responsible for server time
  * @author Vitaly
  */
 public class Time extends HttpServlet {

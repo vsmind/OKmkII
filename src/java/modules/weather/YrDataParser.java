@@ -15,7 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- *
+ * Yr weather parser class
  * @author Vitaly
  */
 public class YrDataParser {
@@ -27,6 +27,11 @@ public class YrDataParser {
     private NodeList nodeList;
     private Node node;
     
+    /**
+     * Class constructor
+     * gets XML document from url
+     * @param _url - url to XML file
+     */
     public YrDataParser(String _url)
     {
         try 
@@ -43,22 +48,28 @@ public class YrDataParser {
         }
     }
     
+    /**
+     * XML parser, gets weather forecast from XML file
+     * @param _date - date in format yyyy-MM-dd
+     * @return LinkedList<YrForecast> with weather forecast for chosen date
+     */
     public LinkedList<YrForecast> getWeather(String _date)
     {
         StringBuilder answer = new StringBuilder();
         nodeList = document.getElementsByTagName("time");
+        //search for first node with necessary information
         int offset = 0;
         for(int i = 1; i < nodeList.getLength();i++)
         {
             if(nodeList.item(i).getChildNodes().getLength() > 10)
             {
-                offset = i;
+                offset = i;//set offset
                 break;
             }
         }
         
         LinkedList<YrForecast> weatherList = new LinkedList();
-        
+        //XML parsing
         for(int i = offset; i < nodeList.getLength();i++)
         {
             node = nodeList.item(i);
@@ -76,6 +87,8 @@ public class YrDataParser {
             System.out.println(timeStart);
             System.out.println(timeEnd);
             */
+            
+            //compare dates
             if(_date.equals(weatherForecastDate))
             {
                 NodeList nl = node.getChildNodes();
@@ -85,17 +98,16 @@ public class YrDataParser {
                 yf.setTemp(nl.item(13).getAttributes().getNamedItem("value").getNodeValue());
                 
                 weatherList.add(yf);
-                
-                /*
-                 * answer.append(node.getAttributes().getNamedItem("from").toString()).append(" ");
-                 * answer.append(nl.item(13).getAttributes().getNamedItem("value").getNodeValue()).append("-");
-                 * answer.append(nl.item(3).getAttributes().getNamedItem("number").getNodeValue()).append(" ");
-                 */
             }    
         }    
         return weatherList;
     }
     
+    @Deprecated
+    /**
+     * Search for temperature value in node
+     * @return XML node
+     */
     private String getTempValue()
     {
         Node nodeValue = node.getChildNodes().item(3).getAttributes().getNamedItem("name"); 

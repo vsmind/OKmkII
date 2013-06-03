@@ -22,7 +22,7 @@ import session.ModulesusersFacade;
 import session.YrlinksFacade;
 
 /**
- *
+ * Servlet ModulesShow is responsible modules demonstration
  * @author Vitaly
  */
 public class ModulesShow extends HttpServlet {
@@ -86,7 +86,7 @@ public class ModulesShow extends HttpServlet {
         //choice of actions depending on the request parameter
         if(action.equals("showm"))
         {
-            showMonthModulesForUser(request, response);
+            showMonthModulesForUser(request, response);//show month modules
         }
     }
 
@@ -105,18 +105,25 @@ public class ModulesShow extends HttpServlet {
         processRequest(request, response);
     }
     
+    /**
+     * Method generates html code in depends of user view
+     * and user modules
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void showMonthModulesForUser(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         //html code which is returned in response to a request
         answer = new StringBuilder();
-        
+        //user ID from session
         int userID = (Integer)httpsession.getAttribute("userID");
             
         //Get all modules for user
         List modulesList = modulesUserFacade.getModulesByUserUD(userID);
         
         String moduleData;
-        
+        //check all user modules
         entity.Modules tempModule;
         for(int i = 0; i < modulesList.size(); i++)
         {
@@ -124,7 +131,7 @@ public class ModulesShow extends HttpServlet {
             //get module id
             tempModule = userModules.getModuleId();
             //check if user using yr.no module
-            if(tempModule.getId() == 1 && tempModule.getMmonth() == true)
+            if(tempModule.getId() == 1 && tempModule.getMmonth() == true)//weather module for month
             {
                 moduleData = userModules.getModuleData();
                 
@@ -138,6 +145,13 @@ public class ModulesShow extends HttpServlet {
         response.getWriter().write(answer.toString());
     }
     
+    /**
+     * Method calls XML parser and generate HTML code for
+     * weather demonstration
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void showWeather(String placeID, HttpServletRequest request, HttpServletResponse response)
     {
         answer.append("<p class=\"muted\">yr.no -")
@@ -153,16 +167,16 @@ public class ModulesShow extends HttpServlet {
         YrDataParser yr = new YrDataParser(url);
         
         LinkedList<YrForecast> forecast = new LinkedList();
-        
+        //Get watching date from session
         Calendar cal = (Calendar) httpsession.getAttribute("watchingDate");
         SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd");
         
         String wDate = dFormat.format(cal.getTime());
-        
+        //call XML parser
         forecast = yr.getWeather(wDate);
         
         System.out.println(wDate);
-        
+        //HTML code
         answer.append("<table>")
                 .append("<tbody>");
         

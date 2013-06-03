@@ -18,7 +18,7 @@ import session.EventFacade;
 
 
 /**
- *
+ * Test class, used for fast testing 
  * @author Vitaly
  */
 public class WorkingWithEvents {

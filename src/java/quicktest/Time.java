@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- *
+ * Test class, used for fast testing 
  * @author Vitaly
  */
 public class Time {

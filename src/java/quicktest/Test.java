@@ -7,7 +7,8 @@ package quicktest;
 import modules.weather.YrDataParser;
 
 /**
- *
+ * Test class, used for fast testing 
+ * Main method
  * @author Vitaly
  */
 public class Test {

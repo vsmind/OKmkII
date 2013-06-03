@@ -128,9 +128,9 @@ public class Modulespage extends HttpServlet {
     
     /**
      * Method getActiveModules generates html code for user active modules demonstration
-     * @param request
-     * @param response
-     * @throws IOException 
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
      */
     private void getActiveModules(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
@@ -245,9 +245,9 @@ public class Modulespage extends HttpServlet {
     
     /**
      * Method getAvailableModules generates html code for available modules demonstration
-     * @param request
-     * @param response
-     * @throws IOException 
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
      */
     private void getAvailableModules(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
@@ -330,6 +330,12 @@ public class Modulespage extends HttpServlet {
         response.getWriter().write(answer.toString());
     }
     
+    /**
+     * Method creates form that send information with city name to servlet
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs 
+     */
     private void showModule(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         //variable is responsible for selecting actions

@@ -26,7 +26,7 @@ import session.ModulesstatusFacade;
 import session.YrlinksFacade;
 
 /**
- *
+ * Yr servlet is responsible for different fork with yr module
  * @author Vitaly
  */
 public class Yr extends HttpServlet {
@@ -120,6 +120,12 @@ public class Yr extends HttpServlet {
         processRequest(request, response);
     }
     
+    /**
+     * Method generates html code that used when user search city for yr.no module
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void getCity(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         //html code which is returned in response to a request
@@ -147,11 +153,12 @@ public class Yr extends HttpServlet {
         
         if(!cityName.equals(""))
         {
-            cityName = cityName + "%";
-            yrLinks = yrlinksFacade.getLinkByName(cityName);
+            cityName = cityName + "%";//have to start from these letters
+            yrLinks = yrlinksFacade.getLinkByName(cityName);//database query
             
             help.Yrlinks ylink; 
             
+            //object convertation
             for(int i = 0 ; i < yrLinks.size(); i++)
             {
                 Object[] obj;
@@ -193,6 +200,7 @@ public class Yr extends HttpServlet {
                 cityList.add(ylink);
             }
             
+            //html code generation
             answer.append("<table class=\"table table-hover span11\">");
             
             answer.append("<thead>");
@@ -242,6 +250,12 @@ public class Yr extends HttpServlet {
         response.getWriter().write(answer.toString());
     }
     
+    /**
+     * Method generates used to save new yr.no module to user module table
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
     private void saveUserModule(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         //html code which is returned in response to a request
@@ -274,13 +288,17 @@ public class Yr extends HttpServlet {
         response.getWriter().write(answer.toString());
     }
     
+    @Deprecated
+    /**
+     * Method should show yr module on month view
+     * @param request servlet request
+     * @param response servlet response
+     * @throws IOException if an I/O error occurs
+     */
      private void showWeatherOnMonth(HttpServletRequest request, HttpServletResponse response) throws IOException
      {
         //html code which is returned in response to a request
         StringBuilder answer =  new StringBuilder();
-        
-        
-        
         //response type
         response.setContentType("text/plain");
         //send response from servlet
